@@ -1,0 +1,529 @@
+:: StoryTitle
+Intro to Soldering
+
+
+:: StoryData
+{
+  "ifid": "A3F2B1C4-9E7D-4A6B-8C5F-1D2E3F4A5B6C",
+  "format": "Harlowe",
+  "format-version": "3.3.9",
+  "start": "Title",
+  "zoom": 1
+}
+
+
+:: Basic Technique {"position":"25,150","size":"100,100"}
+<div class="slide-label">Slide 09 of 14</div>
+
+## Basic Soldering Technique
+
+<div class="info-box">**The golden rule: heat the joint, not the solder.** Solder should melt when it touches the hot joint, not when it touches the iron tip.</div>
+
+### Step-by-Step
+
+1. **Flux**: Add flux to the joint.
+2. **Heat**: Touch the iron tip to the junction of the lead and pad simultaneously. Wait 1–2 seconds.
+3. **Feed solder**: Bring solder to the joint from the opposite side of the iron tip. Let it flow in.
+4. **Remove solder**: Once enough solder has flowed, pull the solder wire away.
+5. **Remove iron**: Pull the iron away cleanly and smoothly in an upward motion.
+6. **Don't move**: Let the joint cool undisturbed for 2–3 seconds. Movement during cooling causes cold joints.
+
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 1044.4181975801966 203.91498760174545" width="1044.4181975801966" height="203.91498760174545"><!-- svg-source:excalidraw --><metadata/><defs><style class="style-fonts">
+      @font-face { font-family: Nunito; src: url(data:font/woff2;base64,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); }</style></defs><rect x="0" y="0" width="1044.4181975801966" height="203.91498760174545" fill="#ffffff"/><g stroke-linecap="round" transform="translate(78.00366921820205 66.84962823532078) rotate(0 3.598077736412961 60.44770597173465)"><path d="M0 0 L7.2 0 L7.2 120.9 L0 120.9" stroke="none" stroke-width="0" fill="#868e96"/><path d="M0 0 C2.83 0, 5.67 0, 7.2 0 M0 0 C1.83 0, 3.66 0, 7.2 0 M7.2 0 C7.2 47.56, 7.2 95.11, 7.2 120.9 M7.2 0 C7.2 46.52, 7.2 93.05, 7.2 120.9 M7.2 120.9 C4.59 120.9, 1.98 120.9, 0 120.9 M7.2 120.9 C4.7 120.9, 2.21 120.9, 0 120.9 M0 120.9 C0 86.06, 0 51.23, 0 0 M0 120.9 C0 73.23, 0 25.57, 0 0" stroke="#868e96" stroke-width="2" fill="none"/></g><g stroke-linecap="round" transform="translate(10 138.09156741629522) rotate(0 71.6017469546141 5.037308830977963)"><path d="M0 0 L143.2 0 L143.2 10.07 L0 10.07" stroke="none" stroke-width="0" fill="#2f9e44"/><path d="M0 0 C46.5 0, 93 0, 143.2 0 M0 0 C34.64 0, 69.29 0, 143.2 0 M143.2 0 C143.2 2.55, 143.2 5.1, 143.2 10.07 M143.2 0 C143.2 3.81, 143.2 7.62, 143.2 10.07 M143.2 10.07 C104.13 10.07, 65.07 10.07, 0 10.07 M143.2 10.07 C94.88 10.07, 46.56 10.07, 0 10.07 M0 10.07 C0 6.96, 0 3.86, 0 0 M0 10.07 C0 7.09, 0 4.1, 0 0" stroke="#2f9e44" stroke-width="2" fill="none"/></g><g stroke-linecap="round" transform="translate(51.37789396874723 133.05425858531635) rotate(0 30.22385298586687 1.7990388682064804)"><path d="M0 0 L60.45 0 L60.45 3.6 L0 3.6" stroke="none" stroke-width="0" fill="#f08c00"/><path d="M0 0 C19.56 0, 39.12 0, 60.45 0 M0 0 C18.95 0, 37.9 0, 60.45 0 M60.45 0 C60.45 1.35, 60.45 2.7, 60.45 3.6 M60.45 0 C60.45 0.89, 60.45 1.78, 60.45 3.6 M60.45 3.6 C39.38 3.6, 18.32 3.6, 0 3.6 M60.45 3.6 C47.86 3.6, 35.27 3.6, 0 3.6 M0 3.6 C0 2.38, 0 1.16, 0 0 M0 3.6 C0 2.46, 0 1.32, 0 0" stroke="#f08c00" stroke-width="2" fill="none"/></g><g stroke-linecap="round" transform="translate(241.8361421495283 66.84962823532078) rotate(0 3.598077736412961 60.44770597173465)"><path d="M0 0 L7.2 0 L7.2 120.9 L0 120.9" stroke="none" stroke-width="0" fill="#868e96"/><path d="M0 0 C1.46 0, 2.93 0, 7.2 0 M0 0 C2.2 0, 4.41 0, 7.2 0 M7.2 0 C7.2 28.73, 7.2 57.46, 7.2 120.9 M7.2 0 C7.2 40.05, 7.2 80.1, 7.2 120.9 M7.2 120.9 C4.8 120.9, 2.4 120.9, 0 120.9 M7.2 120.9 C4.32 120.9, 1.45 120.9, 0 120.9 M0 120.9 C0 96.68, 0 72.47, 0 0 M0 120.9 C0 83.88, 0 46.86, 0 0" stroke="#868e96" stroke-width="2" fill="none"/></g><g stroke-linecap="round" transform="translate(173.83247293132808 138.09156741629522) rotate(0 71.6017469546141 5.037308830977963)"><path d="M0 0 L143.2 0 L143.2 10.07 L0 10.07" stroke="none" stroke-width="0" fill="#2f9e44"/><path d="M0 0 C39.16 0, 78.31 0, 143.2 0 M0 0 C33.32 0, 66.64 0, 143.2 0 M143.2 0 C143.2 2.68, 143.2 5.36, 143.2 10.07 M143.2 0 C143.2 3.16, 143.2 6.33, 143.2 10.07 M143.2 10.07 C109.83 10.07, 76.45 10.07, 0 10.07 M143.2 10.07 C107.23 10.07, 71.26 10.07, 0 10.07 M0 10.07 C0 6.45, 0 2.82, 0 0 M0 10.07 C0 7.15, 0 4.22, 0 0" stroke="#2f9e44" stroke-width="2" fill="none"/></g><g stroke-linecap="round" transform="translate(215.2103669000735 133.05425858531635) rotate(0 30.22385298586687 1.7990388682064804)"><path d="M0 0 L60.45 0 L60.45 3.6 L0 3.6" stroke="none" stroke-width="0" fill="#f08c00"/><path d="M0 0 C20.38 0, 40.77 0, 60.45 0 M0 0 C16.55 0, 33.09 0, 60.45 0 M60.45 0 C60.45 1.24, 60.45 2.48, 60.45 3.6 M60.45 0 C60.45 1.44, 60.45 2.88, 60.45 3.6 M60.45 3.6 C48.25 3.6, 36.05 3.6, 0 3.6 M60.45 3.6 C41.45 3.6, 22.46 3.6, 0 3.6 M0 3.6 C0 2.5, 0 1.41, 0 0 M0 3.6 C0 2.21, 0 0.83, 0 0" stroke="#f08c00" stroke-width="2" fill="none"/></g><g stroke-linecap="round" transform="translate(497.0597895857409 66.84962823532078) rotate(0 3.598077736412961 60.44770597173465)"><path d="M0 0 L7.2 0 L7.2 120.9 L0 120.9" stroke="none" stroke-width="0" fill="#868e96"/><path d="M0 0 C2.39 0, 4.77 0, 7.2 0 M0 0 C1.58 0, 3.16 0, 7.2 0 M7.2 0 C7.2 35.59, 7.2 71.17, 7.2 120.9 M7.2 0 C7.2 32.33, 7.2 64.65, 7.2 120.9 M7.2 120.9 C5.34 120.9, 3.49 120.9, 0 120.9 M7.2 120.9 C4.69 120.9, 2.19 120.9, 0 120.9 M0 120.9 C0 85.37, 0 49.85, 0 0 M0 120.9 C0 79.01, 0 37.13, 0 0" stroke="#868e96" stroke-width="2" fill="none"/></g><g stroke-linecap="round" transform="translate(429.0561203675388 138.09156741629522) rotate(0 71.6017469546141 5.037308830977963)"><path d="M0 0 L143.2 0 L143.2 10.07 L0 10.07" stroke="none" stroke-width="0" fill="#2f9e44"/><path d="M0 0 C39.55 0, 79.11 0, 143.2 0 M0 0 C32.6 0, 65.2 0, 143.2 0 M143.2 0 C143.2 2.37, 143.2 4.75, 143.2 10.07 M143.2 0 C143.2 2.43, 143.2 4.87, 143.2 10.07 M143.2 10.07 C97.5 10.07, 51.8 10.07, 0 10.07 M143.2 10.07 C97.83 10.07, 52.45 10.07, 0 10.07 M0 10.07 C0 6.83, 0 3.59, 0 0 M0 10.07 C0 6.83, 0 3.59, 0 0" stroke="#2f9e44" stroke-width="2" fill="none"/></g><g stroke-linecap="round" transform="translate(470.43401433628605 133.05425858531635) rotate(0 30.22385298586687 1.7990388682064804)"><path d="M0 0 L60.45 0 L60.45 3.6 L0 3.6" stroke="none" stroke-width="0" fill="#f08c00"/><path d="M0 0 C16.08 0, 32.16 0, 60.45 0 M0 0 C20.9 0, 41.8 0, 60.45 0 M60.45 0 C60.45 1.28, 60.45 2.55, 60.45 3.6 M60.45 0 C60.45 1.06, 60.45 2.11, 60.45 3.6 M60.45 3.6 C45.31 3.6, 30.18 3.6, 0 3.6 M60.45 3.6 C41.63 3.6, 22.81 3.6, 0 3.6 M0 3.6 C0 2.35, 0 1.1, 0 0 M0 3.6 C0 2.23, 0 0.86, 0 0" stroke="#f08c00" stroke-width="2" fill="none"/></g><g stroke-linecap="round" transform="translate(681.041497840979 66.84962823532078) rotate(0 3.598077736412961 60.44770597173465)"><path d="M0 0 L7.2 0 L7.2 120.9 L0 120.9" stroke="none" stroke-width="0" fill="#868e96"/><path d="M0 0 C2.16 0, 4.31 0, 7.2 0 M0 0 C1.83 0, 3.66 0, 7.2 0 M7.2 0 C7.2 33.97, 7.2 67.94, 7.2 120.9 M7.2 0 C7.2 48.22, 7.2 96.43, 7.2 120.9 M7.2 120.9 C5.2 120.9, 3.21 120.9, 0 120.9 M7.2 120.9 C4.52 120.9, 1.83 120.9, 0 120.9 M0 120.9 C0 77.52, 0 34.15, 0 0 M0 120.9 C0 85.15, 0 49.41, 0 0" stroke="#868e96" stroke-width="2" fill="none"/></g><g stroke-linecap="round" transform="translate(613.0378286227788 138.09156741629522) rotate(0 71.6017469546141 5.037308830977963)"><path d="M0 0 L143.2 0 L143.2 10.07 L0 10.07" stroke="none" stroke-width="0" fill="#2f9e44"/><path d="M0 0 C40.81 0, 81.62 0, 143.2 0 M0 0 C40.6 0, 81.21 0, 143.2 0 M143.2 0 C143.2 3.12, 143.2 6.24, 143.2 10.07 M143.2 0 C143.2 4, 143.2 8, 143.2 10.07 M143.2 10.07 C93.86 10.07, 44.52 10.07, 0 10.07 M143.2 10.07 C90.32 10.07, 37.44 10.07, 0 10.07 M0 10.07 C0 6.09, 0 2.11, 0 0 M0 10.07 C0 7.37, 0 4.67, 0 0" stroke="#2f9e44" stroke-width="2" fill="none"/></g><g stroke-linecap="round" transform="translate(654.4157225915242 133.05425858531635) rotate(0 30.22385298586687 1.7990388682064804)"><path d="M0 0 L60.45 0 L60.45 3.6 L0 3.6" stroke="none" stroke-width="0" fill="#f08c00"/><path d="M0 0 C17.92 0, 35.83 0, 60.45 0 M0 0 C17.02 0, 34.04 0, 60.45 0 M60.45 0 C60.45 0.94, 60.45 1.88, 60.45 3.6 M60.45 0 C60.45 1.31, 60.45 2.62, 60.45 3.6 M60.45 3.6 C48.19 3.6, 35.94 3.6, 0 3.6 M60.45 3.6 C45.24 3.6, 30.03 3.6, 0 3.6 M0 3.6 C0 2.19, 0 0.78, 0 0 M0 3.6 C0 2.62, 0 1.64, 0 0" stroke="#f08c00" stroke-width="2" fill="none"/></g><g stroke-linecap="round" transform="translate(930.9134946960548 66.13001268803964) rotate(0 3.598077736412961 60.44770597173465)"><path d="M0 0 L7.2 0 L7.2 120.9 L0 120.9" stroke="none" stroke-width="0" fill="#868e96"/><path d="M0 0 C1.72 0, 3.44 0, 7.2 0 M0 0 C1.84 0, 3.67 0, 7.2 0 M7.2 0 C7.2 33.65, 7.2 67.29, 7.2 120.9 M7.2 0 C7.2 33.56, 7.2 67.12, 7.2 120.9 M7.2 120.9 C4.75 120.9, 2.3 120.9, 0 120.9 M7.2 120.9 C4.88 120.9, 2.56 120.9, 0 120.9 M0 120.9 C0 88.18, 0 55.46, 0 0 M0 120.9 C0 75.93, 0 30.96, 0 0" stroke="#868e96" stroke-width="2" fill="none"/></g><g stroke-linecap="round" transform="translate(862.9098254778528 137.37195186901226) rotate(0 71.6017469546141 5.037308830977963)"><path d="M0 0 L143.2 0 L143.2 10.07 L0 10.07" stroke="none" stroke-width="0" fill="#2f9e44"/><path d="M0 0 C29.07 0, 58.14 0, 143.2 0 M0 0 C42.94 0, 85.89 0, 143.2 0 M143.2 0 C143.2 3.02, 143.2 6.03, 143.2 10.07 M143.2 0 C143.2 2.47, 143.2 4.95, 143.2 10.07 M143.2 10.07 C94.91 10.07, 46.62 10.07, 0 10.07 M143.2 10.07 C100.83 10.07, 58.46 10.07, 0 10.07 M0 10.07 C0 7.74, 0 5.41, 0 0 M0 10.07 C0 7.51, 0 4.95, 0 0" stroke="#2f9e44" stroke-width="2" fill="none"/></g><g stroke-linecap="round" transform="translate(904.2877194466 132.3346430380334) rotate(0 30.22385298586687 1.7990388682064804)"><path d="M0 0 L60.45 0 L60.45 3.6 L0 3.6" stroke="none" stroke-width="0" fill="#f08c00"/><path d="M0 0 C22.03 0, 44.06 0, 60.45 0 M0 0 C14.41 0, 28.82 0, 60.45 0 M60.45 0 C60.45 0.97, 60.45 1.93, 60.45 3.6 M60.45 0 C60.45 1.03, 60.45 2.07, 60.45 3.6 M60.45 3.6 C40.44 3.6, 20.43 3.6, 0 3.6 M60.45 3.6 C37.21 3.6, 13.98 3.6, 0 3.6 M0 3.6 C0 2.85, 0 2.09, 0 0 M0 3.6 C0 2.63, 0 1.67, 0 0" stroke="#f08c00" stroke-width="2" fill="none"/></g><g stroke-linecap="round"><g stroke-opacity="0.4" fill-opacity="0.4" transform="translate(20.56054086799304 138.09156741629522) rotate(0 61.04120608661924 -8.188495998907456)" fill-rule="evenodd"><path d="M0 0 C2.16 -1.2, 5.28 -4.92, 12.95 -7.2 C20.63 -9.47, 33.94 -12.23, 46.06 -13.67 C58.17 -15.11, 73.52 -17.87, 85.63 -15.83 C97.75 -13.79, 133.01 -4.08, 118.74 -1.44 C104.46 1.2, 19.79 -0.24, 0 0" stroke="none" stroke-width="0" fill="#ffec99" fill-rule="evenodd"/><path d="M0 0 C2.16 -1.2, 5.28 -4.92, 12.95 -7.2 C20.63 -9.47, 33.94 -12.23, 46.06 -13.67 C58.17 -15.11, 73.52 -17.87, 85.63 -15.83 C97.75 -13.79, 133.01 -4.08, 118.74 -1.44 C104.46 1.2, 19.79 -0.24, 0 0 M0 0 C2.16 -1.2, 5.28 -4.92, 12.95 -7.2 C20.63 -9.47, 33.94 -12.23, 46.06 -13.67 C58.17 -15.11, 73.52 -17.87, 85.63 -15.83 C97.75 -13.79, 133.01 -4.08, 118.74 -1.44 C104.46 1.2, 19.79 -0.24, 0 0" stroke="#868e96" stroke-width="2" fill="none"/></g></g><mask/><g stroke-linecap="round"><g stroke-opacity="0.4" fill-opacity="0.4" transform="translate(184.39301379932112 138.81118296357636) rotate(0 61.04120608661924 -8.188495998907456)" fill-rule="evenodd"><path d="M0 0 C2.16 -1.2, 5.28 -4.92, 12.95 -7.2 C20.63 -9.47, 33.94 -12.23, 46.06 -13.67 C58.17 -15.11, 73.52 -17.87, 85.63 -15.83 C97.75 -13.79, 133.01 -4.08, 118.74 -1.44 C104.46 1.2, 19.79 -0.24, 0 0" stroke="none" stroke-width="0" fill="#ffec99" fill-rule="evenodd"/><path d="M0 0 C2.16 -1.2, 5.28 -4.92, 12.95 -7.2 C20.63 -9.47, 33.94 -12.23, 46.06 -13.67 C58.17 -15.11, 73.52 -17.87, 85.63 -15.83 C97.75 -13.79, 133.01 -4.08, 118.74 -1.44 C104.46 1.2, 19.79 -0.24, 0 0 M0 0 C2.16 -1.2, 5.28 -4.92, 12.95 -7.2 C20.63 -9.47, 33.94 -12.23, 46.06 -13.67 C58.17 -15.11, 73.52 -17.87, 85.63 -15.83 C97.75 -13.79, 133.01 -4.08, 118.74 -1.44 C104.46 1.2, 19.79 -0.24, 0 0" stroke="#868e96" stroke-width="2" fill="none"/></g></g><mask/><g stroke-linecap="round"><g stroke-opacity="0.4" fill-opacity="0.4" transform="translate(437.69768644277974 138.09156741629522) rotate(0 61.04120608661924 -8.188495998907456)" fill-rule="evenodd"><path d="M0 0 C2.16 -1.2, 5.28 -4.92, 12.95 -7.2 C20.63 -9.47, 33.94 -12.23, 46.06 -13.67 C58.17 -15.11, 73.52 -17.87, 85.63 -15.83 C97.75 -13.79, 133.01 -4.08, 118.74 -1.44 C104.46 1.2, 19.79 -0.24, 0 0" stroke="none" stroke-width="0" fill="#ffec99" fill-rule="evenodd"/><path d="M0 0 C2.16 -1.2, 5.28 -4.92, 12.95 -7.2 C20.63 -9.47, 33.94 -12.23, 46.06 -13.67 C58.17 -15.11, 73.52 -17.87, 85.63 -15.83 C97.75 -13.79, 133.01 -4.08, 118.74 -1.44 C104.46 1.2, 19.79 -0.24, 0 0 M0 0 C2.16 -1.2, 5.28 -4.92, 12.95 -7.2 C20.63 -9.47, 33.94 -12.23, 46.06 -13.67 C58.17 -15.11, 73.52 -17.87, 85.63 -15.83 C97.75 -13.79, 133.01 -4.08, 118.74 -1.44 C104.46 1.2, 19.79 -0.24, 0 0" stroke="#868e96" stroke-width="2" fill="none"/></g></g><mask/><g stroke-linecap="round"><g transform="translate(653.5823506275465 131.61502749075225) rotate(0 31.85477272818298 -7.25410414506041)" fill-rule="evenodd"><path d="M0 0 C2.16 -0.96, 8.76 -3.24, 12.95 -5.76 C17.15 -8.28, 19.79 -14.63, 25.19 -15.11 C30.58 -15.59, 39.22 -11.15, 45.34 -8.64 C51.45 -6.12, 69.44 -1.44, 61.89 0 C54.33 1.44, 10.31 0, 0 0" stroke="none" stroke-width="0" fill="#ced4da" fill-rule="evenodd"/><path d="M0 0 C2.16 -0.96, 8.76 -3.24, 12.95 -5.76 C17.15 -8.28, 19.79 -14.63, 25.19 -15.11 C30.58 -15.59, 39.22 -11.15, 45.34 -8.64 C51.45 -6.12, 69.44 -1.44, 61.89 0 C54.33 1.44, 10.31 0, 0 0 M0 0 C2.16 -0.96, 8.76 -3.24, 12.95 -5.76 C17.15 -8.28, 19.79 -14.63, 25.19 -15.11 C30.58 -15.59, 39.22 -11.15, 45.34 -8.64 C51.45 -6.12, 69.44 -1.44, 61.89 0 C54.33 1.44, 10.31 0, 0 0" stroke="#ced4da" stroke-width="2" fill="none"/></g></g><mask/><g stroke-linecap="round"><g transform="translate(934.4719733397797 130.94706885829146) rotate(0 -0.36564528639701166 -9.579765961577323)" fill-rule="evenodd"><path d="M0 0 C-4.97 0.01, -27.26 1.55, -29.84 0.04 C-32.41 -1.48, -19.78 -5.9, -15.44 -9.1 C-11.09 -12.29, -7.1 -17.51, -3.76 -19.12 C-0.42 -20.73, 1.57 -20.33, 4.59 -18.77 C7.61 -17.21, 10.27 -12.94, 14.36 -9.76 C18.46 -6.57, 31.55 -1.29, 29.16 0.33 C26.76 1.96, 4.86 0.06, 0 0" stroke="none" stroke-width="0" fill="#ced4da" fill-rule="evenodd"/><path d="M0 0 C-4.97 0.01, -27.26 1.55, -29.84 0.04 C-32.41 -1.48, -19.78 -5.9, -15.44 -9.1 C-11.09 -12.29, -7.1 -17.51, -3.76 -19.12 C-0.42 -20.73, 1.57 -20.33, 4.59 -18.77 C7.61 -17.21, 10.27 -12.94, 14.36 -9.76 C18.46 -6.57, 31.55 -1.29, 29.16 0.33 C26.76 1.96, 4.86 0.06, 0 0 M0 0 C-4.97 0.01, -27.26 1.55, -29.84 0.04 C-32.41 -1.48, -19.78 -5.9, -15.44 -9.1 C-11.09 -12.29, -7.1 -17.51, -3.76 -19.12 C-0.42 -20.73, 1.57 -20.33, 4.59 -18.77 C7.61 -17.21, 10.27 -12.94, 14.36 -9.76 C18.46 -6.57, 31.55 -1.29, 29.16 0.33 C26.76 1.96, 4.86 0.06, 0 0" stroke="#ced4da" stroke-width="2" fill="none"/></g></g><mask/><g transform="translate(51.852875806649536 27.270773134781848) rotate(0 29.748871147964564 8.995194341031493)"><text x="0" y="13.73026464215111" font-family="Nunito, sans-serif, Segoe UI Emoji" font-size="14.392310945651058px" fill="#1e1e1e" text-anchor="start" style="white-space: pre;" direction="ltr" dominant-baseline="alphabetic">Add Flux</text></g><g transform="translate(185.37516736110774 27.990388682062985) rotate(0 60.05905252483444 17.990388682063895)"><text x="60.05905252483403" y="13.73026464215111" font-family="Nunito, sans-serif, Segoe UI Emoji" font-size="14.392310945651058px" fill="#1e1e1e" text-anchor="middle" style="white-space: pre;" direction="ltr" dominant-baseline="alphabetic">Touch Pad and Pin</text><text x="60.05905252483403" y="31.720653324214933" font-family="Nunito, sans-serif, Segoe UI Emoji" font-size="14.392310945651058px" fill="#1e1e1e" text-anchor="middle" style="white-space: pre;" direction="ltr" dominant-baseline="alphabetic">with Iron</text></g><g transform="translate(449.65876641206523 27.990388682062985) rotate(0 50.9991009100886 17.990388682063895)"><text x="50.99910091008845" y="13.73026464215111" font-family="Nunito, sans-serif, Segoe UI Emoji" font-size="14.392310945651058px" fill="#1e1e1e" text-anchor="middle" style="white-space: pre;" direction="ltr" dominant-baseline="alphabetic">Touch Solder to</text><text x="50.99910091008845" y="31.720653324214933" font-family="Nunito, sans-serif, Segoe UI Emoji" font-size="14.392310945651058px" fill="#1e1e1e" text-anchor="middle" style="white-space: pre;" direction="ltr" dominant-baseline="alphabetic"> the Pad</text></g><g transform="translate(632.1029007264042 27.990388682062985) rotate(0 51.33731560551769 17.990388682063895)"><text x="51.337315605517276" y="13.73026464215111" font-family="Nunito, sans-serif, Segoe UI Emoji" font-size="14.392310945651058px" fill="#1e1e1e" text-anchor="middle" style="white-space: pre;" direction="ltr" dominant-baseline="alphabetic">Remove Solder </text><text x="51.337315605517276" y="31.720653324214933" font-family="Nunito, sans-serif, Segoe UI Emoji" font-size="14.392310945651058px" fill="#1e1e1e" text-anchor="middle" style="white-space: pre;" direction="ltr" dominant-baseline="alphabetic">First</text></g><g transform="translate(893.5055226536188 10) rotate(0 40.76617792975503 26.985583023095387)"><text x="40.76617792975544" y="13.73026464215111" font-family="Nunito, sans-serif, Segoe UI Emoji" font-size="14.392310945651058px" fill="#1e1e1e" text-anchor="middle" style="white-space: pre;" direction="ltr" dominant-baseline="alphabetic">Remove Iron</text><text x="40.76617792975544" y="31.720653324214933" font-family="Nunito, sans-serif, Segoe UI Emoji" font-size="14.392310945651058px" fill="#1e1e1e" text-anchor="middle" style="white-space: pre;" direction="ltr" dominant-baseline="alphabetic">in Upward </text><text x="40.76617792975544" y="49.71104200627876" font-family="Nunito, sans-serif, Segoe UI Emoji" font-size="14.392310945651058px" fill="#1e1e1e" text-anchor="middle" style="white-space: pre;" direction="ltr" dominant-baseline="alphabetic">Motion</text></g><g stroke-linecap="round"><g transform="translate(245.31428396139563 125.85810311249043) rotate(0 41.7377017423878 -27.705198570378343)" fill-rule="evenodd"><path d="M0 0 L7.92 9.36 L83.48 -43.18 L64.05 -64.77 L0 0" stroke="none" stroke-width="0" fill="#868e96" fill-rule="evenodd"/><path d="M0 0 C1.67 1.98, 3.34 3.95, 7.92 9.36 M0 0 C2.66 3.14, 5.31 6.28, 7.92 9.36 M7.92 9.36 C34.35 -9.02, 60.79 -27.4, 83.48 -43.18 M7.92 9.36 C28.55 -4.99, 49.19 -19.34, 83.48 -43.18 M83.48 -43.18 C78.8 -48.37, 74.13 -53.56, 64.05 -64.77 M83.48 -43.18 C76.92 -50.47, 70.36 -57.76, 64.05 -64.77 M64.05 -64.77 C44.78 -45.28, 25.51 -25.8, 0 0 M64.05 -64.77 C38.9 -39.34, 13.75 -13.9, 0 0 M0 0 C0 0, 0 0, 0 0 M0 0 C0 0, 0 0, 0 0" stroke="#1e1e1e" stroke-width="2" fill="none"/></g></g><mask/><g stroke-linecap="round"><g transform="translate(498.61895660485425 125.13848756520929) rotate(0 41.7377017423878 -27.705198570378343)" fill-rule="evenodd"><path d="M0 0 L7.92 9.36 L83.48 -43.18 L64.05 -64.77 L0 0" stroke="none" stroke-width="0" fill="#868e96" fill-rule="evenodd"/><path d="M0 0 C2.42 2.85, 4.83 5.71, 7.92 9.36 M0 0 C3.02 3.57, 6.04 7.14, 7.92 9.36 M7.92 9.36 C36.88 -10.78, 65.85 -30.92, 83.48 -43.18 M7.92 9.36 C26.86 -3.82, 45.8 -16.99, 83.48 -43.18 M83.48 -43.18 C76.59 -50.83, 69.7 -58.48, 64.05 -64.77 M83.48 -43.18 C76.94 -50.44, 70.4 -57.71, 64.05 -64.77 M64.05 -64.77 C43.27 -43.76, 22.5 -22.75, 0 0 M64.05 -64.77 C43.02 -43.51, 22 -22.25, 0 0 M0 0 C0 0, 0 0, 0 0 M0 0 C0 0, 0 0, 0 0" stroke="#1e1e1e" stroke-width="2" fill="none"/></g></g><mask/><g stroke-linecap="round"><g transform="translate(681.4013056146214 125.13848756520929) rotate(0 41.7377017423878 -27.705198570378343)" fill-rule="evenodd"><path d="M0 0 L7.92 9.36 L83.48 -43.18 L64.05 -64.77 L0 0" stroke="none" stroke-width="0" fill="#868e96" fill-rule="evenodd"/><path d="M0 0 C1.76 2.08, 3.53 4.17, 7.92 9.36 M0 0 C1.83 2.17, 3.67 4.33, 7.92 9.36 M7.92 9.36 C23.38 -1.4, 38.85 -12.15, 83.48 -43.18 M7.92 9.36 C35.4 -9.75, 62.89 -28.86, 83.48 -43.18 M83.48 -43.18 C77.52 -49.8, 71.56 -56.41, 64.05 -64.77 M83.48 -43.18 C78.25 -48.98, 73.03 -54.78, 64.05 -64.77 M64.05 -64.77 C42.57 -43.04, 21.09 -21.32, 0 0 M64.05 -64.77 C43.02 -43.51, 22 -22.24, 0 0 M0 0 C0 0, 0 0, 0 0 M0 0 C0 0, 0 0, 0 0" stroke="#1e1e1e" stroke-width="2" fill="none"/></g></g><mask/><g stroke-linecap="round"><g transform="translate(950.942794095421 86.2792480119515) rotate(0 41.7377017423878 -27.705198570378343)" fill-rule="evenodd"><path d="M0 0 L7.92 9.36 L83.48 -43.18 L64.05 -64.77 L0 0" stroke="none" stroke-width="0" fill="#868e96" fill-rule="evenodd"/><path d="M0 0 C2.28 2.7, 4.56 5.39, 7.92 9.36 M0 0 C2.5 2.95, 4.99 5.9, 7.92 9.36 M7.92 9.36 C36.38 -10.44, 64.85 -30.23, 83.48 -43.18 M7.92 9.36 C27.19 -4.04, 46.46 -17.44, 83.48 -43.18 M83.48 -43.18 C77.6 -49.7, 71.73 -56.22, 64.05 -64.77 M83.48 -43.18 C78 -49.26, 72.52 -55.35, 64.05 -64.77 M64.05 -64.77 C47.17 -47.7, 30.29 -30.63, 0 0 M64.05 -64.77 C38.54 -38.97, 13.04 -13.18, 0 0 M0 0 C0 0, 0 0, 0 0 M0 0 C0 0, 0 0, 0 0" stroke="#1e1e1e" stroke-width="2" fill="none"/></g></g><mask/><g stroke-linecap="round"><g stroke-opacity="0.3" fill-opacity="0.3" transform="translate(260.42410968737204 79.7113283343715) rotate(0 -6.300671361917011 19.4753096526465)"><path d="M0 0 C-2.4 2.48, -14.7 10.68, -14.4 14.87 C-14.1 19.06, 1.74 21.12, 1.8 25.13 C1.86 29.14, -11.4 36.65, -14.04 38.95 M0 0 C-2.4 2.48, -14.7 10.68, -14.4 14.87 C-14.1 19.06, 1.74 21.12, 1.8 25.13 C1.86 29.14, -11.4 36.65, -14.04 38.95" stroke="#1e1e1e" stroke-width="2" fill="none"/></g></g><mask/><g stroke-linecap="round"><g stroke-opacity="0.3" fill-opacity="0.3" transform="translate(513.7287823308307 78.99171278708855) rotate(0 -6.300671361917011 19.4753096526465)"><path d="M0 0 C-2.4 2.48, -14.7 10.68, -14.4 14.87 C-14.1 19.06, 1.74 21.12, 1.8 25.13 C1.86 29.14, -11.4 36.65, -14.04 38.95 M0 0 C-2.4 2.48, -14.7 10.68, -14.4 14.87 C-14.1 19.06, 1.74 21.12, 1.8 25.13 C1.86 29.14, -11.4 36.65, -14.04 38.95" stroke="#1e1e1e" stroke-width="2" fill="none"/></g></g><mask/><g stroke-linecap="round"><g stroke-opacity="0.3" fill-opacity="0.3" transform="translate(696.5111313405996 78.99171278708855) rotate(0 -6.300671361917011 19.4753096526465)"><path d="M0 0 C-2.4 2.48, -14.7 10.68, -14.4 14.87 C-14.1 19.06, 1.74 21.12, 1.8 25.13 C1.86 29.14, -11.4 36.65, -14.04 38.95 M0 0 C-2.4 2.48, -14.7 10.68, -14.4 14.87 C-14.1 19.06, 1.74 21.12, 1.8 25.13 C1.86 29.14, -11.4 36.65, -14.04 38.95" stroke="#1e1e1e" stroke-width="2" fill="none"/></g></g><mask/><g stroke-linecap="round"><g stroke-opacity="0.3" fill-opacity="0.3" transform="translate(264.7427902235959 79.50191640262346) rotate(0 -6.300671361917011 19.4753096526465)"><path d="M0 0 C-2.4 2.48, -14.7 10.68, -14.4 14.87 C-14.1 19.06, 1.74 21.12, 1.8 25.13 C1.86 29.14, -11.4 36.65, -14.04 38.95 M0 0 C-2.4 2.48, -14.7 10.68, -14.4 14.87 C-14.1 19.06, 1.74 21.12, 1.8 25.13 C1.86 29.14, -11.4 36.65, -14.04 38.95" stroke="#1e1e1e" stroke-width="2" fill="none"/></g></g><mask/><g stroke-linecap="round"><g stroke-opacity="0.3" fill-opacity="0.3" transform="translate(518.0474628670545 78.78230085534051) rotate(0 -6.300671361917011 19.4753096526465)"><path d="M0 0 C-2.4 2.48, -14.7 10.68, -14.4 14.87 C-14.1 19.06, 1.74 21.12, 1.8 25.13 C1.86 29.14, -11.4 36.65, -14.04 38.95 M0 0 C-2.4 2.48, -14.7 10.68, -14.4 14.87 C-14.1 19.06, 1.74 21.12, 1.8 25.13 C1.86 29.14, -11.4 36.65, -14.04 38.95" stroke="#1e1e1e" stroke-width="2" fill="none"/></g></g><mask/><g stroke-linecap="round"><g stroke-opacity="0.3" fill-opacity="0.3" transform="translate(700.8298118768234 78.78230085534051) rotate(0 -6.300671361917011 19.4753096526465)"><path d="M0 0 C-2.4 2.48, -14.7 10.68, -14.4 14.87 C-14.1 19.06, 1.74 21.12, 1.8 25.13 C1.86 29.14, -11.4 36.65, -14.04 38.95 M0 0 C-2.4 2.48, -14.7 10.68, -14.4 14.87 C-14.1 19.06, 1.74 21.12, 1.8 25.13 C1.86 29.14, -11.4 36.65, -14.04 38.95" stroke="#1e1e1e" stroke-width="2" fill="none"/></g></g><mask/><g stroke-linecap="round"><g stroke-opacity="0.3" fill-opacity="0.3" transform="translate(268.7015807151347 79.08309253912557) rotate(0 -6.300671361917011 19.4753096526465)"><path d="M0 0 C-2.4 2.48, -14.7 10.68, -14.4 14.87 C-14.1 19.06, 1.74 21.12, 1.8 25.13 C1.86 29.14, -11.4 36.65, -14.04 38.95 M0 0 C-2.4 2.48, -14.7 10.68, -14.4 14.87 C-14.1 19.06, 1.74 21.12, 1.8 25.13 C1.86 29.14, -11.4 36.65, -14.04 38.95" stroke="#1e1e1e" stroke-width="2" fill="none"/></g></g><mask/><g stroke-linecap="round"><g stroke-opacity="0.3" fill-opacity="0.3" transform="translate(522.0062533585933 78.36347699184262) rotate(0 -6.300671361917011 19.4753096526465)"><path d="M0 0 C-2.4 2.48, -14.7 10.68, -14.4 14.87 C-14.1 19.06, 1.74 21.12, 1.8 25.13 C1.86 29.14, -11.4 36.65, -14.04 38.95 M0 0 C-2.4 2.48, -14.7 10.68, -14.4 14.87 C-14.1 19.06, 1.74 21.12, 1.8 25.13 C1.86 29.14, -11.4 36.65, -14.04 38.95" stroke="#1e1e1e" stroke-width="2" fill="none"/></g></g><mask/><g stroke-linecap="round"><g stroke-opacity="0.3" fill-opacity="0.3" transform="translate(704.7886023683623 78.36347699184262) rotate(0 -6.300671361917011 19.4753096526465)"><path d="M0 0 C-2.4 2.48, -14.7 10.68, -14.4 14.87 C-14.1 19.06, 1.74 21.12, 1.8 25.13 C1.86 29.14, -11.4 36.65, -14.04 38.95 M0 0 C-2.4 2.48, -14.7 10.68, -14.4 14.87 C-14.1 19.06, 1.74 21.12, 1.8 25.13 C1.86 29.14, -11.4 36.65, -14.04 38.95" stroke="#1e1e1e" stroke-width="2" fill="none"/></g></g><mask/><g transform="translate(282.7536187820933 88.0969905596412) rotate(270 89.98639219364668 15.831542040215936)"><text x="89.986392193647" y="24.16526577018598" font-family="Nunito, sans-serif, Segoe UI Emoji" font-size="25.33046726434589px" fill="#1e1e1e" text-anchor="middle" style="white-space: pre;" direction="ltr" dominant-baseline="alphabetic">Wait 2 Seconds</text></g><g transform="translate(720.1681038700481 88.0969905596412) rotate(270 89.98645500188832 15.831542040215936)"><text x="89.98645500188877" y="24.16526577018598" font-family="Nunito, sans-serif, Segoe UI Emoji" font-size="25.33046726434589px" fill="#1e1e1e" text-anchor="middle" style="white-space: pre;" direction="ltr" dominant-baseline="alphabetic">Wait 1 Seconds</text></g><g stroke-linecap="round"><g transform="translate(443.9281750113787 48.859239553257794) rotate(0 21.228658644835377 41.01808619510575)"><path d="M0 0 C5.76 7.8, 27.47 33.1, 34.54 46.78 C41.62 60.45, 41.14 76.16, 42.46 82.04 M0 0 C5.76 7.8, 27.47 33.1, 34.54 46.78 C41.62 60.45, 41.14 76.16, 42.46 82.04" stroke="#ced4da" stroke-width="4" fill="none"/></g></g><mask/><g stroke-linecap="round"><g transform="translate(614.4770597173447 26.551157587498892) rotate(0 21.228658644835377 41.01808619510575)"><path d="M0 0 C5.76 7.8, 27.47 33.1, 34.54 46.78 C41.62 60.45, 41.14 76.16, 42.46 82.04 M0 0 C5.76 7.8, 27.47 33.1, 34.54 46.78 C41.62 60.45, 41.14 76.16, 42.46 82.04" stroke="#ced4da" stroke-width="4" fill="none"/></g></g><mask/><g stroke-linecap="round"><g transform="translate(970.37241387205 121.54040982879633) rotate(0 2.598687129382597 -13.322343172112596)"><path d="M0 0 C1.46 -7.46, 2.91 -14.92, 5.2 -26.64 M0 0 C1.19 -6.09, 2.38 -12.18, 5.2 -26.64" stroke="#e03131" stroke-width="4" fill="none"/></g><g transform="translate(970.37241387205 121.54040982879633) rotate(0 2.598687129382597 -13.322343172112596)"><path d="M5.2 -26.64 L8.47 -13.47 L-2.79 -15.67 L5.2 -26.64" stroke="none" stroke-width="0" fill="#e03131" fill-rule="evenodd"/><path d="M5.2 -26.64 C6.11 -22.96, 7.03 -19.27, 8.47 -13.47 M5.2 -26.64 C5.95 -23.63, 6.7 -20.62, 8.47 -13.47 M8.47 -13.47 C4.11 -14.32, -0.26 -15.18, -2.79 -15.67 M8.47 -13.47 C4.67 -14.21, 0.87 -14.96, -2.79 -15.67 M-2.79 -15.67 C0.02 -19.53, 2.83 -23.39, 5.2 -26.64 M-2.79 -15.67 C-0.46 -18.87, 1.87 -22.07, 5.2 -26.64 M5.2 -26.64 C5.2 -26.64, 5.2 -26.64, 5.2 -26.64 M5.2 -26.64 C5.2 -26.64, 5.2 -26.64, 5.2 -26.64" stroke="#e03131" stroke-width="4" fill="none"/></g></g><mask/><g stroke-linecap="round"><g transform="translate(648.5791591155394 106.72620684231515) rotate(0 -7.2774481949372785 -14.145354449139631)"><path d="M0 0 C-4.65 -9.04, -9.31 -18.09, -14.55 -28.29 M0 0 C-4.91 -9.55, -9.83 -19.1, -14.55 -28.29" stroke="#e03131" stroke-width="4" fill="none"/></g><g transform="translate(648.5791591155394 106.72620684231515) rotate(0 -7.2774481949372785 -14.145354449139631)"><path d="M-14.55 -28.29 L-2.7 -19.1 L-13.97 -13.3 L-14.55 -28.29" stroke="none" stroke-width="0" fill="#e03131" fill-rule="evenodd"/><path d="M-14.55 -28.29 C-10.76 -25.35, -6.97 -22.42, -2.7 -19.1 M-14.55 -28.29 C-10.55 -25.19, -6.55 -22.09, -2.7 -19.1 M-2.7 -19.1 C-5.45 -17.69, -8.19 -16.28, -13.97 -13.3 M-2.7 -19.1 C-6.36 -17.22, -10.03 -15.33, -13.97 -13.3 M-13.97 -13.3 C-14.19 -18.91, -14.41 -24.53, -14.55 -28.29 M-13.97 -13.3 C-14.16 -18.08, -14.34 -22.87, -14.55 -28.29 M-14.55 -28.29 C-14.55 -28.29, -14.55 -28.29, -14.55 -28.29 M-14.55 -28.29 C-14.55 -28.29, -14.55 -28.29, -14.55 -28.29" stroke="#e03131" stroke-width="4" fill="none"/></g></g><mask/></svg>
+
+### Timing
+
+* Total dwell time on the joint: typically **2–4 seconds**
+* Too short → incomplete wetting, cold joint
+* Too long → component damage, lifted pads, burned flux
+
+<div class="nav-bar">[[← Previous->Tinning the Tip]] [[Next: Reading the Joint →->Reading the Joint]]</div>
+
+
+:: Common Mistakes {"position":"275,150","size":"100,100"}
+<div class="slide-label">Slide 11 of 14</div>
+
+## Common Mistakes
+
+* **Heating the solder instead of the joint**: solder balls up on the tip instead of flowing into the joint
+* **Moving the joint during cooling**: creates a cold, electrically unreliable connection
+* **Too much solder**: blobs are hard to inspect and can cause bridges
+* **Too little heat time**: solder doesn't wet; looks complete but is intermittent
+* **Oxidized or dirty tip**: heat won't transfer; joints look lumpy regardless of technique
+* **Wrong temperature**: too low → cold joints; too high → burned pads, damaged ICs
+* **Feeding solder onto the tip**: bypasses the joint; you lose flux before it can do its job
+* **Ignoring polarity**: not a technique issue, but always verify component orientation before soldering
+
+<img src="images/polarity.png" style="max-width:100%" />
+
+<div class="warn-box">**The #1 safety mistake:** Setting the iron down on the work surface instead of returning it to the stand. Burns happen in less than a second of contact.</div>
+
+<div class="nav-bar">[[← Previous->Reading the Joint]] [[Next: Desoldering Basics →->Desoldering Basics]]</div>
+
+
+:: Desoldering Basics {"position":"400,150","size":"100,100"}
+<div class="slide-label">Slide 12 of 14</div>
+
+## Desoldering Basics
+
+Mistakes happen. Desoldering lets you remove or rework components without damaging the board.
+
+### Desoldering Pump (Solder Sucker)
+
+* Spring-loaded vacuum pump: prime it, heat the joint until molten, position the tip over it, trigger
+* Works best for through-hole components with larger pads
+* Fast once you develop the timing; takes some practice to operate one-handed with the iron
+
+### Desoldering Braid (Wick)
+
+* Flux-coated copper braid: lay it over the joint, press the iron on top of the braid
+* Solder wicks up into the braid via capillary action
+* Excellent for cleaning up bridges and excess solder on flat pads
+* Use a fresh section each time, a saturated braid won't wick
+
+<div class="info-box">**Patience matters.** Pulling components before the solder is fully molten tears pads off the board. Let the heat do the work, not your fingers.</div>
+
+<div class="nav-bar">[[← Previous->Common Mistakes]] [[Next: Practice & Next Steps →->Practice and Next Steps]]</div>
+
+
+:: Footer [footer] {"position":"150,25","size":"100,100"}
+<div id="pres-footer">
+<select id="slide-jump">
+<option value="">⊞ Jump to slide...</option>
+<option value="Title">01 · Title</option>
+<option value="What Is Soldering">02 · What Is Soldering?</option>
+<option value="Safety First">03 · Safety First</option>
+<option value="Tools and Materials">04 · Tools &amp; Materials</option>
+<option value="The Soldering Iron">05 · The Soldering Iron</option>
+<option value="Soldering Iron Tips">06 · Soldering Iron Tips</option>
+<option value="Preparing Your Workspace">07 · Preparing Your Workspace</option>
+<option value="Tinning the Tip">08 · Tinning the Tip</option>
+<option value="Basic Technique">09 · Basic Technique</option>
+<option value="Reading the Joint">10 · Reading the Joint</option>
+<option value="Common Mistakes">11 · Common Mistakes</option>
+<option value="Desoldering Basics">12 · Desoldering Basics</option>
+<option value="Practice and Next Steps">13 · Practice &amp; Next Steps</option>
+<option value="Wrap Up">14 · Wrap-Up &amp; Q&amp;A</option>
+</select>
+<button id="slide-go" onclick="goToSlide(document.getElementById('slide-jump').value)">Go →</button>
+<span id="slide-links" style="display:none">[[Title]][[What Is Soldering]][[Safety First]][[Tools and Materials]][[The Soldering Iron]][[Soldering Iron Tips]][[Preparing Your Workspace]][[Tinning the Tip]][[Basic Technique]][[Reading the Joint]][[Common Mistakes]][[Desoldering Basics]][[Practice and Next Steps]][[Wrap Up]]</span>
+</div>
+
+
+:: Header [header] {"position":"25,25","size":"100,100"}
+<div id="pres-header"><span class="pres-title">🔧 Intro to Soldering</span></div>
+
+
+:: Practice and Next Steps {"position":"525,150","size":"100,100"}
+<div class="slide-label">Slide 13 of 14</div>
+
+## Practice & Next Steps
+
+### Building Skill
+
+* **Start with through-hole kits**: larger pads, slower pace, easy to see what's happening. Look for beginner kits on Adafruit or SparkFun.
+* **Practice boards**: dedicated boards with a variety of pad sizes and component types
+* **Old/broken electronics**: great low-stakes material for desoldering practice
+* **Slow down**: watch the solder flow, develop feel for heat timing, don't rush
+
+### Good Resources
+
+* **Adafruit Learning System** (adafruit.com/learn) — thorough beginner soldering guides with photos
+* **EEVblog on YouTube**: Dave Jones' soldering tutorials are widely considered the best free resource
+* **r/soldering on Reddit**: community for joint critique and technique feedback
+
+
+<div class="tip-box">**Fastest way to improve:** Solder something, photograph every joint, post for critique. Specific feedback accelerates skill far faster than solo practice.</div>
+
+<div class="nav-bar">[[← Previous->Desoldering Basics]] [[Next: Wrap-Up →->Wrap Up]]</div>
+
+
+:: Preparing Your Workspace {"position":"1025,25","size":"100,100"}
+<div class="slide-label">Slide 07 of 14</div>
+
+## Preparing Your Workspace
+
+### Physical Setup
+
+* Work on a **heat-resistant mat**: silicone, ceramic tile, or a proper soldering mat
+* Place your iron stand **within easy reach** of your dominant hand
+* Ensure **good lighting**: you need to clearly see pads and component leads
+* Set up **ventilation**: a fan pulling fumes away, or a dedicated fume extractor
+
+### Before You Start Soldering
+
+* Organize your components and PCB before turning on the iron
+* Know exactly what you're going to solder and plan before you heat
+* Heat the iron and **tin the tip** (covered next)
+* Have your brass cleaner ready
+
+<div class="nav-bar">[[← Previous->Soldering Iron Tips]] [[Next: Tinning the Tip →->Tinning the Tip]]</div>
+
+
+:: Reading the Joint {"position":"150,150","size":"100,100"}
+<div class="slide-label">Slide 10 of 14</div>
+
+## Reading the Joint
+
+Visually assessing a solder joint is a skill you'll develop quickly with practice.
+
+<img src="images/common-issues.jpg" style="max-width:100%" />
+
+### Good Joint ✅
+
+* Smooth, shiny surface (slightly matte for lead-free — that's normal)
+* Concave/volcano shape — solder wets up the component lead and down onto the pad
+* You can see the outline of the pad and lead through the solder
+
+### Cold Joint ❌
+
+* Dull, grainy, or frosted surface
+* Rounded blob that didn't wet to the pad properly
+* Caused by movement during cooling, iron too cool, or insufficient heat time
+
+### Too Much Solder ❌
+
+* Large blob that obscures the pad and lead entirely
+* Risks bridging adjacent pads → short circuit
+
+### Solder Bridge ❌
+
+* Solder spanning between two adjacent pads or leads
+* Creates a short circuit — always inspect after soldering fine-pitch ICs
+
+<div class="tip-box">**Use a magnifier or your phone camera** to inspect joints, especially on small components.</div>
+
+<div class="nav-bar">[[← Previous->Basic Technique]] [[Next: Common Mistakes →->Common Mistakes]]</div>
+
+
+:: Safety First {"position":"525,25","size":"100,100"}
+<div class="slide-label">Slide 03 of 14</div>
+
+## Safety First ⚠️
+
+<div class="warn-box">**The iron tip runs at 300–400°C. (text-colour:red)+(bg:yellow)[Burns happen instantly and without warning.]**</div>
+
+### Key Safety Rules
+
+* **Eye protection**: always wear safety glasses
+* **Ventilation**: solder fumes (flux vapor) are irritating; work near a fan or fume extractor
+* **Never touch the tip**: use a stand at all times when the iron is hot
+* **Lead handling**: if using leaded solder, wear gloves and wash your hands afterwards
+* **Fire hazard**: keep flammables away and never leave a hot iron unattended
+* **Cable management**: keep the iron cord away from the tip and your work area
+
+<div class="tip-box">**Tip:** Return the iron to its stand between every operation. Most burns happen when an iron is set down "just for a second."</div>
+
+<div class="nav-bar">[[← Previous->What Is Soldering]] [[Next: Tools & Materials →->Tools and Materials]]</div>
+
+
+:: Soldering Iron Tips {"position":"900,25","size":"100,100"}
+<div class="slide-label">Slide 06 of 14</div>
+
+## Soldering Iron Tips
+
+### What's in a Tip?
+
+<img src="images/soldering-iron-tip.png" style="max-width:100%" />
+
+### Choosing a Tip
+
+<img src="images/soldering-iron-tip-types.png" style="max-width:100%" />
+
+<div class="tip-box">**Tip choice:** Chisel or bevel tips transfer heat more efficiently than fine conical tips for most through-hole and pad work. Use fine tips for precision SMD work only.</div>
+<div class="nav-bar">[[← Previous->The Soldering Iron]] [[Next: Preparing Your Workspace →->Preparing Your Workspace]]</div>
+
+
+:: The Soldering Iron {"position":"775,25","size":"100,100"}
+<div class="slide-label">Slide 05 of 14</div>
+
+## The Soldering Iron
+
+### Types of Irons
+
+**Pencil iron (fixed wattage)**: Simple, inexpensive (~$15–30). Good for learning but harder to control temperature precisely.
+
+**Temperature-controlled station**: Dial or digital setpoint. More consistent results, especially for heat-sensitive components. Recommended for regular use.
+
+⭐ **Temperature-controlled pencil iron**: The best of both! It's simple, inexpensive (~$35). A digital setpoint and sensors provide consistent results.
+
+
+### Temperature Settings
+
+* **Leaded solder (63/37, 60/40):** 315–340°C / 600–650°F
+* **Lead-free solder:** 340–370°C / 650–700°F
+* **Too cool** → solder won't flow properly, cold joints
+* **Too hot** → damages components, burns flux, shortens tip life
+
+<div class="nav-bar">[[← Previous->Tools and Materials]] [[Next: Soldering Iron Tips →->Soldering Iron Tips]]</div>
+
+
+:: Tinning the Tip {"position":"1150,25","size":"100,100"}
+<div class="slide-label">Slide 08 of 14</div>
+
+## Tinning the Tip
+
+Tinning means coating the iron tip with a thin, fresh layer of solder. It is the single most important maintenance habit for clean, reliable soldering.
+
+### Why It Matters
+
+* A tinned (shiny, silver) tip transfers heat efficiently and wets solder properly
+* An oxidized (black, dull) tip insulates itself — heat won't transfer, joints will be poor regardless of technique
+
+### How to Tin
+
+1. Heat the iron to working temperature
+2. Clean the tip on the brass cleaner to remove old oxidation
+3. Immediately touch fresh solder to the tip. It should melt and coat it evenly
+4. Wipe off the excess on the cleaner, leaving a thin, shiny coat
+
+<div class="info-box">**Tin //before// and //after// every session.** Before you put the iron away, tin it. The solder coat protects the tip from oxidizing while it cools between uses.</div>
+
+### Keeping Tips Healthy
+
+* Never leave a hot iron idle with a bare, dry tip for long
+* Don't sand or file tips. Tt destroys the iron plating layer
+* Use tip tinner/activator paste for severely oxidized tips
+
+<div class="nav-bar">[[← Previous->Preparing Your Workspace]] [[Next: Basic Technique →->Basic Technique]]</div>
+
+
+:: Title {"position":"275,25","size":"100,100"}
+<div class="title-hero">
+
+# Introduction to Soldering
+
+<p class="subtitle">A hands-on guide to soldering electronics.</p><p class="presenter">Monty DeGauven</p>
+
+This is a hands-on, beginner-friendly workshop. No prior experience needed, no pressure. Just a relaxed environment to try something new and build some confidence with real tools and techniques.
+
+Today you'll learn the fundamentals of soldering while assembling a practice board with common components: resistors, capacitors, and LEDs. Everything you need is provided, and with a small group there's plenty of room for questions and one-on-one help.
+
+Whether this is your first step into electronics or just something you've always wanted to try, you're in the right place.
+</div>
+
+<div class="nav-bar">[[Next: What Is Soldering? →->What Is Soldering]]</div>
+
+
+:: Tools and Materials {"position":"650,25","size":"100,100"}
+<div class="slide-label">Slide 04 of 14</div>
+
+## Tools & Materials
+
+### The Essentials
+
+* **Soldering iron**: pencil-style or temperature-controlled station
+* **Solder**: rosin-core, 60/40 or lead-free, 0.8mm diameter for electronics
+* **Iron stand**: holds the iron safely; often includes a cleaning sponge
+* **Brass tip cleaner**: removes oxidation between joints
+* **Flux**: improves solder flow and wetting on difficult joints
+
+### Helpful Extras
+
+* **Helping hands / PCB holder**: holds your workpiece steady
+* **Desoldering pump or braid**: for fixing mistakes
+* **Fume extractor**: fan with filter to pull flux vapors away from your face
+* **Multimeter**: verify connections electrically after soldering
+* **Silicone Mat**: prevents burning work surfaces and makes cleanup easier
+
+<div class="nav-bar">[[← Previous->Safety First]] [[Next: The Soldering Iron →->The Soldering Iron]]</div>
+
+
+:: What Is Soldering {"position":"400,25","size":"100,100"}
+<div class="slide-label">Slide 02 of 14</div>
+
+## What Is Soldering?
+
+Soldering is the process of joining two metal surfaces using a low-melting-point filler metal called solder. Unlike welding, the base materials are **not melted**, only the solder is.
+
+### Where Is It Used?
+
+* Electronics for circuit boards, wiring, connectors
+* Plumbing to join copper pipes
+* Jewelry making and metalwork
+* Stained glass assembly
+
+
+<div class="nav-bar">[[← Previous->Title]] [[Next: Safety First →->Safety First]]</div>
+
+
+:: Wrap Up {"position":"650,150","size":"100,100"}
+<div class="slide-label">Slide 14 of 14</div>
+
+<div class="end-center">
+
+## Thank You!
+
+### Questions?
+
+TODO: Add 
+
+</div>
+
+<div class="nav-bar">[[← Previous->Practice and Next Steps]]</div>
+
+
+:: StoryScript [script]
+window.goToSlide = function(name) {
+  if (!name) return;
+  var links = document.querySelectorAll('#slide-links tw-link');
+  for (var i = 0; i < links.length; i++) {
+    if (links[i].textContent.trim() === name) { links[i].click(); return; }
+  }
+};
+
+:: StoryStylesheet [stylesheet]
+tw-sidebar { display: none !important; }
+
+body {
+  background: #16213e;
+  color: #dce3f0;
+  font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+  margin: 0;
+}
+
+tw-story {
+  display: block !important;
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0;
+}
+
+tw-passage {
+  display: block !important;
+  width: 100% !important;
+  padding: 90px 80px 80px;
+  min-height: 100vh;
+  box-sizing: border-box;
+}
+
+h1 { color: #f4a261; font-size: 2.6em; line-height: 1.2; margin: 0 0 0.25em; }
+h2 { color: #f4a261; font-size: 1.85em; border-bottom: 2px solid rgba(244,162,97,0.35); padding-bottom: 0.3em; margin: 0 0 0.6em; }
+h3 { color: #e9c46a; font-size: 1.15em; margin: 1em 0 0.3em; }
+
+p  { font-size: 1.1em; line-height: 1.8; margin: 0.4em 0; }
+ul { padding-left: 1.5em; margin: 0.3em 0; }
+li { font-size: 1.1em; line-height: 1.85; margin-bottom: 0.15em; }
+
+tw-link, .enchantment-link {
+  color: #f4a261;
+  border: 1px solid rgba(244,162,97,0.55);
+  padding: 6px 14px;
+  border-radius: 4px;
+  text-decoration: none;
+  display: inline-block;
+  margin: 3px;
+  cursor: pointer;
+}
+tw-link:hover, .enchantment-link:hover {
+  background: #f4a261;
+  color: #16213e;
+}
+
+/* ── Slide meta label ── */
+.slide-label {
+  font-size: 0.75em;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #556070;
+  margin-bottom: 22px;
+}
+
+/* ── Bottom nav bar ── */
+.nav-bar {
+  margin-top: 44px;
+  padding-top: 18px;
+  border-top: 1px solid rgba(255,255,255,0.09);
+}
+
+/* ── Callout boxes ── */
+.warn-box {
+  background: rgba(220,50,50,0.14);
+  border-left: 4px solid #e05555;
+  padding: 12px 18px;
+  border-radius: 0 6px 6px 0;
+  margin: 14px 0;
+}
+.tip-box {
+  background: rgba(50,180,100,0.13);
+  border-left: 4px solid #50c878;
+  padding: 12px 18px;
+  border-radius: 0 6px 6px 0;
+  margin: 14px 0;
+}
+.info-box {
+  background: rgba(50,120,220,0.13);
+  border-left: 4px solid #5090e0;
+  padding: 12px 18px;
+  border-radius: 0 6px 6px 0;
+  margin: 14px 0;
+}
+
+/* ── Persistent header bar ── */
+#pres-header {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  height: 54px;
+  background: #0d1526;
+  border-bottom: 2px solid rgba(244,162,97,0.4);
+  display: flex;
+  align-items: center;
+  padding: 0 80px;
+  z-index: 1000;
+  box-sizing: border-box;
+}
+.pres-title {
+  font-size: 1em;
+  font-weight: 600;
+  color: #f4a261;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+/* ── Persistent footer bar ── */
+#pres-footer {
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  height: 54px;
+  background: #0d1526;
+  border-top: 2px solid rgba(244,162,97,0.2);
+  display: flex;
+  align-items: center;
+  padding: 0 80px;
+  z-index: 1000;
+  box-sizing: border-box;
+}
+#slide-jump {
+  background: #1a2a3d;
+  color: #dce3f0;
+  border: 1px solid rgba(244,162,97,0.45);
+  padding: 6px 14px;
+  border-radius: 4px;
+  font-size: 0.9em;
+  font-family: inherit;
+  cursor: pointer;
+  min-width: 260px;
+}
+#slide-jump:focus { outline: none; border-color: #f4a261; }
+#slide-go {
+  background: transparent;
+  color: #f4a261;
+  border: 1px solid rgba(244,162,97,0.55);
+  padding: 6px 14px;
+  border-radius: 4px;
+  font-size: 0.9em;
+  font-family: inherit;
+  cursor: pointer;
+  margin-left: 8px;
+}
+#slide-go:hover { background: #f4a261; color: #0d1526; }
+
+/* ── Title slide ── */
+.title-hero { padding-top: 70px; }
+.subtitle   { font-size: 1.3em; color: #94a3b8; margin: 8px 0 36px; }
+.presenter  { font-size: 0.9em;  color: #4a5a70; }
+
+/* ── End slide ── */
+.end-center { text-align: center; padding-top: 50px; }
+.end-center ul { display: inline-block; text-align: left; }
