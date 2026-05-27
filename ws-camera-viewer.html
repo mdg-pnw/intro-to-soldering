@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WS Camera Viewer</title>
+<style>
+  :root {
+    --bg: #0d0f12;
+    --surface: #161a20;
+    --surface2: #1e242d;
+    --border: rgba(255,255,255,0.08);
+    --border-hover: rgba(255,255,255,0.18);
+    --accent: #00e5a0;
+    --accent-dim: rgba(0,229,160,0.12);
+    --accent-glow: rgba(0,229,160,0.25);
+    --text: #eef0f3;
+    --text-muted: #7a8494;
+    --danger: #ff5c5c;
+    --danger-dim: rgba(255,92,92,0.12);
+    --warn: #f5a623;
+    --radius: 8px;
+    --font: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', monospace;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font);
+    font-size: 13px;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 2rem 1rem;
+  }
+
+  header {
+    width: 100%;
+    max-width: 900px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 2rem;
+  }
+
+  .logo {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    background: var(--accent-dim);
+    border: 1px solid var(--accent);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .logo svg { width: 18px; height: 18px; stroke: var(--accent); fill: none; stroke-width: 1.8; }
+
+  h1 {
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    color: var(--text);
+  }
+
+  .tagline {
+    font-size: 11px;
+    color: var(--text-muted);
+    letter-spacing: 0.02em;
+    margin-left: auto;
+  }
+
+  .card {
+    width: 100%;
+    max-width: 900px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+  }
+
+  .connect-bar {
+    display: flex;
+    gap: 10px;
+    padding: 16px;
+    border-bottom: 1px solid var(--border);
+    align-items: center;
+    flex-wrap: wrap;
+  }
+
+  .field {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .field label {
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+  }
+
+  input {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    color: var(--text);
+    font-family: var(--font);
+    font-size: 13px;
+    padding: 7px 10px;
+    outline: none;
+    transition: border-color 0.15s;
+  }
+
+  input:focus { border-color: var(--accent); }
+
+  #ip-input { width: 180px; }
+  #port-input { width: 90px; }
+  #path-input { width: 130px; }
+
+  .proto-toggle {
+    display: flex;
+    gap: 0;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+  }
+
+  .proto-toggle button {
+    background: var(--bg);
+    border: none;
+    color: var(--text-muted);
+    font-family: var(--font);
+    font-size: 11px;
+    padding: 7px 12px;
+    cursor: pointer;
+    transition: all 0.15s;
+    letter-spacing: 0.04em;
+  }
+
+  .proto-toggle button.active {
+    background: var(--accent-dim);
+    color: var(--accent);
+  }
+
+  .connect-btn {
+    margin-left: auto;
+    background: var(--accent-dim);
+    border: 1px solid var(--accent);
+    border-radius: var(--radius);
+    color: var(--accent);
+    font-family: var(--font);
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    padding: 8px 20px;
+    cursor: pointer;
+    transition: all 0.15s;
+    white-space: nowrap;
+  }
+
+  .connect-btn:hover { background: var(--accent-glow); }
+
+  .connect-btn.connected {
+    background: var(--danger-dim);
+    border-color: var(--danger);
+    color: var(--danger);
+  }
+
+  .viewer {
+    position: relative;
+    background: #090b0e;
+    aspect-ratio: 16/9;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  canvas {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: none;
+  }
+
+  .placeholder {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+    color: var(--text-muted);
+  }
+
+  .placeholder svg {
+    width: 48px;
+    height: 48px;
+    stroke: currentColor;
+    fill: none;
+    stroke-width: 1.2;
+    opacity: 0.4;
+  }
+
+  .placeholder p { font-size: 12px; letter-spacing: 0.04em; opacity: 0.6; }
+
+  .hud {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    right: 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+
+  .hud.visible { opacity: 1; }
+
+  .badge {
+    font-size: 10px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 4px 8px;
+    border-radius: 4px;
+    backdrop-filter: blur(8px);
+  }
+
+  .badge.live {
+    background: rgba(0,229,160,0.2);
+    border: 1px solid rgba(0,229,160,0.4);
+    color: var(--accent);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--accent);
+    animation: pulse 1.2s ease-in-out infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+  }
+
+  .badge.fps {
+    background: rgba(0,0,0,0.5);
+    border: 1px solid rgba(255,255,255,0.1);
+    color: var(--text-muted);
+  }
+
+  .status-bar {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 16px;
+    border-top: 1px solid var(--border);
+    background: var(--surface2);
+  }
+
+  .status-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--text-muted);
+    flex-shrink: 0;
+    transition: background 0.3s;
+  }
+
+  .status-dot.connecting { background: var(--warn); animation: pulse 0.8s infinite; }
+  .status-dot.connected { background: var(--accent); }
+  .status-dot.error { background: var(--danger); }
+
+  #status-text { font-size: 11px; color: var(--text-muted); flex: 1; }
+  #frame-count { font-size: 11px; color: var(--text-muted); margin-left: auto; }
+
+  .format-hint {
+    padding: 10px 16px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .fmt-pill {
+    font-size: 10px;
+    letter-spacing: 0.04em;
+    padding: 3px 8px;
+    border-radius: 4px;
+    border: 1px solid var(--border);
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: all 0.15s;
+    background: transparent;
+    font-family: var(--font);
+  }
+
+  .fmt-pill.active, .fmt-pill:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+    background: var(--accent-dim);
+  }
+
+  .fmt-label {
+    font-size: 10px;
+    color: var(--text-muted);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-right: 4px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">
+    <svg viewBox="0 0 24 24"><path d="M15 10l4.553-2.277A1 1 0 0121 8.6v6.8a1 1 0 01-1.447.877L15 14M3 8a2 2 0 012-2h10a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2V8z"/></svg>
+  </div>
+  <h1>WS Camera Viewer</h1>
+  <span class="tagline">WebSocket live feed</span>
+</header>
+
+<div class="card">
+
+  <div class="connect-bar">
+
+    <div class="field">
+      <label>Protocol</label>
+      <div class="proto-toggle">
+        <button id="proto-ws" class="active" onclick="setProto('ws')">ws://</button>
+        <button id="proto-wss" onclick="setProto('wss')">wss://</button>
+      </div>
+    </div>
+
+    <div class="field">
+      <label>IP Address</label>
+      <input id="ip-input" type="text" placeholder="192.168.1.100" value="" />
+    </div>
+
+    <div class="field">
+      <label>Port</label>
+      <input id="port-input" type="number" placeholder="8080" value="" />
+    </div>
+
+    <div class="field">
+      <label>Path</label>
+      <input id="path-input" type="text" placeholder="/video" value="/" />
+    </div>
+
+    <button class="connect-btn" id="connect-btn" onclick="toggleConnection()">CONNECT</button>
+
+  </div>
+
+  <div class="viewer" id="viewer">
+    <div class="placeholder" id="placeholder">
+      <svg viewBox="0 0 24 24"><path d="M15 10l4.553-2.277A1 1 0 0121 8.6v6.8a1 1 0 01-1.447.877L15 14M3 8a2 2 0 012-2h10a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2V8z"/></svg>
+      <p>Enter connection details above to start</p>
+    </div>
+    <canvas id="feed" width="1280" height="720"></canvas>
+    <div class="hud" id="hud">
+      <div class="badge live"><div class="dot"></div> LIVE</div>
+      <div class="badge fps" id="fps-badge">— fps</div>
+    </div>
+  </div>
+
+  <div class="format-hint">
+    <span class="fmt-label">Frame format</span>
+    <button class="fmt-pill active" id="fmt-auto" onclick="setFormat('auto')">Auto-detect</button>
+    <button class="fmt-pill" id="fmt-jpeg" onclick="setFormat('jpeg')">JPEG binary</button>
+    <button class="fmt-pill" id="fmt-b64" onclick="setFormat('base64')">Base64</button>
+    <button class="fmt-pill" id="fmt-mjpeg" onclick="setFormat('mjpeg')">MJPEG stream</button>
+  </div>
+
+  <div class="status-bar">
+    <div class="status-dot" id="status-dot"></div>
+    <span id="status-text">Disconnected — enter an IP and port to begin</span>
+    <span id="frame-count"></span>
+  </div>
+
+</div>
+
+<script>
+  let ws = null;
+  let proto = 'ws';
+  let format = 'auto';
+  let frameCount = 0;
+  let lastFpsTime = performance.now();
+  let fpsFrames = 0;
+  let fpsDisplay = '—';
+  let connected = false;
+
+  const canvas = document.getElementById('feed');
+  const ctx = canvas.getContext('2d');
+
+  function setProto(p) {
+    proto = p;
+    document.getElementById('proto-ws').classList.toggle('active', p === 'ws');
+    document.getElementById('proto-wss').classList.toggle('active', p === 'wss');
+  }
+
+  function setFormat(f) {
+    format = f;
+    ['auto','jpeg','base64','mjpeg'].forEach(id => {
+      document.getElementById('fmt-' + id).classList.toggle('active', id === f);
+    });
+  }
+
+  function setStatus(state, msg) {
+    const dot = document.getElementById('status-dot');
+    dot.className = 'status-dot' + (state ? ' ' + state : '');
+    document.getElementById('status-text').textContent = msg;
+  }
+
+  function buildUrl() {
+    const ip = document.getElementById('ip-input').value.trim();
+    const port = document.getElementById('port-input').value.trim();
+    let path = document.getElementById('path-input').value.trim();
+    if (!ip || !port) return null;
+    if (!path.startsWith('/')) path = '/' + path;
+    return `${proto}://${ip}:${port}${path}`;
+  }
+
+  function toggleConnection() {
+    if (connected) {
+      disconnect();
+    } else {
+      connect();
+    }
+  }
+
+  function connect() {
+    const url = buildUrl();
+    if (!url) {
+      setStatus('error', 'Enter an IP address and port first');
+      return;
+    }
+
+    setStatus('connecting', 'Connecting to ' + url + ' …');
+    document.getElementById('connect-btn').textContent = 'CONNECTING…';
+
+    try {
+      ws = new WebSocket(url);
+      ws.binaryType = 'arraybuffer';
+    } catch(e) {
+      setStatus('error', 'Failed to create WebSocket: ' + e.message);
+      return;
+    }
+
+    ws.onopen = () => {
+      connected = true;
+      frameCount = 0;
+      document.getElementById('connect-btn').textContent = 'DISCONNECT';
+      document.getElementById('connect-btn').classList.add('connected');
+      setStatus('connected', 'Connected — waiting for frames…');
+    };
+
+    ws.onmessage = (evt) => handleFrame(evt.data);
+
+    ws.onerror = () => {
+      setStatus('error', 'Connection error — check IP, port, and that the app is running');
+    };
+
+    ws.onclose = (evt) => {
+      onDisconnected('Disconnected' + (evt.reason ? ': ' + evt.reason : ''));
+    };
+  }
+
+  function disconnect() {
+    if (ws) { ws.close(); ws = null; }
+    onDisconnected('Disconnected by user');
+  }
+
+  function onDisconnected(msg) {
+    connected = false;
+    document.getElementById('connect-btn').textContent = 'CONNECT';
+    document.getElementById('connect-btn').classList.remove('connected');
+    document.getElementById('hud').classList.remove('visible');
+    canvas.style.display = 'none';
+    document.getElementById('placeholder').style.display = 'flex';
+    document.getElementById('frame-count').textContent = '';
+    setStatus('', msg);
+  }
+
+  function handleFrame(data) {
+    const detectedFormat = format === 'auto' ? detect(data) : format;
+
+    if (detectedFormat === 'base64') {
+      renderBase64(typeof data === 'string' ? data : null);
+    } else if (detectedFormat === 'jpeg' || detectedFormat === 'mjpeg') {
+      renderBinary(data);
+    } else if (typeof data === 'string') {
+      // Try base64 as fallback for string data
+      renderBase64(data);
+    } else {
+      renderBinary(data);
+    }
+  }
+
+  function detect(data) {
+    if (typeof data === 'string') {
+      // Check if it's base64 JPEG (starts with /9j/ when decoded)
+      const trimmed = data.replace(/^data:image\/[^;]+;base64,/, '').trim();
+      if (/^[A-Za-z0-9+/]/.test(trimmed)) return 'base64';
+      return 'base64';
+    }
+    // Binary: check for JPEG magic bytes FF D8 FF
+    const arr = new Uint8Array(data instanceof ArrayBuffer ? data : data);
+    if (arr[0] === 0xFF && arr[1] === 0xD8 && arr[2] === 0xFF) return 'jpeg';
+    return 'jpeg';
+  }
+
+  function renderBinary(data) {
+    const blob = new Blob(
+      [data instanceof ArrayBuffer ? data : data],
+      { type: 'image/jpeg' }
+    );
+    const url = URL.createObjectURL(blob);
+    const img = new Image();
+    img.onload = () => {
+      showFrame(img);
+      URL.revokeObjectURL(url);
+    };
+    img.onerror = () => URL.revokeObjectURL(url);
+    img.src = url;
+  }
+
+  function renderBase64(str) {
+    if (!str) return;
+    // Strip data URI prefix if present
+    const b64 = str.replace(/^data:image\/[^;]+;base64,/, '');
+    const img = new Image();
+    img.onload = () => showFrame(img);
+    img.src = 'data:image/jpeg;base64,' + b64;
+  }
+
+  function showFrame(img) {
+    canvas.width = img.naturalWidth || img.width;
+    canvas.height = img.naturalHeight || img.height;
+    ctx.drawImage(img, 0, 0);
+
+    canvas.style.display = 'block';
+    document.getElementById('placeholder').style.display = 'none';
+    document.getElementById('hud').classList.add('visible');
+
+    frameCount++;
+    fpsFrames++;
+    document.getElementById('frame-count').textContent = frameCount + ' frames';
+
+    const now = performance.now();
+    if (now - lastFpsTime >= 1000) {
+      fpsDisplay = (fpsFrames / ((now - lastFpsTime) / 1000)).toFixed(1);
+      document.getElementById('fps-badge').textContent = fpsDisplay + ' fps';
+      fpsFrames = 0;
+      lastFpsTime = now;
+    }
+
+    if (connected) {
+      setStatus('connected', 'Receiving — ' + fpsDisplay + ' fps');
+    }
+  }
+</script>
+
+</body>
+</html>
