@@ -258,6 +258,73 @@
     color: var(--text-muted);
   }
 
+  .controls-bar {
+    display: flex;
+    gap: 16px;
+    padding: 10px 16px;
+    border-bottom: 1px solid var(--border);
+    align-items: center;
+    flex-wrap: wrap;
+  }
+
+  .control-group {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .control-group label {
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    white-space: nowrap;
+  }
+
+  select {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    color: var(--text);
+    font-family: var(--font);
+    font-size: 12px;
+    padding: 5px 8px;
+    outline: none;
+    cursor: pointer;
+  }
+
+  select:focus { border-color: var(--accent); }
+
+  .mem-bar-wrap {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-left: auto;
+  }
+
+  .mem-label {
+    font-size: 10px;
+    color: var(--text-muted);
+    letter-spacing: 0.04em;
+    white-space: nowrap;
+  }
+
+  .mem-bar {
+    width: 80px;
+    height: 4px;
+    background: var(--border);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+
+  .mem-fill {
+    height: 100%;
+    border-radius: 2px;
+    background: var(--accent);
+    transition: width 0.5s, background 0.5s;
+    width: 0%;
+  }
+
   .status-bar {
     display: flex;
     align-items: center;
@@ -289,6 +356,7 @@
     display: flex;
     gap: 8px;
     flex-wrap: wrap;
+    align-items: center;
   }
 
   .fmt-pill {
@@ -320,6 +388,15 @@
     letter-spacing: 0.04em;
     text-transform: uppercase;
   }
+
+  .drop-badge {
+    font-size: 10px;
+    color: var(--warn);
+    margin-left: auto;
+    letter-spacing: 0.04em;
+    display: none;
+  }
+  .drop-badge.visible { display: block; }
 </style>
 </head>
 <body>
@@ -335,7 +412,6 @@
 <div class="card">
 
   <div class="connect-bar">
-
     <div class="field">
       <label>Protocol</label>
       <div class="proto-toggle">
@@ -360,7 +436,33 @@
     </div>
 
     <button class="connect-btn" id="connect-btn" onclick="toggleConnection()">CONNECT</button>
+  </div>
 
+  <div class="controls-bar">
+    <div class="control-group">
+      <label>FPS cap</label>
+      <select id="fps-cap" onchange="setFpsCap(this.value)">
+        <option value="0">Uncapped</option>
+        <option value="60">60 fps</option>
+        <option value="30" selected>30 fps</option>
+        <option value="24">24 fps</option>
+        <option value="15">15 fps</option>
+        <option value="10">10 fps</option>
+      </select>
+    </div>
+
+    <div class="control-group">
+      <label>Drop policy</label>
+      <select id="drop-policy">
+        <option value="latest" selected>Keep latest</option>
+        <option value="skip">Skip-N</option>
+      </select>
+    </div>
+
+    <div class="mem-bar-wrap" id="mem-wrap" style="display:none">
+      <span class="mem-label" id="mem-label">— MB</span>
+      <div class="mem-bar"><div class="mem-fill" id="mem-fill"></div></div>
+    </div>
   </div>
 
   <div class="viewer" id="viewer">
@@ -381,6 +483,7 @@
     <button class="fmt-pill" id="fmt-jpeg" onclick="setFormat('jpeg')">JPEG binary</button>
     <button class="fmt-pill" id="fmt-b64" onclick="setFormat('base64')">Base64</button>
     <button class="fmt-pill" id="fmt-mjpeg" onclick="setFormat('mjpeg')">MJPEG stream</button>
+    <span class="drop-badge" id="drop-badge">▼ frames dropped</span>
   </div>
 
   <div class="status-bar">
@@ -396,13 +499,60 @@
   let proto = 'ws';
   let format = 'auto';
   let frameCount = 0;
-  let lastFpsTime = performance.now();
-  let fpsFrames = 0;
-  let fpsDisplay = '—';
+  let droppedCount = 0;
   let connected = false;
 
+  // FPS tracking
+  let fpsFrames = 0;
+  let lastFpsTime = performance.now();
+  let fpsDisplay = '—';
+
+  // Frame-drop / rate-limit state
+  let rendering = false;         // true while an Image is decoding
+  let pendingData = null;        // latest unrendered frame (only one held at a time)
+  let fpsCap = 30;               // ms minimum between renders (0 = uncapped)
+  let minFrameMs = 1000 / fpsCap;
+  let lastRenderTime = 0;
+
+  // Reuse a single Image object instead of allocating one per frame
+  const img = new Image();
+  let currentBlobUrl = null;
+
   const canvas = document.getElementById('feed');
-  const ctx = canvas.getContext('2d');
+  const ctx = canvas.getContext('2d', { alpha: false }); // alpha:false saves memory
+  let canvasW = 0;
+  let canvasH = 0;
+
+  // Memory readout (non-standard but works in Firefox/Chrome)
+  const hasMemAPI = typeof performance !== 'undefined' && performance.memory;
+  if (hasMemAPI) document.getElementById('mem-wrap').style.display = 'flex';
+  setInterval(updateMemDisplay, 2000);
+
+  function updateMemDisplay() {
+    if (!hasMemAPI) return;
+    const mb = Math.round(performance.memory.usedJSHeapSize / 1048576);
+    const limit = Math.round(performance.memory.jsHeapSizeLimit / 1048576);
+    const pct = Math.min(100, Math.round((mb / limit) * 100));
+    document.getElementById('mem-label').textContent = mb + ' MB';
+    const fill = document.getElementById('mem-fill');
+    fill.style.width = pct + '%';
+    fill.style.background = pct > 75 ? 'var(--danger)' : pct > 50 ? 'var(--warn)' : 'var(--accent)';
+  }
+
+  // Reusable image handlers — set once, not per frame
+  img.onload = () => {
+    // Revoke previous blob URL immediately after decode
+    if (currentBlobUrl) {
+      URL.revokeObjectURL(currentBlobUrl);
+      currentBlobUrl = null;
+    }
+    paintFrame();
+  };
+  img.onerror = () => {
+    if (currentBlobUrl) { URL.revokeObjectURL(currentBlobUrl); currentBlobUrl = null; }
+    rendering = false;
+    drainPending();
+  };
 
   function setProto(p) {
     proto = p;
@@ -415,6 +565,11 @@
     ['auto','jpeg','base64','mjpeg'].forEach(id => {
       document.getElementById('fmt-' + id).classList.toggle('active', id === f);
     });
+  }
+
+  function setFpsCap(val) {
+    fpsCap = parseInt(val, 10);
+    minFrameMs = fpsCap > 0 ? 1000 / fpsCap : 0;
   }
 
   function setStatus(state, msg) {
@@ -433,19 +588,12 @@
   }
 
   function toggleConnection() {
-    if (connected) {
-      disconnect();
-    } else {
-      connect();
-    }
+    if (connected) disconnect(); else connect();
   }
 
   function connect() {
     const url = buildUrl();
-    if (!url) {
-      setStatus('error', 'Enter an IP address and port first');
-      return;
-    }
+    if (!url) { setStatus('error', 'Enter an IP address and port first'); return; }
 
     setStatus('connecting', 'Connecting to ' + url + ' …');
     document.getElementById('connect-btn').textContent = 'CONNECTING…';
@@ -461,12 +609,16 @@
     ws.onopen = () => {
       connected = true;
       frameCount = 0;
+      droppedCount = 0;
+      lastRenderTime = 0;
+      rendering = false;
+      pendingData = null;
       document.getElementById('connect-btn').textContent = 'DISCONNECT';
       document.getElementById('connect-btn').classList.add('connected');
       setStatus('connected', 'Connected — waiting for frames…');
     };
 
-    ws.onmessage = (evt) => handleFrame(evt.data);
+    ws.onmessage = (evt) => queueFrame(evt.data);
 
     ws.onerror = () => {
       setStatus('error', 'Connection error — check IP, port, and that the app is running');
@@ -484,71 +636,92 @@
 
   function onDisconnected(msg) {
     connected = false;
+    pendingData = null;
+    rendering = false;
     document.getElementById('connect-btn').textContent = 'CONNECT';
     document.getElementById('connect-btn').classList.remove('connected');
     document.getElementById('hud').classList.remove('visible');
     canvas.style.display = 'none';
     document.getElementById('placeholder').style.display = 'flex';
     document.getElementById('frame-count').textContent = '';
+    document.getElementById('drop-badge').classList.remove('visible');
     setStatus('', msg);
   }
 
-  function handleFrame(data) {
+  // Central entry point for incoming frames.
+  // If we're busy rendering or under the FPS cap, stash only the latest data
+  // (discarding the previous pending frame). This keeps memory flat.
+  function queueFrame(data) {
+    const now = performance.now();
+    const tooSoon = fpsCap > 0 && (now - lastRenderTime) < minFrameMs;
+
+    if (rendering || tooSoon) {
+      // Drop the previously stashed frame if there is one
+      if (pendingData !== null) {
+        droppedCount++;
+        document.getElementById('drop-badge').classList.add('visible');
+      }
+      pendingData = data;
+      return;
+    }
+
+    startRender(data);
+  }
+
+  // If there's a stashed frame waiting, render it now
+  function drainPending() {
+    if (pendingData !== null) {
+      const d = pendingData;
+      pendingData = null;
+      startRender(d);
+    }
+  }
+
+  function startRender(data) {
+    rendering = true;
+    lastRenderTime = performance.now();
+
     const detectedFormat = format === 'auto' ? detect(data) : format;
 
-    if (detectedFormat === 'base64') {
-      renderBase64(typeof data === 'string' ? data : null);
-    } else if (detectedFormat === 'jpeg' || detectedFormat === 'mjpeg') {
-      renderBinary(data);
-    } else if (typeof data === 'string') {
-      // Try base64 as fallback for string data
-      renderBase64(data);
+    if (detectedFormat === 'base64' || typeof data === 'string') {
+      loadBase64(data);
     } else {
-      renderBinary(data);
+      loadBinary(data);
     }
   }
 
   function detect(data) {
-    if (typeof data === 'string') {
-      // Check if it's base64 JPEG (starts with /9j/ when decoded)
-      const trimmed = data.replace(/^data:image\/[^;]+;base64,/, '').trim();
-      if (/^[A-Za-z0-9+/]/.test(trimmed)) return 'base64';
-      return 'base64';
-    }
-    // Binary: check for JPEG magic bytes FF D8 FF
-    const arr = new Uint8Array(data instanceof ArrayBuffer ? data : data);
-    if (arr[0] === 0xFF && arr[1] === 0xD8 && arr[2] === 0xFF) return 'jpeg';
-    return 'jpeg';
+    if (typeof data === 'string') return 'base64';
+    const arr = new Uint8Array(data, 0, 3);
+    return (arr[0] === 0xFF && arr[1] === 0xD8 && arr[2] === 0xFF) ? 'jpeg' : 'jpeg';
   }
 
-  function renderBinary(data) {
-    const blob = new Blob(
-      [data instanceof ArrayBuffer ? data : data],
-      { type: 'image/jpeg' }
-    );
-    const url = URL.createObjectURL(blob);
-    const img = new Image();
-    img.onload = () => {
-      showFrame(img);
-      URL.revokeObjectURL(url);
-    };
-    img.onerror = () => URL.revokeObjectURL(url);
-    img.src = url;
+  function loadBinary(data) {
+    // Revoke any previous blob before creating a new one
+    if (currentBlobUrl) { URL.revokeObjectURL(currentBlobUrl); currentBlobUrl = null; }
+    const blob = new Blob([data], { type: 'image/jpeg' });
+    currentBlobUrl = URL.createObjectURL(blob);
+    img.src = currentBlobUrl;
   }
 
-  function renderBase64(str) {
-    if (!str) return;
-    // Strip data URI prefix if present
+  function loadBase64(str) {
     const b64 = str.replace(/^data:image\/[^;]+;base64,/, '');
-    const img = new Image();
-    img.onload = () => showFrame(img);
     img.src = 'data:image/jpeg;base64,' + b64;
   }
 
-  function showFrame(img) {
-    canvas.width = img.naturalWidth || img.width;
-    canvas.height = img.naturalHeight || img.height;
+  function paintFrame() {
+    // Only resize canvas if dimensions changed — avoids clearing the bitmap every frame
+    const w = img.naturalWidth || img.width;
+    const h = img.naturalHeight || img.height;
+    if (w !== canvasW || h !== canvasH) {
+      canvas.width = w;
+      canvas.height = h;
+      canvasW = w;
+      canvasH = h;
+    }
+
     ctx.drawImage(img, 0, 0);
+    rendering = false;
 
     canvas.style.display = 'block';
     document.getElementById('placeholder').style.display = 'none';
@@ -556,7 +729,8 @@
 
     frameCount++;
     fpsFrames++;
-    document.getElementById('frame-count').textContent = frameCount + ' frames';
+    document.getElementById('frame-count').textContent =
+      frameCount + ' frames' + (droppedCount ? ' (' + droppedCount + ' dropped)' : '');
 
     const now = performance.now();
     if (now - lastFpsTime >= 1000) {
@@ -566,9 +740,10 @@
       lastFpsTime = now;
     }
 
-    if (connected) {
-      setStatus('connected', 'Receiving — ' + fpsDisplay + ' fps');
-    }
+    if (connected) setStatus('connected', 'Receiving — ' + fpsDisplay + ' fps');
+
+    // Try to render any frame that arrived while we were busy
+    drainPending();
   }
 </script>
 
