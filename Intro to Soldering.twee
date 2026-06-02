@@ -131,6 +131,11 @@ Mistakes happen. Desoldering lets you remove or rework components without damagi
 * **Adafruit Learning System** (adafruit.com/learn) — thorough beginner soldering guides with photos
 * **EEVblog on YouTube**: Dave Jones' soldering tutorials are widely considered the best free resource
 * **r/soldering on Reddit**: community for joint critique and technique feedback
+* **Into to Electronics Video for Beginngers**:  https://www.youtube.com/watch?v=nYuVSG89vg0
+
+### Projects and Kits
+
+* **Micro Racer Kit**: https://stuckatprototype.com/ <img src="https://stuckatprototype.com/cdn/shop/files/242A3933.png?v=1750626769&width=350 />
 
 
 <div class="tip-box">**Fastest way to improve:** Solder something, photograph every joint, post for critique. Specific feedback accelerates skill far faster than solo practice.</div>
@@ -230,7 +235,7 @@ Visually assessing a solder joint is a skill you'll develop quickly with practic
 
 <img src="images/soldering-iron-tip-types.png" style="max-width:100%" />
 
-<div class="tip-box">**Tip choice:** Chisel or bevel tips transfer heat more efficiently than fine conical tips for most through-hole and pad work. Use fine tips for precision SMD work only.</div>
+<div class="tip-box">**Tip choice:** Chisel or bevel tips transfer heat more efficiently than fine conical tips for most through-hole and pad work. Use fine tips for precision Surface-Mount (SMD) work only.</div>
 <div class="nav-bar">[[← Previous->The Soldering Iron]] [[Next: Preparing Your Workspace →->Preparing Your Workspace]]</div>
 
 
@@ -343,7 +348,18 @@ Soldering is the process of joining two metal surfaces using a low-melting-point
 * Jewelry making and metalwork
 * Stained glass assembly
 
+### Why Learn Soldering?
 
+* Make THINGS!
+* Fix THINGS!
+* Hack THINGS!
+
+<img src="images/ex-fortune-00.png" style="max-width:100%" />
+
+<video controls>
+<source type="video/mp4" src="/images/deskpet.mp4" type="video/mp4">
+</video>
+  
 <div class="nav-bar">[[← Previous->Title]] [[Next: Safety First →->Safety First]]</div>
 
 
@@ -356,7 +372,7 @@ Soldering is the process of joining two metal surfaces using a low-melting-point
 
 ### Questions?
 
-TODO: Add 
+TODO: Add plug for EMS
 
 </div>
 
