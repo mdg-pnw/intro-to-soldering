@@ -157,7 +157,7 @@ Mistakes happen. Desoldering lets you remove or rework components without damagi
 
 ### Before You Start Soldering
 
-* Organize your components and PCB before turning on the iron
+* Organize your components and (link:"PCB")[Printed Circuit Board] before turning on the iron
 * Know exactly what you're going to solder and plan before you heat
 * Heat the iron and **tin the tip** (covered next)
 * Have your brass cleaner ready
@@ -235,7 +235,7 @@ Visually assessing a solder joint is a skill you'll develop quickly with practic
 
 <img src="images/soldering-iron-tip-types.png" style="max-width:100%" />
 
-<div class="tip-box">**Tip choice:** Chisel or bevel tips transfer heat more efficiently than fine conical tips for most through-hole and pad work. Use fine tips for precision Surface-Mount (SMD) work only.</div>
+<div class="tip-box">**Tip choice:** Chisel or bevel tips transfer heat more efficiently than fine conical tips for most through-hole and pad work. Use fine tips for precision (link:"SMD")[Surface Mount Device] work only.</div>
 <div class="nav-bar">[[← Previous->The Soldering Iron]] [[Next: Preparing Your Workspace →->Preparing Your Workspace]]</div>
 
 
