@@ -83,7 +83,7 @@ Mistakes happen. Desoldering lets you remove or rework components without damagi
 
 <div class="info-box">**Patience matters.** Pulling components before the solder is fully molten tears pads off the board. Let the heat do the work, not your fingers.</div>
 
-<div class="nav-bar">[[← Previous->Common Mistakes]] [[Next: Practice & Next Steps →->Practice and Next Steps]]</div>
+<div class="nav-bar">[[← Previous->Common Mistakes]] [[Next: Let's Get Practical →->Let's Get Practical]]</div>
 
 
 :: Footer [footer] {"position":"150,25","size":"100,100"}
@@ -102,11 +102,12 @@ Mistakes happen. Desoldering lets you remove or rework components without damagi
 <option value="Reading the Joint">10 · Reading the Joint</option>
 <option value="Common Mistakes">11 · Common Mistakes</option>
 <option value="Desoldering Basics">12 · Desoldering Basics</option>
-<option value="Practice and Next Steps">13 · Practice &amp; Next Steps</option>
-<option value="Wrap Up">14 · Wrap-Up &amp; Q&amp;A</option>
+<option value="Let's Get Practical">13 · Let's Get Practical</option>
+<option value="Practice and Next Steps">14 · Practice &amp; Next Steps</option>
+<option value="Wrap Up">15 · Wrap-Up &amp; Q&amp;A</option>
 </select>
 <button id="slide-go" onclick="goToSlide(document.getElementById('slide-jump').value)">Go →</button>
-<span id="slide-links" style="display:none">[[Title]][[What Is Soldering]][[Safety First]][[Tools and Materials]][[The Soldering Iron]][[Soldering Iron Tips]][[Preparing Your Workspace]][[Tinning the Tip]][[Basic Technique]][[Reading the Joint]][[Common Mistakes]][[Desoldering Basics]][[Practice and Next Steps]][[Wrap Up]]</span>
+<span id="slide-links" style="display:none">[[Title]][[What Is Soldering]][[Safety First]][[Tools and Materials]][[The Soldering Iron]][[Soldering Iron Tips]][[Preparing Your Workspace]][[Tinning the Tip]][[Basic Technique]][[Reading the Joint]][[Common Mistakes]][[Desoldering Basics]][[Let's Get Practical]][[Practice and Next Steps]][[Wrap Up]]</span>
 </div>
 
 
@@ -114,8 +115,77 @@ Mistakes happen. Desoldering lets you remove or rework components without damagi
 <div id="pres-header"><span class="pres-title">🔧 Intro to Soldering</span></div>
 
 
-:: Practice and Next Steps {"position":"525,150","size":"100,100"}
-<div class="slide-label">Slide 13 of 14</div>
+:: Let's Get Practical {"position":"525,150","size":"100,100"}
+<div class="slide-label">Slide 13 of 15</div>
+
+## Let's Get Practical
+
+<img src="images/Kits.png" style="max-width:100%" />
+
+### Components
+
+<details class="component">
+<summary><strong>Resistor</strong> <span class="expand-icon">▶</span></summary>
+<div class="component-body"><p><strong>Simple definition:</strong> A resistor limits how much electrical current can flow through a circuit.</p>
+<p><strong>Think of it this way:</strong> Electricity is like water flowing through a hose. A resistor is like making the hose narrower - less gets through at once. This protects parts that could be damaged by too much electricity.</p>
+<p><strong>In your kit:</strong> Resistors protect LEDs, set signal levels, and control how strongly parts interact.</p>
+</div>
+</details>
+
+<details class="component">
+<summary><strong>Diode</strong> <span class="expand-icon">▶</span></summary>
+<div class="component-body"><p><strong>Simple definition:</strong> A diode allows electricity to flow in one direction, but blocks it from flowing the other way.</p>
+<p><strong>Think of it this way:</strong> A diode is like a one-way door for electricity - it lets electricity go through one way, but stops it from going backward.</p>
+<p><strong>In your kit:</strong> Diodes prevent reverse current, protect parts, and control the direction of current flow.</p>
+</div>
+</details>
+
+<details class="component">
+<summary><strong>LED</strong> <span class="expand-icon">▶</span></summary>
+<div class="component-body"><p><strong>Simple definition:</strong> An LED (Light Emitting Diode) is a diode that gives off light when current flows through it.</p>
+<p><strong>Think of it this way:</strong> An LED is a tiny light that turns on when electricity flows through it the correct way.</p>
+<p><strong>In your kit:</strong> LEDs are used as lights, indicators, status signals, and visual outputs.</p>
+<div class="warn-box"><strong>Important:</strong> LEDs need a resistor in series. Without one, too much current flows and burns out the LED.</div>
+</div>
+</details>
+
+<details class="component">
+<summary><strong>Capacitor</strong> <span class="expand-icon">▶</span></summary>
+<div class="component-body"><p><strong>Simple definition:</strong> A capacitor stores a small amount of electrical energy and releases it when needed.</p>
+<p><strong>Think of it this way:</strong> A capacitor is like a tiny rechargeable bucket for electricity - it fills up, holds a charge briefly, and then releases it.</p>
+<p><strong>In your kit:</strong> Capacitors smooth out power, reduce electrical noise, create timing effects, and help stabilize circuits.</p>
+</div>
+</details>
+
+<details class="component">
+<summary><strong>Integrated Circuit (IC)</strong> <span class="expand-icon">▶</span></summary>
+<div class="component-body"><p><strong>Simple definition:</strong> An IC is a tiny chip that contains many electronic parts inside it.</p>
+<p><strong>Think of it this way:</strong> An IC is like a tiny electronic brain. Instead of building a circuit from lots of separate pieces, many parts are packed into one small chip.</p>
+<p><strong>In your kit:</strong> An IC might control lights, respond to sensors, store logic, amplify signals, or perform a specific function designed by the chip manufacturer.</p>
+</div>
+</details>
+
+<details class="component">
+<summary><strong>PCB</strong> <span class="expand-icon">▶</span></summary>
+<div class="component-body"><p><strong>Simple definition:</strong> A printed circuit board (PCB) is the board that holds electronic parts and connects them together.</p>
+<p><strong>Think of it this way:</strong> A PCB is like a map of roads for electricity. The parts sit on the board, and the copper paths show electricity where to go.</p>
+<p><strong>In your kit:</strong> The PCB makes assembly easier because the wiring paths are already built into the board.</p>
+</div>
+</details>
+
+<details class="component">
+<summary><strong>Battery</strong> <span class="expand-icon">▶</span></summary>
+<div class="component-body"><p><strong>Simple definition:</strong> A battery provides electrical power to a circuit.</p>
+<p><strong>Think of it this way:</strong> A battery is like a small power tank - it gives the circuit the energy it needs to work.</p>
+<p><strong>In your kit:</strong> The battery powers the LEDs, ICs, and other components.</p>
+</div>
+</details>
+
+<div class="nav-bar">[[← Previous->Desoldering Basics]] [[Next: Practice & Next Steps →->Practice and Next Steps]]</div>
+
+
+:: Practice and Next Steps {"position":"650,150","size":"100,100"}
+<div class="slide-label">Slide 14 of 15</div>
 
 ## Practice & Next Steps
 
@@ -128,7 +198,7 @@ Mistakes happen. Desoldering lets you remove or rework components without damagi
 
 ### Good Resources
 
-* **Adafruit Learning System** (adafruit.com/learn) — thorough beginner soldering guides with photos
+* **Adafruit Learning System** (adafruit.com/learn) - thorough beginner soldering guides with photos
 * **EEVblog on YouTube**: Dave Jones' soldering tutorials are widely considered the best free resource
 * **r/soldering on Reddit**: community for joint critique and technique feedback
 * **Into to Electronics Video for Beginngers**:  https://www.youtube.com/watch?v=nYuVSG89vg0
@@ -140,7 +210,7 @@ Mistakes happen. Desoldering lets you remove or rework components without damagi
 
 <div class="tip-box">**Fastest way to improve:** Solder something, photograph every joint, post for critique. Specific feedback accelerates skill far faster than solo practice.</div>
 
-<div class="nav-bar">[[← Previous->Desoldering Basics]] [[Next: Wrap-Up →->Wrap Up]]</div>
+<div class="nav-bar">[[← Previous->Let's Get Practical]] [[Next: Wrap-Up →->Wrap Up]]</div>
 
 
 :: Preparing Your Workspace {"position":"1025,25","size":"100,100"}
@@ -176,8 +246,8 @@ Visually assessing a solder joint is a skill you'll develop quickly with practic
 
 ### Good Joint ✅
 
-* Smooth, shiny surface (slightly matte for lead-free — that's normal)
-* Concave/volcano shape — solder wets up the component lead and down onto the pad
+* Smooth, shiny surface (slightly matte for lead-free - that's normal)
+* Concave/volcano shape - solder wets up the component lead and down onto the pad
 * You can see the outline of the pad and lead through the solder
 
 ### Cold Joint ❌
@@ -194,7 +264,7 @@ Visually assessing a solder joint is a skill you'll develop quickly with practic
 ### Solder Bridge ❌
 
 * Solder spanning between two adjacent pads or leads
-* Creates a short circuit — always inspect after soldering fine-pitch ICs
+* Creates a short circuit - always inspect after soldering fine-pitch ICs
 
 <div class="tip-box">**Use a magnifier or your phone camera** to inspect joints, especially on small components.</div>
 
@@ -273,7 +343,7 @@ Tinning means coating the iron tip with a thin, fresh layer of solder. It is the
 ### Why It Matters
 
 * A tinned (shiny, silver) tip transfers heat efficiently and wets solder properly
-* An oxidized (black, dull) tip insulates itself — heat won't transfer, joints will be poor regardless of technique
+* An oxidized (black, dull) tip insulates itself - heat won't transfer, joints will be poor regardless of technique
 
 ### How to Tin
 
@@ -363,8 +433,8 @@ Soldering is the process of joining two metal surfaces using a low-melting-point
 <div class="nav-bar">[[← Previous->Title]] [[Next: Safety First →->Safety First]]</div>
 
 
-:: Wrap Up {"position":"650,150","size":"100,100"}
-<div class="slide-label">Slide 14 of 14</div>
+:: Wrap Up {"position":"775,150","size":"100,100"}
+<div class="slide-label">Slide 15 of 15</div>
 
 <div class="end-center">
 
@@ -553,3 +623,41 @@ tw-link:hover, .enchantment-link:hover {
 /* ── End slide ── */
 .end-center { text-align: center; padding-top: 50px; }
 .end-center ul { display: inline-block; text-align: left; }
+
+/* ── Component expand/collapse ── */
+details.component {
+  border: 1px solid rgba(244,162,97,0.25);
+  border-radius: 6px;
+  margin: 6px 0;
+}
+details.component summary {
+  padding: 10px 16px;
+  cursor: pointer;
+  list-style: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 1.05em;
+  background: rgba(255,255,255,0.03);
+  border-radius: 6px;
+  user-select: none;
+}
+details.component summary::-webkit-details-marker { display: none; }
+details.component summary::marker { display: none; }
+details.component summary:hover { background: rgba(244,162,97,0.1); }
+details.component[open] > summary {
+  border-bottom: 1px solid rgba(244,162,97,0.2);
+  border-radius: 6px 6px 0 0;
+  background: rgba(244,162,97,0.08);
+}
+.expand-icon {
+  display: inline-block;
+  transition: transform 0.2s ease;
+  color: #f4a261;
+  flex-shrink: 0;
+  margin-left: 8px;
+}
+details.component[open] .expand-icon { transform: rotate(90deg); }
+.component-body { padding: 12px 16px; line-height: 1.7; }
+.component-body p { margin: 0.3em 0 0.6em; }
+.component-body p:last-child { margin-bottom: 0; }
