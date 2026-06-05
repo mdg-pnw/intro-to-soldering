@@ -130,6 +130,9 @@ Mistakes happen. Desoldering lets you remove or rework components without damagi
 <div class="component-body"><p><strong>Simple definition:</strong> A resistor limits how much electrical current can flow through a circuit.</p>
 <p><strong>Think of it this way:</strong> Electricity is like water flowing through a hose. A resistor is like making the hose narrower - less gets through at once. This protects parts that could be damaged by too much electricity.</p>
 <p><strong>In your kit:</strong> Resistors protect LEDs, set signal levels, and control how strongly parts interact.</p>
+
+<div class="tip-box">**Tip:** 
+You can use this handy <a href="https://www.digikey.com/en/resources/conversion-calculators/conversion-calculator-resistor-color-code">Resistor Color Code Calculator from DigiKey</a> to identify a resistor.</div>
 </div>
 </details>
 }
@@ -534,7 +537,7 @@ p  { font-size: 1.1em; line-height: 1.8; margin: 0.4em 0; }
 ul { padding-left: 1.5em; margin: 0.3em 0; }
 li { font-size: 1.1em; line-height: 1.85; margin-bottom: 0.15em; }
 
-tw-link, .enchantment-link {
+tw-link, .enchantment-link, a {
   color: #f4a261;
   text-decoration: underline;
   text-decoration-style: dashed;
