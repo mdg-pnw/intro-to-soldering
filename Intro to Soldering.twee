@@ -53,12 +53,13 @@ Intro to Soldering
 * **Wrong temperature**: too low → cold joints; too high → burned pads, damaged ICs
 * **Feeding solder onto the tip**: bypasses the joint; you lose flux before it can do its job
 * **Ignoring polarity**: not a technique issue, but always verify component orientation before soldering
-
+{
 <img src="images/polarity.png" style="max-width:100%" />
 
 <div class="warn-box">**The #1 safety mistake:** Setting the iron down on the work surface instead of returning it to the stand. Burns happen in less than a second of contact.</div>
 
 <div class="nav-bar">[[← Previous->Reading the Joint]] [[Next: Desoldering Basics →->Desoldering Basics]]</div>
+}
 
 
 :: Desoldering Basics {"position":"400,150","size":"100,100"}
@@ -123,7 +124,7 @@ Mistakes happen. Desoldering lets you remove or rework components without damagi
 <img src="images/Kits.png" style="max-width:100%" />
 
 ### Components
-
+{
 <details class="component">
 <summary><strong>Resistor</strong> <span class="expand-icon">▶</span></summary>
 <div class="component-body"><p><strong>Simple definition:</strong> A resistor limits how much electrical current can flow through a circuit.</p>
@@ -131,7 +132,9 @@ Mistakes happen. Desoldering lets you remove or rework components without damagi
 <p><strong>In your kit:</strong> Resistors protect LEDs, set signal levels, and control how strongly parts interact.</p>
 </div>
 </details>
+}
 
+{
 <details class="component">
 <summary><strong>Diode</strong> <span class="expand-icon">▶</span></summary>
 <div class="component-body"><p><strong>Simple definition:</strong> A diode allows electricity to flow in one direction, but blocks it from flowing the other way.</p>
@@ -139,7 +142,9 @@ Mistakes happen. Desoldering lets you remove or rework components without damagi
 <p><strong>In your kit:</strong> Diodes prevent reverse current, protect parts, and control the direction of current flow.</p>
 </div>
 </details>
+}
 
+{
 <details class="component">
 <summary><strong>LED</strong> <span class="expand-icon">▶</span></summary>
 <div class="component-body"><p><strong>Simple definition:</strong> An LED (Light Emitting Diode) is a diode that gives off light when current flows through it.</p>
@@ -148,7 +153,9 @@ Mistakes happen. Desoldering lets you remove or rework components without damagi
 <div class="warn-box"><strong>Important:</strong> LEDs need a resistor in series. Without one, too much current flows and burns out the LED.</div>
 </div>
 </details>
+}
 
+{
 <details class="component">
 <summary><strong>Capacitor</strong> <span class="expand-icon">▶</span></summary>
 <div class="component-body"><p><strong>Simple definition:</strong> A capacitor stores a small amount of electrical energy and releases it when needed.</p>
@@ -156,7 +163,9 @@ Mistakes happen. Desoldering lets you remove or rework components without damagi
 <p><strong>In your kit:</strong> Capacitors smooth out power, reduce electrical noise, create timing effects, and help stabilize circuits.</p>
 </div>
 </details>
+}
 
+{
 <details class="component">
 <summary><strong>Integrated Circuit (IC)</strong> <span class="expand-icon">▶</span></summary>
 <div class="component-body"><p><strong>Simple definition:</strong> An IC is a tiny chip that contains many electronic parts inside it.</p>
@@ -164,7 +173,9 @@ Mistakes happen. Desoldering lets you remove or rework components without damagi
 <p><strong>In your kit:</strong> An IC might control lights, respond to sensors, store logic, amplify signals, or perform a specific function designed by the chip manufacturer.</p>
 </div>
 </details>
+}
 
+{
 <details class="component">
 <summary><strong>PCB</strong> <span class="expand-icon">▶</span></summary>
 <div class="component-body"><p><strong>Simple definition:</strong> A printed circuit board (PCB) is the board that holds electronic parts and connects them together.</p>
@@ -172,14 +183,7 @@ Mistakes happen. Desoldering lets you remove or rework components without damagi
 <p><strong>In your kit:</strong> The PCB makes assembly easier because the wiring paths are already built into the board.</p>
 </div>
 </details>
-
-<details class="component">
-<summary><strong>Battery</strong> <span class="expand-icon">▶</span></summary>
-<div class="component-body"><p><strong>Simple definition:</strong> A battery provides electrical power to a circuit.</p>
-<p><strong>Think of it this way:</strong> A battery is like a small power tank - it gives the circuit the energy it needs to work.</p>
-<p><strong>In your kit:</strong> The battery powers the LEDs, ICs, and other components.</p>
-</div>
-</details>
+}
 
 <div class="nav-bar">[[← Previous->Desoldering Basics]] [[Next: Practice & Next Steps →->Practice and Next Steps]]</div>
 
@@ -198,14 +202,16 @@ Mistakes happen. Desoldering lets you remove or rework components without damagi
 
 ### Good Resources
 
+* **Eugene Maker Space** - Join and participate in our Discord and work on projects together!
 * **Adafruit Learning System** (adafruit.com/learn) - thorough beginner soldering guides with photos
 * **EEVblog on YouTube**: Dave Jones' soldering tutorials are widely considered the best free resource
 * **r/soldering on Reddit**: community for joint critique and technique feedback
-* **Into to Electronics Video for Beginngers**:  https://www.youtube.com/watch?v=nYuVSG89vg0
+* **Electrical Basics Made Easy**:  <a href="https://www.youtube.com/watch?v=nYuVSG89vg0">https://www.youtube.com/watch?v=nYuVSG89vg0</a>
+** Highly Recommended
 
 ### Projects and Kits
 
-* **Micro Racer Kit**: https://stuckatprototype.com/ <img src="https://stuckatprototype.com/cdn/shop/files/242A3933.png?v=1750626769&width=350 />
+* **Micro Racer Kit**: <a href="https://stuckatprototype.com/">https://stuckatprototype.com/ </a> <img src="https://stuckatprototype.com/cdn/shop/files/242A3933.png?v=1750626769&width=350 />
 
 
 <div class="tip-box">**Fastest way to improve:** Solder something, photograph every joint, post for critique. Specific feedback accelerates skill far faster than solo practice.</div>
@@ -354,6 +360,21 @@ Tinning means coating the iron tip with a thin, fresh layer of solder. It is the
 
 <div class="info-box">**Tin //before// and //after// every session.** Before you put the iron away, tin it. The solder coat protects the tip from oxidizing while it cools between uses.</div>
 
+{
+<button class="video-btn" onclick="openVideoModal('tin-modal','tin-video','https://www.youtube.com/embed/ejZpB9TPTMg?start=831&rel=0')">▶ Watch: Tinning in Action</button>
+<div id="tin-modal" class="video-modal" onclick="if(event.target===this)closeVideoModal('tin-modal')">
+  <div class="video-modal-box">
+    <button class="video-modal-close" onclick="closeVideoModal('tin-modal')">✕</button>
+    <div class="video-modal-title">How to Tin a Soldering Iron Tip</div>
+    <div class="video-wrapper">
+      <iframe id="tin-video" frameborder="0" allowfullscreen
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture">
+      </iframe>
+    </div>
+  </div>
+</div>
+}
+
 ### Keeping Tips Healthy
 
 * Never leave a hot iron idle with a bare, dry tip for long
@@ -457,6 +478,26 @@ window.goToSlide = function(name) {
     if (links[i].textContent.trim() === name) { links[i].click(); return; }
   }
 };
+
+window.openVideoModal = function(modalId, videoId, src) {
+  document.getElementById(videoId).src = src;
+  document.getElementById(modalId).classList.add('open');
+};
+
+window.closeVideoModal = function(modalId) {
+  var modal = document.getElementById(modalId);
+  modal.querySelector('iframe').src = '';
+  modal.classList.remove('open');
+};
+
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') {
+    document.querySelectorAll('.video-modal.open').forEach(function(m) {
+      m.querySelector('iframe').src = '';
+      m.classList.remove('open');
+    });
+  }
+});
 
 :: StoryStylesheet [stylesheet]
 tw-sidebar { display: none !important; }
@@ -661,3 +702,65 @@ details.component[open] .expand-icon { transform: rotate(90deg); }
 .component-body { padding: 12px 16px; line-height: 1.7; }
 .component-body p { margin: 0.3em 0 0.6em; }
 .component-body p:last-child { margin-bottom: 0; }
+
+/* ── Video modal ── */
+.video-btn {
+  background: transparent;
+  color: #f4a261;
+  border: 1px solid rgba(244,162,97,0.55);
+  padding: 8px 18px;
+  border-radius: 4px;
+  font-size: 1em;
+  font-family: inherit;
+  cursor: pointer;
+  margin: 12px 0;
+}
+.video-btn:hover { background: #f4a261; color: #16213e; }
+
+.video-modal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.82);
+  z-index: 2000;
+  align-items: center;
+  justify-content: center;
+}
+.video-modal.open { display: flex; }
+.video-modal-box {
+  background: #0d1526;
+  border: 1px solid rgba(244,162,97,0.4);
+  border-radius: 8px;
+  padding: 20px;
+  max-width: 820px;
+  width: 90%;
+  position: relative;
+}
+.video-modal-close {
+  position: absolute;
+  top: 10px; right: 14px;
+  background: transparent;
+  border: none;
+  color: #f4a261;
+  font-size: 1.4em;
+  cursor: pointer;
+  line-height: 1;
+}
+.video-modal-close:hover { color: #fff; }
+.video-modal-title {
+  color: #e9c46a;
+  font-size: 1em;
+  font-weight: 600;
+  margin-bottom: 14px;
+  padding-right: 30px;
+}
+.video-wrapper {
+  position: relative;
+  padding-bottom: 56.25%; /* 16:9 */
+  height: 0;
+}
+.video-wrapper iframe {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+}
