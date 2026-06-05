@@ -88,6 +88,7 @@ Mistakes happen. Desoldering lets you remove or rework components without damagi
 
 
 :: Footer [footer] {"position":"150,25","size":"100,100"}
+{
 <div id="pres-footer">
 <select id="slide-jump">
 <option value="">⊞ Jump to slide...</option>
@@ -109,7 +110,10 @@ Mistakes happen. Desoldering lets you remove or rework components without damagi
 </select>
 <button id="slide-go" onclick="goToSlide(document.getElementById('slide-jump').value)">Go →</button>
 <span id="slide-links" style="display:none">[[Title]][[What Is Soldering]][[Safety First]][[Tools and Materials]][[The Soldering Iron]][[Soldering Iron Tips]][[Preparing Your Workspace]][[Tinning the Tip]][[Basic Technique]][[Reading the Joint]][[Common Mistakes]][[Desoldering Basics]][[Let's Get Practical]][[Practice and Next Steps]][[Wrap Up]]</span>
+
+<button id="viewer" onclick="window.open('http://i2s.cmmn.com/viewer.html', '_blank')">📳</button>
 </div>
+}
 
 
 :: Header [header] {"position":"25,25","size":"100,100"}
@@ -647,7 +651,7 @@ tw-link:hover, .enchantment-link:hover {
   min-width: 260px;
 }
 #slide-jump:focus { outline: none; border-color: #f4a261; }
-#slide-go {
+#slide-go, #viewer {
   background: transparent;
   color: #f4a261;
   border: 1px solid rgba(244,162,97,0.55);
@@ -657,6 +661,10 @@ tw-link:hover, .enchantment-link:hover {
   font-family: inherit;
   cursor: pointer;
   margin-left: 8px;
+}
+#viewer {
+  position: absolute;
+  right: 80px;
 }
 #slide-go:hover { background: #f4a261; color: #0d1526; }
 

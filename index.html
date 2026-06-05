@@ -152,7 +152,7 @@ tw-link:hover, .enchantment-link:hover {
   min-width: 260px;
 }
 #slide-jump:focus { outline: none; border-color: #f4a261; }
-#slide-go {
+#slide-go, #viewer {
   background: transparent;
   color: #f4a261;
   border: 1px solid rgba(244,162,97,0.55);
@@ -162,6 +162,10 @@ tw-link:hover, .enchantment-link:hover {
   font-family: inherit;
   cursor: pointer;
   margin-left: 8px;
+}
+#viewer {
+  position: absolute;
+  right: 80px;
 }
 #slide-go:hover { background: #f4a261; color: #0d1526; }
 
@@ -361,7 +365,8 @@ Mistakes happen. Desoldering lets you remove or rework components without damagi
 
 &lt;div class=&quot;info-box&quot;&gt;**Patience matters.** Pulling components before the solder is fully molten tears pads off the board. Let the heat do the work, not your fingers.&lt;/div&gt;
 
-&lt;div class=&quot;nav-bar&quot;&gt;[[← Previous-&gt;Common Mistakes]] [[Next: Let&#39;s Get Practical →-&gt;Let&#39;s Get Practical]]&lt;/div&gt;</tw-passagedata><tw-passagedata pid="4" name="Footer" tags="footer" position="150,25" size="100,100">&lt;div id=&quot;pres-footer&quot;&gt;
+&lt;div class=&quot;nav-bar&quot;&gt;[[← Previous-&gt;Common Mistakes]] [[Next: Let&#39;s Get Practical →-&gt;Let&#39;s Get Practical]]&lt;/div&gt;</tw-passagedata><tw-passagedata pid="4" name="Footer" tags="footer" position="150,25" size="100,100">{
+&lt;div id=&quot;pres-footer&quot;&gt;
 &lt;select id=&quot;slide-jump&quot;&gt;
 &lt;option value=&quot;&quot;&gt;⊞ Jump to slide...&lt;/option&gt;
 &lt;option value=&quot;Title&quot;&gt;01 · Title&lt;/option&gt;
@@ -382,7 +387,10 @@ Mistakes happen. Desoldering lets you remove or rework components without damagi
 &lt;/select&gt;
 &lt;button id=&quot;slide-go&quot; onclick=&quot;goToSlide(document.getElementById(&#39;slide-jump&#39;).value)&quot;&gt;Go →&lt;/button&gt;
 &lt;span id=&quot;slide-links&quot; style=&quot;display:none&quot;&gt;[[Title]][[What Is Soldering]][[Safety First]][[Tools and Materials]][[The Soldering Iron]][[Soldering Iron Tips]][[Preparing Your Workspace]][[Tinning the Tip]][[Basic Technique]][[Reading the Joint]][[Common Mistakes]][[Desoldering Basics]][[Let&#39;s Get Practical]][[Practice and Next Steps]][[Wrap Up]]&lt;/span&gt;
-&lt;/div&gt;</tw-passagedata><tw-passagedata pid="5" name="Header" tags="header" position="25,25" size="100,100">&lt;div id=&quot;pres-header&quot;&gt;&lt;span class=&quot;pres-title&quot;&gt;🔧 Intro to Soldering&lt;/span&gt;&lt;/div&gt;</tw-passagedata><tw-passagedata pid="6" name="Let&#39;s Get Practical" tags="" position="525,150" size="100,100">&lt;div class=&quot;slide-label&quot;&gt;Slide 13 of 15&lt;/div&gt;
+
+&lt;button id=&quot;viewer&quot; onclick=&quot;window.open(&#39;http://i2s.cmmn.com/viewer.html&#39;, &#39;_blank&#39;)&quot;&gt;📳&lt;/button&gt;
+&lt;/div&gt;
+}</tw-passagedata><tw-passagedata pid="5" name="Header" tags="header" position="25,25" size="100,100">&lt;div id=&quot;pres-header&quot;&gt;&lt;span class=&quot;pres-title&quot;&gt;🔧 Intro to Soldering&lt;/span&gt;&lt;/div&gt;</tw-passagedata><tw-passagedata pid="6" name="Let&#39;s Get Practical" tags="" position="525,150" size="100,100">&lt;div class=&quot;slide-label&quot;&gt;Slide 13 of 15&lt;/div&gt;
 
 ## Let&#39;s Get Practical
 
