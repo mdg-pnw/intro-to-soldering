@@ -117,7 +117,7 @@ Mistakes happen. Desoldering lets you remove or rework components without damagi
 
 
 :: Header [header] {"position":"25,25","size":"100,100"}
-<div id="pres-header"><span class="pres-title">🔧 Intro to Soldering</span></div>
+<div id="pres-header"><img id="soldering-icon" src="http://i2s.cmmn.com/images/soldering-iron-icon.png" /> <span class="pres-title">Intro to Soldering</span></div>
 
 
 :: Let's Get Practical {"position":"525,150","size":"100,100"}
@@ -625,6 +625,11 @@ tw-link:hover, .enchantment-link:hover {
   color: #f4a261;
   letter-spacing: 0.06em;
   text-transform: uppercase;
+}
+
+#soldering-icon {
+  height:42px;
+  padding-right:8px;
 }
 
 /* ── Persistent footer bar ── */
