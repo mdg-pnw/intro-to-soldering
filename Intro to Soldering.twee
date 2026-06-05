@@ -628,7 +628,7 @@ tw-link:hover, .enchantment-link:hover {
 }
 
 #soldering-icon {
-  height:42px;
+  height:60px;
   padding-right:8px;
 }
 
