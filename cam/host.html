@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>WS Camera — Host</title>
+<style>
+  :root {
+    --bg: #0d0f12;
+    --surface: #161a20;
+    --surface2: #1e242d;
+    --border: rgba(255,255,255,0.08);
+    --accent: #00e5a0;
+    --accent-dim: rgba(0,229,160,0.12);
+    --accent-glow: rgba(0,229,160,0.25);
+    --text: #eef0f3;
+    --text-muted: #7a8494;
+    --danger: #ff5c5c;
+    --danger-dim: rgba(255,92,92,0.12);
+    --warn: #f5a623;
+    --warn-dim: rgba(245,166,35,0.12);
+    --radius: 8px;
+    --font: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', monospace;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font);
+    font-size: 13px;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 1.5rem 1rem;
+    gap: 12px;
+  }
+  header {
+    width: 100%;
+    max-width: 600px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .logo {
+    width: 32px; height: 32px;
+    border-radius: 8px;
+    background: var(--warn-dim);
+    border: 1px solid var(--warn);
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .logo svg { width: 18px; height: 18px; stroke: var(--warn); fill: none; stroke-width: 1.8; }
+  h1 { font-size: 15px; font-weight: 600; letter-spacing: 0.04em; }
+  .tagline { font-size: 11px; color: var(--text-muted); margin-left: auto; }
+
+  .card {
+    width: 100%;
+    max-width: 600px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+  }
+
+  .section {
+    padding: 14px 16px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .section:last-child { border-bottom: none; }
+
+  .row { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+
+  .field { display: flex; flex-direction: column; gap: 4px; flex: 1; min-width: 120px; }
+  .field label { font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-muted); }
+  input, select {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    color: var(--text);
+    font-family: var(--font);
+    font-size: 13px;
+    padding: 8px 10px;
+    outline: none;
+    transition: border-color 0.15s;
+    width: 100%;
+  }
+  input:focus, select:focus { border-color: var(--warn); }
+
+  .btn {
+    border-radius: var(--radius);
+    font-family: var(--font);
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    padding: 9px 20px;
+    cursor: pointer;
+    transition: all 0.15s;
+    white-space: nowrap;
+    border: 1px solid;
+    text-transform: uppercase;
+  }
+  .btn-host {
+    background: var(--warn-dim);
+    border-color: var(--warn);
+    color: var(--warn);
+    width: 100%;
+  }
+  .btn-host:hover { background: rgba(245,166,35,0.22); }
+  .btn-host.active {
+    background: var(--danger-dim);
+    border-color: var(--danger);
+    color: var(--danger);
+  }
+  .btn-sm {
+    font-size: 10px;
+    padding: 5px 10px;
+    background: transparent;
+    border-color: var(--border);
+    color: var(--text-muted);
+  }
+  .btn-sm:hover { border-color: var(--warn); color: var(--warn); }
+
+  /* Preview */
+  .preview-wrap {
+    position: relative;
+    background: #090b0e;
+    aspect-ratio: 16/9;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+  #preview {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: none;
+    transform: scaleX(-1); /* mirror for selfie cam */
+  }
+  #preview.no-mirror { transform: none; }
+  .placeholder {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    color: var(--text-muted);
+    text-align: center;
+    padding: 20px;
+  }
+  .placeholder svg { width: 40px; height: 40px; stroke: currentColor; fill: none; stroke-width: 1.2; opacity: 0.4; }
+  .placeholder p { font-size: 11px; opacity: 0.6; line-height: 1.6; }
+
+  .hud {
+    position: absolute;
+    top: 10px; left: 10px; right: 10px;
+    display: flex;
+    justify-content: space-between;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+  .hud.visible { opacity: 1; }
+  .badge {
+    font-size: 10px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 4px 8px;
+    border-radius: 4px;
+    backdrop-filter: blur(8px);
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+  .badge.on-air { background: rgba(245,166,35,0.25); border: 1px solid rgba(245,166,35,0.5); color: var(--warn); }
+  .badge.conn   { background: rgba(0,0,0,0.55); border: 1px solid rgba(255,255,255,0.12); color: var(--text-muted); }
+  .dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; animation: pulse 1.2s ease-in-out infinite; }
+  @keyframes pulse { 0%,100%{opacity:1}50%{opacity:0.25} }
+
+  /* Log */
+  .log {
+    font-size: 10px;
+    color: var(--text-muted);
+    line-height: 1.7;
+    letter-spacing: 0.02em;
+    max-height: 90px;
+    overflow-y: auto;
+    background: var(--bg);
+    border-radius: var(--radius);
+    padding: 8px 10px;
+    border: 1px solid var(--border);
+  }
+  .log .ok   { color: var(--accent); }
+  .log .warn { color: var(--warn); }
+  .log .err  { color: var(--danger); }
+
+  /* Status */
+  .status-bar {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 16px;
+    background: var(--surface2);
+  }
+  .sdot { width: 7px; height: 7px; border-radius: 50%; background: var(--text-muted); flex-shrink: 0; transition: background 0.3s; }
+  .sdot.connecting { background: var(--warn); animation: pulse 0.8s infinite; }
+  .sdot.connected  { background: var(--accent); }
+  .sdot.streaming  { background: var(--warn); }
+  .sdot.error      { background: var(--danger); }
+  #status-text { font-size: 11px; color: var(--text-muted); flex: 1; }
+
+  .camera-flip-btn {
+    position: absolute;
+    bottom: 10px; right: 10px;
+    background: rgba(0,0,0,0.55);
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 6px;
+    color: var(--text-muted);
+    font-family: var(--font);
+    font-size: 10px;
+    letter-spacing: 0.05em;
+    padding: 5px 10px;
+    cursor: pointer;
+    text-transform: uppercase;
+    display: none;
+  }
+  .camera-flip-btn.visible { display: block; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">
+    <svg viewBox="0 0 24 24"><path d="M23 7l-7 5 7 5V7z"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg>
+  </div>
+  <h1>WS Camera <span style="color:var(--warn);font-weight:400">/ Host</span></h1>
+  <span class="tagline">presentation camera</span>
+</header>
+
+<div class="card">
+
+  <!-- Signal server config -->
+  <div class="section">
+    <div class="row">
+      <div class="field">
+        <label>Signal server URL</label>
+        <input id="signal-url" type="url" placeholder="https://yourdomain.com/signal.php" />
+      </div>
+    </div>
+    <div class="row">
+      <div class="field">
+        <label>Camera</label>
+        <select id="cam-select"><option value="">Loading…</option></select>
+      </div>
+      <div class="field" style="max-width:110px">
+        <label>Resolution</label>
+        <select id="res-select">
+          <option value="1280x720">720p</option>
+          <option value="1920x1080">1080p</option>
+          <option value="640x480">480p</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <!-- Preview -->
+  <div class="preview-wrap">
+    <div class="placeholder" id="placeholder">
+      <svg viewBox="0 0 24 24"><path d="M23 7l-7 5 7 5V7z"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg>
+      <p>Configure the signal URL above,<br>then tap Start to begin streaming.</p>
+    </div>
+    <video id="preview" autoplay muted playsinline></video>
+    <div class="hud" id="hud">
+      <div class="badge on-air"><div class="dot"></div> ON AIR</div>
+      <div class="badge conn" id="conn-badge">no viewers</div>
+    </div>
+    <button class="camera-flip-btn" id="flip-btn" onclick="flipCamera()">⟳ flip</button>
+  </div>
+
+  <!-- Controls -->
+  <div class="section">
+    <button class="btn btn-host" id="host-btn" onclick="toggleHost()">Start Streaming</button>
+    <div class="log" id="log"><span class="warn">Ready — enter the signal server URL to begin.</span></div>
+  </div>
+
+  <div class="status-bar">
+    <div class="sdot" id="sdot"></div>
+    <span id="status-text">Idle</span>
+  </div>
+
+</div>
+
+<script>
+// ── Config ────────────────────────────────────────────
+const POLL_INTERVAL_MS  = 1500;  // how often to check for an answer / ICE
+const ICE_SERVERS = [
+  { urls: 'stun:stun.l.google.com:19302' },
+  { urls: 'stun:stun1.l.google.com:19302' },
+];
+
+// ── State ─────────────────────────────────────────────
+let pc          = null;
+let localStream = null;
+let pollTimer   = null;
+let iceIndex    = 0;
+let hosting     = false;
+let facingMode  = 'environment'; // start with back camera on phones
+
+// ── Helpers ───────────────────────────────────────────
+function signalUrl() {
+  return document.getElementById('signal-url').value.trim();
+}
+
+function log(msg, cls = '') {
+  const el = document.getElementById('log');
+  const line = document.createElement('div');
+  if (cls) line.className = cls;
+  line.textContent = msg;
+  el.appendChild(line);
+  el.scrollTop = el.scrollHeight;
+}
+
+function setStatus(state, msg) {
+  document.getElementById('sdot').className = 'sdot' + (state ? ' ' + state : '');
+  document.getElementById('status-text').textContent = msg;
+}
+
+async function signal(action, body = {}) {
+  const url = signalUrl();
+  if (!url) throw new Error('No signal URL set');
+  const params = new URLSearchParams({ action });
+  const r = await fetch(url + '?' + params, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(body),
+  });
+  return r.json();
+}
+
+// ── Camera list ───────────────────────────────────────
+async function loadCameras() {
+  const sel = document.getElementById('cam-select');
+  sel.innerHTML = '<option value="">Default camera</option>';
+  try {
+    const tmp = await navigator.mediaDevices.getUserMedia({ video: true });
+    tmp.getTracks().forEach(t => t.stop());
+    const devs = await navigator.mediaDevices.enumerateDevices();
+    devs.filter(d => d.kind === 'videoinput').forEach((d, i) => {
+      const o = document.createElement('option');
+      o.value = d.deviceId;
+      o.textContent = d.label || ('Camera ' + (i + 1));
+      // Pre-select back-facing
+      if (d.label && /back|rear|environment/i.test(d.label)) o.selected = true;
+      sel.appendChild(o);
+    });
+  } catch(e) {
+    log('Could not enumerate cameras: ' + e.message, 'warn');
+  }
+}
+
+async function flipCamera() {
+  if (!hosting || !localStream) return;
+  facingMode = facingMode === 'environment' ? 'user' : 'environment';
+  const [w, h] = document.getElementById('res-select').value.split('x').map(Number);
+  try {
+    const newStream = await navigator.mediaDevices.getUserMedia({
+      video: { facingMode, width: { ideal: w }, height: { ideal: h } }
+    });
+    const newTrack = newStream.getVideoTracks()[0];
+    const sender = pc.getSenders().find(s => s.track && s.track.kind === 'video');
+    if (sender) await sender.replaceTrack(newTrack);
+    localStream.getVideoTracks().forEach(t => t.stop());
+    localStream = newStream;
+    document.getElementById('preview').srcObject = newStream;
+    // Mirror user-facing camera
+    document.getElementById('preview').classList.toggle('no-mirror', facingMode === 'environment');
+    log('Camera flipped to ' + facingMode, 'ok');
+  } catch(e) {
+    log('Flip failed: ' + e.message, 'err');
+  }
+}
+
+// ── Main host flow ────────────────────────────────────
+async function toggleHost() {
+  if (hosting) { stopHost(); return; }
+  if (!signalUrl()) { log('Enter the signal server URL first.', 'err'); return; }
+  await startHost();
+}
+
+async function startHost() {
+  log('Starting…');
+  setStatus('connecting', 'Requesting camera…');
+
+  const [w, h] = document.getElementById('res-select').value.split('x').map(Number);
+  const deviceId = document.getElementById('cam-select').value;
+
+  const constraints = {
+    video: {
+      width: { ideal: w }, height: { ideal: h },
+      facingMode: deviceId ? undefined : facingMode,
+      ...(deviceId ? { deviceId: { exact: deviceId } } : {}),
+    },
+    audio: false,
+  };
+
+  try {
+    localStream = await navigator.mediaDevices.getUserMedia(constraints);
+  } catch(e) {
+    log('Camera denied: ' + e.message, 'err');
+    setStatus('error', 'Camera access denied');
+    return;
+  }
+
+  const preview = document.getElementById('preview');
+  preview.srcObject = localStream;
+  preview.style.display = 'block';
+  preview.classList.toggle('no-mirror', facingMode === 'environment');
+  document.getElementById('placeholder').style.display = 'none';
+  document.getElementById('flip-btn').classList.add('visible');
+
+  // Reset old session
+  try {
+    await signal('reset');
+    log('Session reset', 'ok');
+  } catch(e) {
+    log('Could not reach signal server: ' + e.message, 'err');
+    setStatus('error', 'Signal server unreachable');
+    stopStream();
+    return;
+  }
+
+  // Build RTCPeerConnection
+  pc = new RTCPeerConnection({ iceServers: ICE_SERVERS });
+
+  localStream.getTracks().forEach(t => pc.addTrack(t, localStream));
+
+  pc.onicecandidate = async ({ candidate }) => {
+    if (!candidate) return;
+    try {
+      await signal('add_ice', {
+        candidate:     candidate.candidate,
+        sdpMid:        candidate.sdpMid,
+        sdpMLineIndex: candidate.sdpMLineIndex,
+        from:          'host',
+      });
+    } catch(e) { /* non-fatal */ }
+  };
+
+  pc.onconnectionstatechange = () => {
+    const s = pc.connectionState;
+    log('Connection: ' + s, s === 'connected' ? 'ok' : s === 'failed' ? 'err' : '');
+    if (s === 'connected') {
+      setStatus('streaming', 'Streaming — viewer connected');
+      document.getElementById('conn-badge').textContent = '1 viewer';
+      document.getElementById('conn-badge').style.color = 'var(--accent)';
+    } else if (s === 'disconnected' || s === 'failed') {
+      setStatus('connecting', 'Viewer disconnected — waiting…');
+      document.getElementById('conn-badge').textContent = 'no viewers';
+      document.getElementById('conn-badge').style.color = '';
+    }
+  };
+
+  pc.onicegatheringstatechange = () => {
+    log('ICE gathering: ' + pc.iceGatheringState);
+  };
+
+  // Create and publish offer
+  setStatus('connecting', 'Creating offer…');
+  try {
+    const offer = await pc.createOffer({ offerToReceiveVideo: false });
+    await pc.setLocalDescription(offer);
+    await signal('publish_offer', { sdp: offer.sdp, type: offer.type });
+    log('Offer published — waiting for viewer', 'ok');
+  } catch(e) {
+    log('Failed to create offer: ' + e.message, 'err');
+    setStatus('error', 'WebRTC offer failed');
+    cleanup();
+    return;
+  }
+
+  hosting = true;
+  iceIndex = 0;
+  document.getElementById('host-btn').textContent = 'Stop Streaming';
+  document.getElementById('host-btn').classList.add('active');
+  document.getElementById('hud').classList.add('visible');
+  setStatus('connecting', 'Offer ready — waiting for viewer to connect…');
+
+  // Start polling for answer + viewer ICE
+  pollTimer = setInterval(pollSignal, POLL_INTERVAL_MS);
+}
+
+let gotAnswer = false;
+
+async function pollSignal() {
+  if (!hosting) return;
+
+  // 1) Wait for answer if we don't have it yet
+  if (!gotAnswer) {
+    try {
+      const res = await signal('get_answer');
+      if (res.ok && res.answer) {
+        await pc.setRemoteDescription(new RTCSessionDescription(res.answer));
+        gotAnswer = true;
+        log('Answer received — establishing connection…', 'ok');
+        setStatus('connecting', 'Answer received — connecting…');
+      }
+    } catch(e) { /* not ready yet */ }
+  }
+
+  // 2) Collect ICE candidates sent by the viewer
+  try {
+    const res = await signal('get_ice', { since: iceIndex, from: 'host' });
+    if (res.ok && res.candidates && res.candidates.length) {
+      for (const c of res.candidates) {
+        try {
+          await pc.addIceCandidate(new RTCIceCandidate(c));
+          iceIndex = c.id + 1;
+        } catch(e) { /* ignore stale candidates */ }
+      }
+    }
+  } catch(e) { /* non-fatal */ }
+}
+
+function stopHost() {
+  hosting = false;
+  gotAnswer = false;
+  if (pollTimer) { clearInterval(pollTimer); pollTimer = null; }
+  cleanup();
+  document.getElementById('host-btn').textContent = 'Start Streaming';
+  document.getElementById('host-btn').classList.remove('active');
+  document.getElementById('hud').classList.remove('visible');
+  document.getElementById('flip-btn').classList.remove('visible');
+  document.getElementById('preview').style.display = 'none';
+  document.getElementById('placeholder').style.display = 'flex';
+  document.getElementById('conn-badge').textContent = 'no viewers';
+  document.getElementById('conn-badge').style.color = '';
+  document.getElementById('frame-count') && (document.getElementById('frame-count').textContent = '');
+  setStatus('', 'Stopped');
+  log('Streaming stopped');
+  try { signal('reset'); } catch(e) {}
+}
+
+function cleanup() {
+  stopStream();
+  if (pc) { pc.close(); pc = null; }
+}
+
+function stopStream() {
+  if (localStream) {
+    localStream.getTracks().forEach(t => t.stop());
+    localStream = null;
+  }
+  const preview = document.getElementById('preview');
+  preview.srcObject = null;
+}
+
+// ── Init ──────────────────────────────────────────────
+loadCameras();
+
+// Pre-fill signal URL if there's a ?signal= param (handy for QR codes)
+const params = new URLSearchParams(location.search);
+if (params.get('signal')) {
+  document.getElementById('signal-url').value = params.get('signal');
+}
+</script>
+</body>
+</html>

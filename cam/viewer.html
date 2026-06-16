@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WS Camera — Viewer</title>
+<style>
+  :root {
+    --bg: #0d0f12;
+    --surface: #161a20;
+    --surface2: #1e242d;
+    --border: rgba(255,255,255,0.08);
+    --accent: #00e5a0;
+    --accent-dim: rgba(0,229,160,0.12);
+    --accent-glow: rgba(0,229,160,0.25);
+    --text: #eef0f3;
+    --text-muted: #7a8494;
+    --danger: #ff5c5c;
+    --danger-dim: rgba(255,92,92,0.12);
+    --warn: #f5a623;
+    --warn-dim: rgba(245,166,35,0.12);
+    --radius: 8px;
+    --font: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', monospace;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font);
+    font-size: 13px;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 2rem 1rem;
+    gap: 12px;
+  }
+  header {
+    width: 100%;
+    max-width: 900px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 8px;
+  }
+  .logo {
+    width: 32px; height: 32px;
+    border-radius: 8px;
+    background: var(--accent-dim);
+    border: 1px solid var(--accent);
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .logo svg { width: 18px; height: 18px; stroke: var(--accent); fill: none; stroke-width: 1.8; }
+  h1 { font-size: 15px; font-weight: 600; letter-spacing: 0.04em; }
+  .tagline { font-size: 11px; color: var(--text-muted); margin-left: auto; }
+
+  .card {
+    width: 100%;
+    max-width: 900px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+  }
+
+  .connect-bar {
+    display: flex;
+    gap: 10px;
+    padding: 16px;
+    border-bottom: 1px solid var(--border);
+    align-items: flex-end;
+    flex-wrap: wrap;
+  }
+  .field { display: flex; flex-direction: column; gap: 4px; flex: 1; min-width: 180px; }
+  .field label { font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-muted); }
+  input {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    color: var(--text);
+    font-family: var(--font);
+    font-size: 13px;
+    padding: 8px 10px;
+    outline: none;
+    transition: border-color 0.15s;
+    width: 100%;
+  }
+  input:focus { border-color: var(--accent); }
+
+  .btn {
+    border-radius: var(--radius);
+    font-family: var(--font);
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    padding: 9px 22px;
+    cursor: pointer;
+    transition: all 0.15s;
+    white-space: nowrap;
+    border: 1px solid;
+    text-transform: uppercase;
+    align-self: flex-end;
+  }
+  .btn-connect {
+    background: var(--accent-dim);
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+  .btn-connect:hover { background: var(--accent-glow); }
+  .btn-connect.active {
+    background: var(--danger-dim);
+    border-color: var(--danger);
+    color: var(--danger);
+  }
+
+  /* Viewer area */
+  .viewer {
+    position: relative;
+    background: #090b0e;
+    aspect-ratio: 16/9;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  #feed {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: none;
+    background: #090b0e;
+  }
+  .placeholder {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+    color: var(--text-muted);
+    position: absolute;
+  }
+  .placeholder svg { width: 48px; height: 48px; stroke: currentColor; fill: none; stroke-width: 1.2; opacity: 0.4; }
+  .placeholder p { font-size: 12px; letter-spacing: 0.04em; opacity: 0.6; text-align: center; line-height: 1.6; }
+
+  .hud {
+    position: absolute;
+    top: 12px; left: 12px; right: 12px;
+    display: flex;
+    justify-content: space-between;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+  .hud.visible { opacity: 1; }
+  .badge {
+    font-size: 10px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 4px 8px;
+    border-radius: 4px;
+    backdrop-filter: blur(8px);
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+  .badge.live { background: rgba(0,229,160,0.2); border: 1px solid rgba(0,229,160,0.4); color: var(--accent); }
+  .badge.info { background: rgba(0,0,0,0.55); border: 1px solid rgba(255,255,255,0.12); color: var(--text-muted); }
+  .dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; animation: pulse 1.2s ease-in-out infinite; }
+  @keyframes pulse { 0%,100%{opacity:1}50%{opacity:0.25} }
+
+  /* Log */
+  .log-bar {
+    padding: 10px 16px;
+    border-bottom: 1px solid var(--border);
+    background: var(--surface2);
+  }
+  .log {
+    font-size: 10px;
+    color: var(--text-muted);
+    line-height: 1.7;
+    letter-spacing: 0.02em;
+    max-height: 70px;
+    overflow-y: auto;
+  }
+  .log .ok   { color: var(--accent); }
+  .log .warn { color: var(--warn); }
+  .log .err  { color: var(--danger); }
+
+  /* Status */
+  .status-bar {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 16px;
+    background: var(--surface2);
+    border-top: 1px solid var(--border);
+  }
+  .sdot { width: 7px; height: 7px; border-radius: 50%; background: var(--text-muted); flex-shrink: 0; transition: background 0.3s; }
+  .sdot.connecting { background: var(--warn); animation: pulse 0.8s infinite; }
+  .sdot.connected  { background: var(--accent); }
+  .sdot.error      { background: var(--danger); }
+  #status-text { font-size: 11px; color: var(--text-muted); flex: 1; }
+  #res-info { font-size: 11px; color: var(--text-muted); }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">
+    <svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+  </div>
+  <h1>WS Camera <span style="color:var(--accent);font-weight:400">/ Viewer</span></h1>
+  <span class="tagline">WebRTC live feed</span>
+</header>
+
+<div class="card">
+
+  <div class="connect-bar">
+    <div class="field">
+      <label>Signal server URL</label>
+      <input id="signal-url" type="url" placeholder="https://yourdomain.com/signal.php" />
+    </div>
+    <button class="btn btn-connect" id="connect-btn" onclick="toggleConnection()">Connect</button>
+  </div>
+
+  <div class="viewer">
+    <div class="placeholder" id="placeholder">
+      <svg viewBox="0 0 24 24"><path d="M15 10l4.553-2.277A1 1 0 0121 8.6v6.8a1 1 0 01-1.447.877L15 14M3 8a2 2 0 012-2h10a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2V8z"/></svg>
+      <p>Enter the signal server URL above<br>and click Connect</p>
+    </div>
+    <video id="feed" autoplay playsinline></video>
+    <div class="hud" id="hud">
+      <div class="badge live"><div class="dot"></div> LIVE</div>
+      <div class="badge info" id="quality-badge">—</div>
+    </div>
+  </div>
+
+  <div class="log-bar">
+    <div class="log" id="log"><span class="warn">Enter the signal server URL and click Connect to begin.</span></div>
+  </div>
+
+  <div class="status-bar">
+    <div class="sdot" id="sdot"></div>
+    <span id="status-text">Disconnected</span>
+    <span id="res-info"></span>
+  </div>
+
+</div>
+
+<script>
+// ── Config ─────────────────────────────────────────────
+const POLL_INTERVAL_MS = 1500;
+const ICE_SERVERS = [
+  { urls: 'stun:stun.l.google.com:19302' },
+  { urls: 'stun:stun1.l.google.com:19302' },
+];
+
+// ── State ──────────────────────────────────────────────
+let pc         = null;
+let pollTimer  = null;
+let iceIndex   = 0;
+let connected  = false;
+
+// ── Helpers ────────────────────────────────────────────
+function signalUrl() {
+  return document.getElementById('signal-url').value.trim();
+}
+
+function log(msg, cls = '') {
+  const el = document.getElementById('log');
+  const line = document.createElement('div');
+  if (cls) line.className = cls;
+  line.textContent = msg;
+  el.appendChild(line);
+  el.scrollTop = el.scrollHeight;
+}
+
+function setStatus(state, msg) {
+  document.getElementById('sdot').className = 'sdot' + (state ? ' ' + state : '');
+  document.getElementById('status-text').textContent = msg;
+}
+
+async function signal(action, body = {}) {
+  const url = signalUrl();
+  if (!url) throw new Error('No signal URL');
+  const params = new URLSearchParams({ action });
+  const r = await fetch(url + '?' + params, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(body),
+  });
+  return r.json();
+}
+
+// ── Connection flow ────────────────────────────────────
+function toggleConnection() {
+  if (connected) disconnect(); else startConnection();
+}
+
+async function startConnection() {
+  if (!signalUrl()) { log('Enter the signal server URL first.', 'err'); return; }
+
+  setStatus('connecting', 'Waiting for host offer…');
+  log('Polling for offer…', 'warn');
+
+  document.getElementById('connect-btn').textContent = 'Connecting…';
+
+  // Poll until we get an offer
+  pollTimer = setInterval(tryConnect, POLL_INTERVAL_MS);
+  tryConnect();
+}
+
+let offerReceived = false;
+
+async function tryConnect() {
+  if (offerReceived) return;
+
+  let offerData;
+  try {
+    const res = await signal('get_offer');
+    if (!res.ok) return; // not ready yet
+    offerData = res.offer;
+  } catch(e) {
+    log('Signal server error: ' + e.message, 'err');
+    setStatus('error', 'Cannot reach signal server');
+    disconnect();
+    return;
+  }
+
+  offerReceived = true;
+  clearInterval(pollTimer);
+  pollTimer = null;
+
+  log('Offer received — creating answer…', 'ok');
+  setStatus('connecting', 'Offer received — connecting…');
+
+  // Build RTCPeerConnection
+  pc = new RTCPeerConnection({ iceServers: ICE_SERVERS });
+
+  pc.ontrack = (evt) => {
+    log('Track received: ' + evt.track.kind, 'ok');
+    const video = document.getElementById('feed');
+    if (!video.srcObject) video.srcObject = evt.streams[0];
+    video.style.display = 'block';
+    document.getElementById('placeholder').style.display = 'none';
+    document.getElementById('hud').classList.add('visible');
+
+    // Show resolution once video has metadata
+    video.onloadedmetadata = () => {
+      const w = video.videoWidth, h = video.videoHeight;
+      document.getElementById('quality-badge').textContent = w + '×' + h;
+      document.getElementById('res-info').textContent = w + ' × ' + h;
+    };
+  };
+
+  pc.onicecandidate = async ({ candidate }) => {
+    if (!candidate) return;
+    try {
+      await signal('add_ice', {
+        candidate:     candidate.candidate,
+        sdpMid:        candidate.sdpMid,
+        sdpMLineIndex: candidate.sdpMLineIndex,
+        from:          'viewer',
+      });
+    } catch(e) { /* non-fatal */ }
+  };
+
+  pc.onconnectionstatechange = () => {
+    const s = pc.connectionState;
+    log('Connection: ' + s, s === 'connected' ? 'ok' : s === 'failed' ? 'err' : '');
+    if (s === 'connected') {
+      setStatus('connected', 'Connected — receiving stream');
+      connected = true;
+      document.getElementById('connect-btn').textContent = 'Disconnect';
+      document.getElementById('connect-btn').classList.add('active');
+    } else if (s === 'failed') {
+      log('Connection failed — try reconnecting.', 'err');
+      setStatus('error', 'Connection failed');
+    } else if (s === 'disconnected') {
+      setStatus('connecting', 'Host disconnected — reconnecting…');
+    }
+  };
+
+  // Set remote offer and create answer
+  try {
+    await pc.setRemoteDescription(new RTCSessionDescription(offerData));
+    const answer = await pc.createAnswer();
+    await pc.setLocalDescription(answer);
+    await signal('publish_answer', { sdp: answer.sdp, type: answer.type });
+    log('Answer published — waiting for ICE…', 'ok');
+  } catch(e) {
+    log('WebRTC negotiation failed: ' + e.message, 'err');
+    setStatus('error', 'WebRTC failed');
+    disconnect();
+    return;
+  }
+
+  // Start polling for host ICE candidates
+  iceIndex = 0;
+  pollTimer = setInterval(pollIce, POLL_INTERVAL_MS);
+}
+
+async function pollIce() {
+  try {
+    const res = await signal('get_ice', { since: iceIndex, from: 'viewer' });
+    if (res.ok && res.candidates && res.candidates.length) {
+      for (const c of res.candidates) {
+        try {
+          await pc.addIceCandidate(new RTCIceCandidate(c));
+          iceIndex = c.id + 1;
+          log('ICE candidate added (' + c.candidate.split(' ')[7] + ')', 'ok');
+        } catch(e) { /* stale */ }
+      }
+    }
+    // Stop polling once connected (keep a slow heartbeat in case of reconnect)
+    if (pc && pc.connectionState === 'connected') {
+      clearInterval(pollTimer);
+      pollTimer = null;
+    }
+  } catch(e) { /* non-fatal */ }
+}
+
+function disconnect() {
+  connected = false;
+  offerReceived = false;
+  iceIndex = 0;
+  if (pollTimer) { clearInterval(pollTimer); pollTimer = null; }
+  if (pc) { pc.close(); pc = null; }
+
+  const video = document.getElementById('feed');
+  video.srcObject = null;
+  video.style.display = 'none';
+
+  document.getElementById('placeholder').style.display = 'flex';
+  document.getElementById('hud').classList.remove('visible');
+  document.getElementById('connect-btn').textContent = 'Connect';
+  document.getElementById('connect-btn').classList.remove('active');
+  document.getElementById('res-info').textContent = '';
+  document.getElementById('quality-badge').textContent = '—';
+  setStatus('', 'Disconnected');
+  log('Disconnected');
+}
+
+// Pre-fill from ?signal= URL param
+const params = new URLSearchParams(location.search);
+if (params.get('signal')) {
+  document.getElementById('signal-url').value = params.get('signal');
+}
+</script>
+</body>
+</html>
