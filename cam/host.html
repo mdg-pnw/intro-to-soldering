@@ -184,6 +184,7 @@ const ICE_SERVERS = [
 
 let pc = null, localStream = null, pollTimer = null;
 let iceIndex = 0, hosting = false, gotAnswer = false;
+let sessionId = null;   // current session id from signal server
 let facingMode = 'environment';
 
 // ── Logging ────────────────────────────────────────────────────────────────
@@ -320,7 +321,6 @@ async function startHost() {
     },
     audio: false,
   };
-  log('getUserMedia constraints: ' + JSON.stringify(constraints), 'dim');
 
   try {
     localStream = await navigator.mediaDevices.getUserMedia(constraints);
@@ -340,129 +340,126 @@ async function startHost() {
   document.getElementById('placeholder').style.display = 'none';
   document.getElementById('flip-btn').classList.add('visible');
 
-  // Reset signal server session
-  log('Resetting signal server session…');
-  try {
-    await signal('reset');
-    log('Signal server reset OK', 'ok');
-  } catch(e) {
-    log('Signal server unreachable — aborting.', 'err');
-    setStatus('error', 'Cannot reach signal server');
-    stopStream();
-    return;
+  hosting = true;
+  document.getElementById('host-btn').textContent = 'Stop Streaming';
+  document.getElementById('host-btn').classList.add('active');
+  document.getElementById('hud').classList.add('visible');
+
+  // Publish first offer, then keep polling
+  await publishOffer();
+  pollTimer = setInterval(pollSignal, POLL_MS);
+}
+
+// Build a fresh RTCPeerConnection and publish a new offer.
+// Called on first start and whenever the viewer reconnects.
+async function publishOffer() {
+  // Tear down any existing PC without touching the camera stream
+  if (pc) {
+    pc.onconnectionstatechange = null;
+    pc.onicecandidate = null;
+    pc.oniceconnectionstatechange = null;
+    pc.onsignalingstatechange = null;
+    pc.onicegatheringstatechange = null;
+    pc.close();
+    pc = null;
+    log('Previous PeerConnection closed', 'dim');
   }
 
-  // Build peer connection
-  log('Creating RTCPeerConnection with ' + ICE_SERVERS.length + ' STUN server(s)…');
+  gotAnswer = false;
+  iceIndex  = 0;
+
+  log('Creating RTCPeerConnection…');
   pc = new RTCPeerConnection({ iceServers: ICE_SERVERS });
 
   localStream.getTracks().forEach(t => {
     pc.addTrack(t, localStream);
-    log('Track added to PC: ' + t.kind + ' — ' + t.label, 'ok');
+    log('Track added: ' + t.kind, 'dim');
   });
 
   pc.onicecandidate = async ({ candidate }) => {
-    if (!candidate) {
-      log('ICE gathering complete (null candidate)', 'dim');
-      return;
-    }
+    if (!candidate) { log('ICE gathering complete', 'dim'); return; }
     const info = iceInfo(candidate.candidate);
-    log('Local ICE candidate: ' + info.label, info.cls);
+    log('Local ICE: ' + info.label, info.cls);
     try {
       await signal('add_ice', {
         candidate: candidate.candidate,
         sdpMid: candidate.sdpMid,
         sdpMLineIndex: candidate.sdpMLineIndex,
         from: 'host',
+        session_id: sessionId,
       });
-    } catch(e) {
-      log('Failed to publish ICE candidate: ' + e.message, 'err');
-    }
+    } catch(e) { log('Failed to publish ICE: ' + e.message, 'err'); }
   };
 
-  pc.onicegatheringstatechange = () => {
-    log('ICE gathering state → ' + pc.iceGatheringState,
-        pc.iceGatheringState === 'complete' ? 'ok' : 'dim');
-  };
+  pc.onicegatheringstatechange = () =>
+    log('ICE gathering → ' + pc.iceGatheringState, pc.iceGatheringState === 'complete' ? 'ok' : 'dim');
 
   pc.oniceconnectionstatechange = () => {
-    log('ICE connection state → ' + pc.iceConnectionState,
-        pc.iceConnectionState === 'connected' || pc.iceConnectionState === 'completed' ? 'ok' :
-        pc.iceConnectionState === 'failed' ? 'err' : 'dim');
+    const s = pc.iceConnectionState;
+    log('ICE connection → ' + s, s === 'connected' || s === 'completed' ? 'ok' : s === 'failed' ? 'err' : 'dim');
   };
 
-  pc.onsignalingstatechange = () => {
-    log('Signaling state → ' + pc.signalingState, 'dim');
-  };
+  pc.onsignalingstatechange = () =>
+    log('Signaling → ' + pc.signalingState, 'dim');
 
   pc.onconnectionstatechange = () => {
     const s = pc.connectionState;
-    log('Connection state → ' + s, s === 'connected' ? 'ok' : s === 'failed' ? 'err' : 'dim');
+    log('Connection → ' + s, s === 'connected' ? 'ok' : s === 'failed' ? 'err' : 'dim');
     if (s === 'connected') {
       setStatus('streaming', 'Streaming — viewer connected');
       document.getElementById('conn-badge').textContent = '1 viewer';
       document.getElementById('conn-badge').style.color = 'var(--accent)';
     } else if (s === 'disconnected' || s === 'failed') {
-      setStatus('connecting', 'Viewer disconnected — waiting…');
+      setStatus('connecting', 'Viewer disconnected — waiting for reconnect…');
       document.getElementById('conn-badge').textContent = 'no viewers';
       document.getElementById('conn-badge').style.color = '';
+      // Re-publish offer so viewer can reconnect without refreshing
+      log('Viewer lost — re-publishing offer for reconnect', 'warn');
+      publishOffer();
     }
   };
 
-  // Create offer
+  // Create and publish offer
   log('Creating SDP offer…');
-  setStatus('connecting', 'Creating offer…');
+  setStatus('connecting', 'Publishing offer…');
   try {
     const offer = await pc.createOffer({ offerToReceiveVideo: false, offerToReceiveAudio: false });
-    log('Offer created (' + offer.sdp.split('\n').length + ' SDP lines)', 'ok');
     await pc.setLocalDescription(offer);
-    log('Local description set', 'ok');
-    await signal('publish_offer', { sdp: offer.sdp, type: offer.type });
-    log('Offer published to signal server', 'ok');
+    const res = await signal('publish_offer', { sdp: offer.sdp, type: offer.type });
+    sessionId = res.session_id;
+    log('Offer published (session ' + sessionId + ')', 'ok');
+    setStatus('connecting', 'Offer ready — waiting for viewer…');
   } catch(e) {
-    log('Offer creation failed: ' + e.name + ': ' + e.message, 'err');
+    log('Offer failed: ' + e.name + ': ' + e.message, 'err');
     setStatus('error', 'Offer failed');
-    cleanup();
-    return;
+    stopHost();
   }
-
-  hosting = true;
-  gotAnswer = false;
-  iceIndex = 0;
-  document.getElementById('host-btn').textContent = 'Stop Streaming';
-  document.getElementById('host-btn').classList.add('active');
-  document.getElementById('hud').classList.add('visible');
-  setStatus('connecting', 'Offer published — waiting for viewer…');
-
-  log('Polling for answer every ' + POLL_MS + 'ms…', 'dim');
-  pollTimer = setInterval(pollSignal, POLL_MS);
 }
 
 async function pollSignal() {
-  if (!hosting) return;
+  if (!hosting || !pc || !sessionId) return;
 
+  // Wait for answer if we don't have one yet
   if (!gotAnswer) {
     try {
-      const res = await signal('get_answer');
+      const res = await signal('get_answer', { known_session: sessionId });
       if (res.ok && res.answer) {
-        log('Answer received! type=' + res.answer.type + ', ' + res.answer.sdp.split('\n').length + ' SDP lines', 'ok');
+        log('Answer received (' + res.answer.sdp.split('\n').length + ' SDP lines)', 'ok');
         try {
           await pc.setRemoteDescription(new RTCSessionDescription(res.answer));
           log('Remote description set — ICE negotiation begins', 'ok');
           gotAnswer = true;
-          setStatus('connecting', 'Answer set — waiting for ICE…');
+          setStatus('connecting', 'Answer set — connecting…');
         } catch(e) {
           log('setRemoteDescription failed: ' + e.name + ': ' + e.message, 'err');
         }
       }
-    } catch(e) {
-      // signal() already logged — skip
-    }
+    } catch(e) { /* logged by signal() */ }
   }
 
-  // Poll for viewer ICE candidates
+  // Poll for viewer ICE candidates for this session
   try {
-    const res = await signal('get_ice', { since: iceIndex, from: 'host' });
+    const res = await signal('get_ice', { since: iceIndex, from: 'host', session_id: sessionId });
     if (res.ok && res.candidates && res.candidates.length) {
       log('Got ' + res.candidates.length + ' viewer ICE candidate(s)', 'ok');
       for (const c of res.candidates) {
@@ -471,21 +468,21 @@ async function pollSignal() {
         try {
           await pc.addIceCandidate(new RTCIceCandidate(c));
           iceIndex = c.id + 1;
-        } catch(e) {
-          log('addIceCandidate failed: ' + e.message, 'err');
-        }
+        } catch(e) { log('addIceCandidate failed: ' + e.message, 'err'); }
       }
     }
-  } catch(e) {
-    // already logged
-  }
+  } catch(e) { /* logged */ }
 }
 
 function stopHost() {
   log('=== Stopping host ===');
-  hosting = false; gotAnswer = false;
+  hosting = false; gotAnswer = false; sessionId = null;
   if (pollTimer) { clearInterval(pollTimer); pollTimer = null; }
-  cleanup();
+  if (pc) {
+    pc.onconnectionstatechange = null; // prevent re-publish on teardown
+    pc.close(); pc = null;
+  }
+  stopStream();
   document.getElementById('host-btn').textContent = 'Start Streaming';
   document.getElementById('host-btn').classList.remove('active');
   document.getElementById('hud').classList.remove('visible');

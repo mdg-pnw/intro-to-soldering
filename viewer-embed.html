@@ -31,7 +31,7 @@
 
   .overlay {
     position: absolute;
-    inset: 30px;
+    inset: 0;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -120,12 +120,12 @@ const ICE_SERVERS = [
 const POLL_MS = 1500;
 
 let pc = null, pollTimer = null, iceIndex = 0;
-let active = false, offerReceived = false;
+let active = false, sessionId = null;
 
-const btn      = document.getElementById('btn');
-const overlay  = document.getElementById('overlay');
-const feed     = document.getElementById('feed');
-const msg      = document.getElementById('msg');
+const btn       = document.getElementById('btn');
+const overlay   = document.getElementById('overlay');
+const feed      = document.getElementById('feed');
+const msg       = document.getElementById('msg');
 const liveBadge = document.getElementById('live');
 
 function setMsg(text) {
@@ -146,66 +146,79 @@ function toggle() {
   if (active) stop(); else start();
 }
 
-async function start() {
+function start() {
   active = true;
-  offerReceived = false;
-  iceIndex = 0;
-  btn.textContent = 'Waiting for host…';
-  btn.className = 'connect-btn waiting';
-  btn.onclick = null; // disable while waiting
-  setMsg('Connecting to signal server…');
-
-  pollTimer = setInterval(tryConnect, POLL_MS);
-  tryConnect();
+  sessionId = null;
+  btn.textContent = 'Disconnect';
+  btn.className = 'connect-btn disconnect';
+  btn.onclick = toggle;
+  setMsg('Waiting for host…');
+  pollTimer = setInterval(mainPoll, POLL_MS);
+  mainPoll();
 }
 
-async function tryConnect() {
-  if (offerReceived) return;
-  let offerData;
+async function mainPoll() {
+  let offerRes;
   try {
-    const res = await signal('get_offer');
-    if (!res.ok) { setMsg('Waiting for host to start streaming…'); return; }
-    offerData = res.offer;
-  } catch(e) {
-    setMsg('Cannot reach signal server.');
-    stop(); return;
+    offerRes = await signal('get_offer', { known_session: sessionId ?? -1 });
+  } catch(e) { setMsg('Cannot reach signal server.'); return; }
+
+  if (!offerRes.ok) { setMsg('Waiting for host to start streaming…'); return; }
+
+  const newSessionId = offerRes.session_id;
+
+  // Host restarted — tear down and renegotiate
+  if (sessionId !== null && newSessionId !== sessionId) {
+    teardownPc();
+    setMsg('Host restarted — reconnecting…');
   }
 
-  offerReceived = true;
-  clearInterval(pollTimer); pollTimer = null;
-  setMsg('Host found — connecting…');
+  // Already negotiated this session
+  if (sessionId === newSessionId && pc) {
+    if (pc.connectionState !== 'connected' && pc.connectionState !== 'completed') {
+      await pollIce(newSessionId);
+    }
+    return;
+  }
 
+  sessionId = newSessionId;
+  setMsg('Host found — connecting…');
+  await negotiate(offerRes.offer);
+}
+
+async function negotiate(offerData) {
+  teardownPc();
   pc = new RTCPeerConnection({ iceServers: ICE_SERVERS });
 
   pc.ontrack = (evt) => {
     feed.srcObject = evt.streams[0];
     feed.style.display = 'block';
-    overlay.style.display = 'none';
+    overlay.style.background = 'transparent';
+    overlay.style.pointerEvents = 'none';
+    btn.style.pointerEvents = 'auto';
     liveBadge.classList.add('visible');
+    setMsg('');
   };
 
   pc.onicecandidate = async ({ candidate }) => {
     if (!candidate) return;
     try { await signal('add_ice', { candidate: candidate.candidate,
-      sdpMid: candidate.sdpMid, sdpMLineIndex: candidate.sdpMLineIndex, from: 'viewer' }); }
+      sdpMid: candidate.sdpMid, sdpMLineIndex: candidate.sdpMLineIndex,
+      from: 'viewer', session_id: sessionId }); }
     catch(e) {}
   };
 
   pc.onconnectionstatechange = () => {
     const s = pc.connectionState;
-    if (s === 'connected') {
-      // Swap overlay button to a disconnect affordance overlaid on the video
-      btn.textContent = 'Disconnect';
-      btn.className = 'connect-btn disconnect';
-      btn.onclick = toggle;
-      overlay.style.background = 'transparent';
-      overlay.style.pointerEvents = 'none';
-      btn.style.pointerEvents = 'auto';
-      setMsg('');
-      if (pollTimer) { clearInterval(pollTimer); pollTimer = null; }
-    } else if (s === 'failed' || s === 'disconnected') {
-      setMsg(s === 'failed' ? 'Connection failed.' : 'Host disconnected.');
-      showReconnect();
+    if (s === 'failed' || s === 'disconnected') {
+      // Don't stop — keep polling so we catch the host restarting
+      feed.style.display = 'none';
+      feed.srcObject = null;
+      overlay.style.background = '';
+      overlay.style.pointerEvents = '';
+      btn.style.pointerEvents = '';
+      liveBadge.classList.remove('visible');
+      setMsg(s === 'failed' ? 'Connection failed — waiting for host…' : 'Host disconnected — waiting for reconnect…');
     }
   };
 
@@ -213,48 +226,42 @@ async function tryConnect() {
     await pc.setRemoteDescription(new RTCSessionDescription(offerData));
     const answer = await pc.createAnswer();
     await pc.setLocalDescription(answer);
-    await signal('publish_answer', { sdp: answer.sdp, type: answer.type });
+    await signal('publish_answer', { sdp: answer.sdp, type: answer.type, session_id: sessionId });
   } catch(e) {
-    setMsg('WebRTC negotiation failed.'); stop(); return;
+    setMsg('WebRTC negotiation failed.');
+    teardownPc();
+    sessionId = null;
   }
 
   iceIndex = 0;
-  pollTimer = setInterval(pollIce, POLL_MS);
 }
 
-async function pollIce() {
+async function pollIce(sid) {
   try {
-    const res = await signal('get_ice', { since: iceIndex, from: 'viewer' });
+    const res = await signal('get_ice', { since: iceIndex, from: 'viewer', session_id: sid });
     if (res.ok && res.candidates && res.candidates.length) {
       for (const c of res.candidates) {
         try { await pc.addIceCandidate(new RTCIceCandidate(c)); iceIndex = c.id + 1; } catch(e) {}
       }
     }
-    if (pc && (pc.connectionState === 'connected' || pc.connectionState === 'completed')) {
-      clearInterval(pollTimer); pollTimer = null;
-    }
   } catch(e) {}
 }
 
-function showReconnect() {
-  feed.style.display = 'none';
-  feed.srcObject = null;
-  liveBadge.classList.remove('visible');
-  overlay.style.display = 'flex';
-  overlay.style.background = '';
-  overlay.style.pointerEvents = '';
-  btn.style.pointerEvents = '';
-  btn.textContent = 'Reconnect';
-  btn.className = 'connect-btn';
-  btn.onclick = toggle;
-  active = false;
-  offerReceived = false;
+function teardownPc() {
+  if (pc) {
+    pc.onconnectionstatechange = null;
+    pc.onicecandidate = null;
+    pc.ontrack = null;
+    pc.close();
+    pc = null;
+  }
+  iceIndex = 0;
 }
 
 function stop() {
-  active = false; offerReceived = false;
+  active = false; sessionId = null;
   if (pollTimer) { clearInterval(pollTimer); pollTimer = null; }
-  if (pc) { pc.close(); pc = null; }
+  teardownPc();
   feed.srcObject = null; feed.style.display = 'none';
   liveBadge.classList.remove('visible');
   overlay.style.display = 'flex';
