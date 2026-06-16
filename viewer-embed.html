@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Camera</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: #090b0e;
+    width: 100%; height: 100%;
+    display: flex; flex-direction: column;
+    font-family: 'JetBrains Mono', 'Fira Code', monospace;
+  }
+
+  .viewer {
+    position: relative;
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #090b0e;
+  }
+
+  video {
+    width: 100%; height: 100%;
+    object-fit: contain;
+    display: none;
+  }
+
+  .overlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+  }
+
+  .connect-btn {
+    background: rgba(0,229,160,0.12);
+    border: 1px solid #00e5a0;
+    border-radius: 8px;
+    color: #00e5a0;
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    padding: 9px 24px;
+    cursor: pointer;
+    text-transform: uppercase;
+    transition: background 0.15s;
+  }
+  .connect-btn:hover { background: rgba(0,229,160,0.22); }
+  .connect-btn.waiting {
+    border-color: #f5a623; color: #f5a623;
+    background: rgba(245,166,35,0.12);
+    cursor: default;
+  }
+  .connect-btn.disconnect {
+    border-color: #ff5c5c; color: #ff5c5c;
+    background: rgba(255,92,92,0.12);
+  }
+  .connect-btn.disconnect:hover { background: rgba(255,92,92,0.22); }
+
+  .status-msg {
+    font-size: 10px;
+    color: #7a8494;
+    letter-spacing: 0.04em;
+    display: none;
+  }
+
+  /* Live badge — shown over video once connected */
+  .live-badge {
+    position: absolute;
+    top: 10px; left: 10px;
+    font-size: 10px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 4px 8px;
+    border-radius: 4px;
+    background: rgba(0,229,160,0.2);
+    border: 1px solid rgba(0,229,160,0.4);
+    color: #00e5a0;
+    display: none;
+    align-items: center;
+    gap: 5px;
+    backdrop-filter: blur(6px);
+  }
+  .live-badge.visible { display: flex; }
+  .dot { width: 6px; height: 6px; border-radius: 50%;
+    background: #00e5a0; animation: pulse 1.2s ease-in-out infinite; }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.25} }
+</style>
+</head>
+<body>
+
+<div class="viewer">
+  <video id="feed" autoplay playsinline></video>
+
+  <div class="overlay" id="overlay">
+    <button class="connect-btn" id="btn" onclick="toggle()">Connect Camera</button>
+    <span class="status-msg" id="msg"></span>
+  </div>
+
+  <div class="live-badge" id="live"><div class="dot"></div> LIVE</div>
+</div>
+
+<script>
+// ── CONFIG — edit this line ────────────────────────────────────────────────
+const SIGNAL_URL = '%%SIGNAL_URL%%';
+// ─────────────────────────────────────────────────────────────────────────
+
+const ICE_SERVERS = [
+  { urls: 'stun:stun.l.google.com:19302' },
+  { urls: 'stun:stun1.l.google.com:19302' },
+];
+const POLL_MS = 1500;
+
+let pc = null, pollTimer = null, iceIndex = 0;
+let active = false, offerReceived = false;
+
+const btn      = document.getElementById('btn');
+const overlay  = document.getElementById('overlay');
+const feed     = document.getElementById('feed');
+const msg      = document.getElementById('msg');
+const liveBadge = document.getElementById('live');
+
+function setMsg(text) {
+  msg.style.display = text ? 'block' : 'none';
+  msg.textContent = text;
+}
+
+async function signal(action, body = {}) {
+  const r = await fetch(SIGNAL_URL + '?action=' + action, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(body),
+  });
+  return r.json();
+}
+
+function toggle() {
+  if (active) stop(); else start();
+}
+
+async function start() {
+  active = true;
+  offerReceived = false;
+  iceIndex = 0;
+  btn.textContent = 'Waiting for host…';
+  btn.className = 'connect-btn waiting';
+  btn.onclick = null; // disable while waiting
+  setMsg('Connecting to signal server…');
+
+  pollTimer = setInterval(tryConnect, POLL_MS);
+  tryConnect();
+}
+
+async function tryConnect() {
+  if (offerReceived) return;
+  let offerData;
+  try {
+    const res = await signal('get_offer');
+    if (!res.ok) { setMsg('Waiting for host to start streaming…'); return; }
+    offerData = res.offer;
+  } catch(e) {
+    setMsg('Cannot reach signal server.');
+    stop(); return;
+  }
+
+  offerReceived = true;
+  clearInterval(pollTimer); pollTimer = null;
+  setMsg('Host found — connecting…');
+
+  pc = new RTCPeerConnection({ iceServers: ICE_SERVERS });
+
+  pc.ontrack = (evt) => {
+    feed.srcObject = evt.streams[0];
+    feed.style.display = 'block';
+    overlay.style.display = 'none';
+    liveBadge.classList.add('visible');
+  };
+
+  pc.onicecandidate = async ({ candidate }) => {
+    if (!candidate) return;
+    try { await signal('add_ice', { candidate: candidate.candidate,
+      sdpMid: candidate.sdpMid, sdpMLineIndex: candidate.sdpMLineIndex, from: 'viewer' }); }
+    catch(e) {}
+  };
+
+  pc.onconnectionstatechange = () => {
+    const s = pc.connectionState;
+    if (s === 'connected') {
+      // Swap overlay button to a disconnect affordance overlaid on the video
+      btn.textContent = 'Disconnect';
+      btn.className = 'connect-btn disconnect';
+      btn.onclick = toggle;
+      overlay.style.background = 'transparent';
+      overlay.style.pointerEvents = 'none';
+      btn.style.pointerEvents = 'auto';
+      setMsg('');
+      if (pollTimer) { clearInterval(pollTimer); pollTimer = null; }
+    } else if (s === 'failed' || s === 'disconnected') {
+      setMsg(s === 'failed' ? 'Connection failed.' : 'Host disconnected.');
+      showReconnect();
+    }
+  };
+
+  try {
+    await pc.setRemoteDescription(new RTCSessionDescription(offerData));
+    const answer = await pc.createAnswer();
+    await pc.setLocalDescription(answer);
+    await signal('publish_answer', { sdp: answer.sdp, type: answer.type });
+  } catch(e) {
+    setMsg('WebRTC negotiation failed.'); stop(); return;
+  }
+
+  iceIndex = 0;
+  pollTimer = setInterval(pollIce, POLL_MS);
+}
+
+async function pollIce() {
+  try {
+    const res = await signal('get_ice', { since: iceIndex, from: 'viewer' });
+    if (res.ok && res.candidates && res.candidates.length) {
+      for (const c of res.candidates) {
+        try { await pc.addIceCandidate(new RTCIceCandidate(c)); iceIndex = c.id + 1; } catch(e) {}
+      }
+    }
+    if (pc && (pc.connectionState === 'connected' || pc.connectionState === 'completed')) {
+      clearInterval(pollTimer); pollTimer = null;
+    }
+  } catch(e) {}
+}
+
+function showReconnect() {
+  feed.style.display = 'none';
+  feed.srcObject = null;
+  liveBadge.classList.remove('visible');
+  overlay.style.display = 'flex';
+  overlay.style.background = '';
+  overlay.style.pointerEvents = '';
+  btn.style.pointerEvents = '';
+  btn.textContent = 'Reconnect';
+  btn.className = 'connect-btn';
+  btn.onclick = toggle;
+  active = false;
+  offerReceived = false;
+}
+
+function stop() {
+  active = false; offerReceived = false;
+  if (pollTimer) { clearInterval(pollTimer); pollTimer = null; }
+  if (pc) { pc.close(); pc = null; }
+  feed.srcObject = null; feed.style.display = 'none';
+  liveBadge.classList.remove('visible');
+  overlay.style.display = 'flex';
+  overlay.style.background = '';
+  overlay.style.pointerEvents = '';
+  btn.style.pointerEvents = '';
+  btn.textContent = 'Connect Camera';
+  btn.className = 'connect-btn';
+  btn.onclick = toggle;
+  setMsg('');
+}
+</script>
+</body>
+</html>
