@@ -6,228 +6,97 @@
 <title>WS Camera — Host</title>
 <style>
   :root {
-    --bg: #0d0f12;
-    --surface: #161a20;
-    --surface2: #1e242d;
-    --border: rgba(255,255,255,0.08);
-    --accent: #00e5a0;
-    --accent-dim: rgba(0,229,160,0.12);
-    --accent-glow: rgba(0,229,160,0.25);
-    --text: #eef0f3;
-    --text-muted: #7a8494;
-    --danger: #ff5c5c;
-    --danger-dim: rgba(255,92,92,0.12);
-    --warn: #f5a623;
-    --warn-dim: rgba(245,166,35,0.12);
-    --radius: 8px;
-    --font: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', monospace;
+    --bg: #0d0f12; --surface: #161a20; --surface2: #1e242d;
+    --border: rgba(255,255,255,0.08); --border-hover: rgba(255,255,255,0.18);
+    --accent: #00e5a0; --accent-dim: rgba(0,229,160,0.12);
+    --text: #eef0f3; --text-muted: #7a8494;
+    --danger: #ff5c5c; --danger-dim: rgba(255,92,92,0.12);
+    --warn: #f5a623; --warn-dim: rgba(245,166,35,0.12);
+    --radius: 8px; --font: 'JetBrains Mono','Fira Code','Cascadia Code',monospace;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
-  body {
-    background: var(--bg);
-    color: var(--text);
-    font-family: var(--font);
-    font-size: 13px;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 1.5rem 1rem;
-    gap: 12px;
-  }
-  header {
-    width: 100%;
-    max-width: 600px;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-  }
-  .logo {
-    width: 32px; height: 32px;
-    border-radius: 8px;
-    background: var(--warn-dim);
-    border: 1px solid var(--warn);
-    display: flex; align-items: center; justify-content: center;
-    flex-shrink: 0;
-  }
+  body { background: var(--bg); color: var(--text); font-family: var(--font); font-size: 13px;
+    min-height: 100vh; display: flex; flex-direction: column; align-items: center;
+    padding: 1.5rem 1rem; gap: 12px; }
+  header { width: 100%; max-width: 640px; display: flex; align-items: center; gap: 12px; }
+  .logo { width: 32px; height: 32px; border-radius: 8px; background: var(--warn-dim);
+    border: 1px solid var(--warn); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
   .logo svg { width: 18px; height: 18px; stroke: var(--warn); fill: none; stroke-width: 1.8; }
   h1 { font-size: 15px; font-weight: 600; letter-spacing: 0.04em; }
   .tagline { font-size: 11px; color: var(--text-muted); margin-left: auto; }
-
-  .card {
-    width: 100%;
-    max-width: 600px;
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    overflow: hidden;
-  }
-
-  .section {
-    padding: 14px 16px;
-    border-bottom: 1px solid var(--border);
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-  }
+  .card { width: 100%; max-width: 640px; background: var(--surface);
+    border: 1px solid var(--border); border-radius: 12px; overflow: hidden; }
+  .section { padding: 14px 16px; border-bottom: 1px solid var(--border);
+    display: flex; flex-direction: column; gap: 10px; }
   .section:last-child { border-bottom: none; }
-
   .row { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
-
   .field { display: flex; flex-direction: column; gap: 4px; flex: 1; min-width: 120px; }
   .field label { font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-muted); }
-  input, select {
-    background: var(--bg);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    color: var(--text);
-    font-family: var(--font);
-    font-size: 13px;
-    padding: 8px 10px;
-    outline: none;
-    transition: border-color 0.15s;
-    width: 100%;
-  }
+  input, select { background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius);
+    color: var(--text); font-family: var(--font); font-size: 13px; padding: 8px 10px;
+    outline: none; transition: border-color 0.15s; width: 100%; }
   input:focus, select:focus { border-color: var(--warn); }
-
-  .btn {
-    border-radius: var(--radius);
-    font-family: var(--font);
-    font-size: 12px;
-    font-weight: 600;
-    letter-spacing: 0.06em;
-    padding: 9px 20px;
-    cursor: pointer;
-    transition: all 0.15s;
-    white-space: nowrap;
-    border: 1px solid;
-    text-transform: uppercase;
-  }
-  .btn-host {
-    background: var(--warn-dim);
-    border-color: var(--warn);
-    color: var(--warn);
-    width: 100%;
-  }
+  .btn { border-radius: var(--radius); font-family: var(--font); font-size: 12px; font-weight: 600;
+    letter-spacing: 0.06em; padding: 9px 20px; cursor: pointer; transition: all 0.15s;
+    white-space: nowrap; border: 1px solid; text-transform: uppercase; }
+  .btn-host { background: var(--warn-dim); border-color: var(--warn); color: var(--warn); width: 100%; }
   .btn-host:hover { background: rgba(245,166,35,0.22); }
-  .btn-host.active {
-    background: var(--danger-dim);
-    border-color: var(--danger);
-    color: var(--danger);
-  }
-  .btn-sm {
-    font-size: 10px;
-    padding: 5px 10px;
-    background: transparent;
-    border-color: var(--border);
-    color: var(--text-muted);
-  }
+  .btn-host.active { background: var(--danger-dim); border-color: var(--danger); color: var(--danger); }
+  .btn-sm { font-size: 10px; padding: 5px 10px; background: transparent;
+    border-color: var(--border); color: var(--text-muted); }
   .btn-sm:hover { border-color: var(--warn); color: var(--warn); }
-
-  /* Preview */
-  .preview-wrap {
-    position: relative;
-    background: #090b0e;
-    aspect-ratio: 16/9;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    overflow: hidden;
-  }
-  #preview {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: none;
-    transform: scaleX(-1); /* mirror for selfie cam */
-  }
+  .preview-wrap { position: relative; background: #090b0e; aspect-ratio: 16/9;
+    display: flex; align-items: center; justify-content: center; overflow: hidden; }
+  #preview { width: 100%; height: 100%; object-fit: cover; display: none; transform: scaleX(-1); }
   #preview.no-mirror { transform: none; }
-  .placeholder {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 12px;
-    color: var(--text-muted);
-    text-align: center;
-    padding: 20px;
-  }
+  .placeholder { display: flex; flex-direction: column; align-items: center; gap: 12px;
+    color: var(--text-muted); text-align: center; padding: 20px; }
   .placeholder svg { width: 40px; height: 40px; stroke: currentColor; fill: none; stroke-width: 1.2; opacity: 0.4; }
   .placeholder p { font-size: 11px; opacity: 0.6; line-height: 1.6; }
-
-  .hud {
-    position: absolute;
-    top: 10px; left: 10px; right: 10px;
-    display: flex;
-    justify-content: space-between;
-    pointer-events: none;
-    opacity: 0;
-    transition: opacity 0.2s;
-  }
+  .hud { position: absolute; top: 10px; left: 10px; right: 10px;
+    display: flex; justify-content: space-between; pointer-events: none; opacity: 0; transition: opacity 0.2s; }
   .hud.visible { opacity: 1; }
-  .badge {
-    font-size: 10px;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    padding: 4px 8px;
-    border-radius: 4px;
-    backdrop-filter: blur(8px);
-    display: flex;
-    align-items: center;
-    gap: 5px;
-  }
+  .badge { font-size: 10px; letter-spacing: 0.06em; text-transform: uppercase;
+    padding: 4px 8px; border-radius: 4px; backdrop-filter: blur(8px);
+    display: flex; align-items: center; gap: 5px; }
   .badge.on-air { background: rgba(245,166,35,0.25); border: 1px solid rgba(245,166,35,0.5); color: var(--warn); }
-  .badge.conn   { background: rgba(0,0,0,0.55); border: 1px solid rgba(255,255,255,0.12); color: var(--text-muted); }
+  .badge.conn { background: rgba(0,0,0,0.55); border: 1px solid rgba(255,255,255,0.12); color: var(--text-muted); }
   .dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; animation: pulse 1.2s ease-in-out infinite; }
   @keyframes pulse { 0%,100%{opacity:1}50%{opacity:0.25} }
+  .camera-flip-btn { position: absolute; bottom: 10px; right: 10px;
+    background: rgba(0,0,0,0.55); border: 1px solid rgba(255,255,255,0.15); border-radius: 6px;
+    color: var(--text-muted); font-family: var(--font); font-size: 10px; letter-spacing: 0.05em;
+    padding: 5px 10px; cursor: pointer; text-transform: uppercase; display: none; }
+  .camera-flip-btn.visible { display: block; }
 
-  /* Log */
-  .log {
-    font-size: 10px;
-    color: var(--text-muted);
-    line-height: 1.7;
-    letter-spacing: 0.02em;
-    max-height: 90px;
-    overflow-y: auto;
-    background: var(--bg);
-    border-radius: var(--radius);
-    padding: 8px 10px;
-    border: 1px solid var(--border);
-  }
+  /* ── Diagnostic log ── */
+  .log-header { display: flex; align-items: center; justify-content: space-between;
+    font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-muted); }
+  .log-clear { font-size: 10px; padding: 2px 8px; background: transparent;
+    border: 1px solid var(--border); border-radius: 4px; color: var(--text-muted);
+    font-family: var(--font); cursor: pointer; text-transform: uppercase; letter-spacing: 0.05em; }
+  .log-clear:hover { border-color: var(--danger); color: var(--danger); }
+  .log { font-size: 10.5px; color: var(--text-muted); line-height: 1.75;
+    letter-spacing: 0.01em; height: 200px; overflow-y: auto;
+    background: var(--bg); border-radius: var(--radius);
+    padding: 10px 12px; border: 1px solid var(--border); font-family: var(--font); }
+  .log .ts { color: #3a4250; margin-right: 6px; user-select: none; }
   .log .ok   { color: var(--accent); }
   .log .warn { color: var(--warn); }
   .log .err  { color: var(--danger); }
+  .log .dim  { color: #4a5568; }
+  .log .ice-host  { color: #60a5fa; }
+  .log .ice-srflx { color: #a78bfa; }
+  .log .ice-relay { color: #f472b6; }
 
-  /* Status */
-  .status-bar {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 10px 16px;
-    background: var(--surface2);
-  }
-  .sdot { width: 7px; height: 7px; border-radius: 50%; background: var(--text-muted); flex-shrink: 0; transition: background 0.3s; }
+  .status-bar { display: flex; align-items: center; gap: 10px; padding: 10px 16px; background: var(--surface2); }
+  .sdot { width: 7px; height: 7px; border-radius: 50%; background: var(--text-muted);
+    flex-shrink: 0; transition: background 0.3s; }
   .sdot.connecting { background: var(--warn); animation: pulse 0.8s infinite; }
   .sdot.connected  { background: var(--accent); }
   .sdot.streaming  { background: var(--warn); }
   .sdot.error      { background: var(--danger); }
   #status-text { font-size: 11px; color: var(--text-muted); flex: 1; }
-
-  .camera-flip-btn {
-    position: absolute;
-    bottom: 10px; right: 10px;
-    background: rgba(0,0,0,0.55);
-    border: 1px solid rgba(255,255,255,0.15);
-    border-radius: 6px;
-    color: var(--text-muted);
-    font-family: var(--font);
-    font-size: 10px;
-    letter-spacing: 0.05em;
-    padding: 5px 10px;
-    cursor: pointer;
-    text-transform: uppercase;
-    display: none;
-  }
-  .camera-flip-btn.visible { display: block; }
 </style>
 </head>
 <body>
@@ -241,8 +110,6 @@
 </header>
 
 <div class="card">
-
-  <!-- Signal server config -->
   <div class="section">
     <div class="row">
       <div class="field">
@@ -266,7 +133,6 @@
     </div>
   </div>
 
-  <!-- Preview -->
   <div class="preview-wrap">
     <div class="placeholder" id="placeholder">
       <svg viewBox="0 0 24 24"><path d="M23 7l-7 5 7 5V7z"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg>
@@ -280,67 +146,100 @@
     <button class="camera-flip-btn" id="flip-btn" onclick="flipCamera()">⟳ flip</button>
   </div>
 
-  <!-- Controls -->
   <div class="section">
     <button class="btn btn-host" id="host-btn" onclick="toggleHost()">Start Streaming</button>
-    <div class="log" id="log"><span class="warn">Ready — enter the signal server URL to begin.</span></div>
+    <div class="log-header">
+      <span>Diagnostic log</span>
+      <button class="log-clear" onclick="clearLog()">Clear</button>
+    </div>
+    <div class="log" id="log"></div>
   </div>
 
   <div class="status-bar">
     <div class="sdot" id="sdot"></div>
-    <span id="status-text">Idle</span>
+    <span id="status-text">Idle — enter signal URL and tap Start</span>
   </div>
-
 </div>
 
 <script>
-// ── Config ────────────────────────────────────────────
-const POLL_INTERVAL_MS  = 1500;  // how often to check for an answer / ICE
+const POLL_MS   = 1500;
 const ICE_SERVERS = [
   { urls: 'stun:stun.l.google.com:19302' },
   { urls: 'stun:stun1.l.google.com:19302' },
 ];
 
-// ── State ─────────────────────────────────────────────
-let pc          = null;
-let localStream = null;
-let pollTimer   = null;
-let iceIndex    = 0;
-let hosting     = false;
-let facingMode  = 'environment'; // start with back camera on phones
+let pc = null, localStream = null, pollTimer = null;
+let iceIndex = 0, hosting = false, gotAnswer = false;
+let facingMode = 'environment';
 
-// ── Helpers ───────────────────────────────────────────
-function signalUrl() {
-  return document.getElementById('signal-url').value.trim();
+// ── Logging ────────────────────────────────────────────────────────────────
+function ts() {
+  const d = new Date();
+  return d.toTimeString().slice(0,8) + '.' + String(d.getMilliseconds()).padStart(3,'0');
 }
-
-function log(msg, cls = '') {
+function log(msg, cls='') {
   const el = document.getElementById('log');
-  const line = document.createElement('div');
-  if (cls) line.className = cls;
-  line.textContent = msg;
-  el.appendChild(line);
+  const row = document.createElement('div');
+  const stamp = document.createElement('span');
+  stamp.className = 'ts'; stamp.textContent = ts();
+  row.appendChild(stamp);
+  if (cls) row.classList.add(cls);
+  row.appendChild(document.createTextNode(msg));
+  el.appendChild(row);
   el.scrollTop = el.scrollHeight;
+}
+function clearLog() { document.getElementById('log').innerHTML = ''; }
+
+// Classify an ICE candidate string and return a css class + label
+function iceInfo(candidateStr) {
+  if (!candidateStr) return { cls: 'dim', label: 'null/end-of-candidates' };
+  const parts = candidateStr.split(' ');
+  const type = parts[7]; // 'host', 'srflx', 'relay', 'prflx'
+  const addr = parts[4] || '?';
+  const port = parts[5] || '?';
+  const proto = parts[2] || '?';
+  const cls = type === 'host' ? 'ice-host' : type === 'srflx' ? 'ice-srflx' : type === 'relay' ? 'ice-relay' : 'dim';
+  return { cls, label: `[${type}] ${proto} ${addr}:${port}` };
 }
 
 function setStatus(state, msg) {
-  document.getElementById('sdot').className = 'sdot' + (state ? ' ' + state : '');
+  document.getElementById('sdot').className = 'sdot' + (state ? ' '+state : '');
   document.getElementById('status-text').textContent = msg;
 }
 
-async function signal(action, body = {}) {
-  const url = signalUrl();
-  if (!url) throw new Error('No signal URL set');
-  const params = new URLSearchParams({ action });
-  const r = await fetch(url + '?' + params, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(body),
+// ── Signal server ──────────────────────────────────────────────────────────
+function signalUrl() { return document.getElementById('signal-url').value.trim(); }
+
+async function signal(action, body={}) {
+  const base = signalUrl();
+  if (!base) throw new Error('No signal URL configured');
+  const url = base + '?action=' + encodeURIComponent(action);
+  log('→ POST signal/' + action, 'dim');
+  let r;
+  try {
+    r = await fetch(url, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body),
+    });
+  } catch(e) {
+    log('  fetch error: ' + e.message, 'err');
+    throw e;
+  }
+  if (!r.ok) {
+    const txt = await r.text().catch(() => '(unreadable)');
+    log(`  HTTP ${r.status}: ${txt.slice(0,120)}`, 'err');
+    throw new Error('HTTP ' + r.status);
+  }
+  const data = await r.json().catch(async e => {
+    log('  JSON parse error: ' + e.message, 'err');
+    throw e;
   });
-  return r.json();
+  log('← ' + JSON.stringify(data).slice(0, 160), data.ok === false ? 'err' : 'dim');
+  return data;
 }
 
-// ── Camera list ───────────────────────────────────────
+// ── Camera list ────────────────────────────────────────────────────────────
 async function loadCameras() {
   const sel = document.getElementById('cam-select');
   sel.innerHTML = '<option value="">Default camera</option>';
@@ -351,39 +250,34 @@ async function loadCameras() {
     devs.filter(d => d.kind === 'videoinput').forEach((d, i) => {
       const o = document.createElement('option');
       o.value = d.deviceId;
-      o.textContent = d.label || ('Camera ' + (i + 1));
-      // Pre-select back-facing
+      o.textContent = d.label || ('Camera ' + (i+1));
       if (d.label && /back|rear|environment/i.test(d.label)) o.selected = true;
       sel.appendChild(o);
     });
+    log('Found ' + sel.options.length + ' camera(s)', 'ok');
   } catch(e) {
-    log('Could not enumerate cameras: ' + e.message, 'warn');
+    log('Camera enum failed: ' + e.message, 'warn');
   }
 }
 
 async function flipCamera() {
   if (!hosting || !localStream) return;
   facingMode = facingMode === 'environment' ? 'user' : 'environment';
-  const [w, h] = document.getElementById('res-select').value.split('x').map(Number);
+  const [w,h] = document.getElementById('res-select').value.split('x').map(Number);
   try {
-    const newStream = await navigator.mediaDevices.getUserMedia({
-      video: { facingMode, width: { ideal: w }, height: { ideal: h } }
-    });
-    const newTrack = newStream.getVideoTracks()[0];
+    const ns = await navigator.mediaDevices.getUserMedia({ video: { facingMode, width:{ideal:w}, height:{ideal:h} } });
+    const nt = ns.getVideoTracks()[0];
     const sender = pc.getSenders().find(s => s.track && s.track.kind === 'video');
-    if (sender) await sender.replaceTrack(newTrack);
+    if (sender) await sender.replaceTrack(nt);
     localStream.getVideoTracks().forEach(t => t.stop());
-    localStream = newStream;
-    document.getElementById('preview').srcObject = newStream;
-    // Mirror user-facing camera
+    localStream = ns;
+    document.getElementById('preview').srcObject = ns;
     document.getElementById('preview').classList.toggle('no-mirror', facingMode === 'environment');
     log('Camera flipped to ' + facingMode, 'ok');
-  } catch(e) {
-    log('Flip failed: ' + e.message, 'err');
-  }
+  } catch(e) { log('Flip failed: ' + e.message, 'err'); }
 }
 
-// ── Main host flow ────────────────────────────────────
+// ── Host flow ──────────────────────────────────────────────────────────────
 async function toggleHost() {
   if (hosting) { stopHost(); return; }
   if (!signalUrl()) { log('Enter the signal server URL first.', 'err'); return; }
@@ -391,25 +285,29 @@ async function toggleHost() {
 }
 
 async function startHost() {
-  log('Starting…');
+  log('=== Starting host session ===');
   setStatus('connecting', 'Requesting camera…');
 
-  const [w, h] = document.getElementById('res-select').value.split('x').map(Number);
+  const [w,h] = document.getElementById('res-select').value.split('x').map(Number);
   const deviceId = document.getElementById('cam-select').value;
+  log('Camera deviceId: ' + (deviceId || 'default') + '  res: ' + w + 'x' + h);
 
   const constraints = {
     video: {
-      width: { ideal: w }, height: { ideal: h },
-      facingMode: deviceId ? undefined : facingMode,
-      ...(deviceId ? { deviceId: { exact: deviceId } } : {}),
+      width:{ideal:w}, height:{ideal:h},
+      ...(deviceId ? { deviceId:{exact:deviceId} } : { facingMode }),
     },
     audio: false,
   };
+  log('getUserMedia constraints: ' + JSON.stringify(constraints), 'dim');
 
   try {
     localStream = await navigator.mediaDevices.getUserMedia(constraints);
+    const t = localStream.getVideoTracks()[0];
+    const s = t.getSettings();
+    log('Camera acquired: ' + t.label + ' @ ' + s.width + 'x' + s.height + ' ' + (s.frameRate||'?') + 'fps', 'ok');
   } catch(e) {
-    log('Camera denied: ' + e.message, 'err');
+    log('getUserMedia failed: ' + e.name + ': ' + e.message, 'err');
     setStatus('error', 'Camera access denied');
     return;
   }
@@ -421,37 +319,64 @@ async function startHost() {
   document.getElementById('placeholder').style.display = 'none';
   document.getElementById('flip-btn').classList.add('visible');
 
-  // Reset old session
+  // Reset signal server session
+  log('Resetting signal server session…');
   try {
     await signal('reset');
-    log('Session reset', 'ok');
+    log('Signal server reset OK', 'ok');
   } catch(e) {
-    log('Could not reach signal server: ' + e.message, 'err');
-    setStatus('error', 'Signal server unreachable');
+    log('Signal server unreachable — aborting.', 'err');
+    setStatus('error', 'Cannot reach signal server');
     stopStream();
     return;
   }
 
-  // Build RTCPeerConnection
+  // Build peer connection
+  log('Creating RTCPeerConnection with ' + ICE_SERVERS.length + ' STUN server(s)…');
   pc = new RTCPeerConnection({ iceServers: ICE_SERVERS });
 
-  localStream.getTracks().forEach(t => pc.addTrack(t, localStream));
+  localStream.getTracks().forEach(t => {
+    pc.addTrack(t, localStream);
+    log('Track added to PC: ' + t.kind + ' — ' + t.label, 'ok');
+  });
 
   pc.onicecandidate = async ({ candidate }) => {
-    if (!candidate) return;
+    if (!candidate) {
+      log('ICE gathering complete (null candidate)', 'dim');
+      return;
+    }
+    const info = iceInfo(candidate.candidate);
+    log('Local ICE candidate: ' + info.label, info.cls);
     try {
       await signal('add_ice', {
-        candidate:     candidate.candidate,
-        sdpMid:        candidate.sdpMid,
+        candidate: candidate.candidate,
+        sdpMid: candidate.sdpMid,
         sdpMLineIndex: candidate.sdpMLineIndex,
-        from:          'host',
+        from: 'host',
       });
-    } catch(e) { /* non-fatal */ }
+    } catch(e) {
+      log('Failed to publish ICE candidate: ' + e.message, 'err');
+    }
+  };
+
+  pc.onicegatheringstatechange = () => {
+    log('ICE gathering state → ' + pc.iceGatheringState,
+        pc.iceGatheringState === 'complete' ? 'ok' : 'dim');
+  };
+
+  pc.oniceconnectionstatechange = () => {
+    log('ICE connection state → ' + pc.iceConnectionState,
+        pc.iceConnectionState === 'connected' || pc.iceConnectionState === 'completed' ? 'ok' :
+        pc.iceConnectionState === 'failed' ? 'err' : 'dim');
+  };
+
+  pc.onsignalingstatechange = () => {
+    log('Signaling state → ' + pc.signalingState, 'dim');
   };
 
   pc.onconnectionstatechange = () => {
     const s = pc.connectionState;
-    log('Connection: ' + s, s === 'connected' ? 'ok' : s === 'failed' ? 'err' : '');
+    log('Connection state → ' + s, s === 'connected' ? 'ok' : s === 'failed' ? 'err' : 'dim');
     if (s === 'connected') {
       setStatus('streaming', 'Streaming — viewer connected');
       document.getElementById('conn-badge').textContent = '1 viewer';
@@ -463,70 +388,81 @@ async function startHost() {
     }
   };
 
-  pc.onicegatheringstatechange = () => {
-    log('ICE gathering: ' + pc.iceGatheringState);
-  };
-
-  // Create and publish offer
+  // Create offer
+  log('Creating SDP offer…');
   setStatus('connecting', 'Creating offer…');
   try {
-    const offer = await pc.createOffer({ offerToReceiveVideo: false });
+    const offer = await pc.createOffer({ offerToReceiveVideo: false, offerToReceiveAudio: false });
+    log('Offer created (' + offer.sdp.split('\n').length + ' SDP lines)', 'ok');
     await pc.setLocalDescription(offer);
+    log('Local description set', 'ok');
     await signal('publish_offer', { sdp: offer.sdp, type: offer.type });
-    log('Offer published — waiting for viewer', 'ok');
+    log('Offer published to signal server', 'ok');
   } catch(e) {
-    log('Failed to create offer: ' + e.message, 'err');
-    setStatus('error', 'WebRTC offer failed');
+    log('Offer creation failed: ' + e.name + ': ' + e.message, 'err');
+    setStatus('error', 'Offer failed');
     cleanup();
     return;
   }
 
   hosting = true;
+  gotAnswer = false;
   iceIndex = 0;
   document.getElementById('host-btn').textContent = 'Stop Streaming';
   document.getElementById('host-btn').classList.add('active');
   document.getElementById('hud').classList.add('visible');
-  setStatus('connecting', 'Offer ready — waiting for viewer to connect…');
+  setStatus('connecting', 'Offer published — waiting for viewer…');
 
-  // Start polling for answer + viewer ICE
-  pollTimer = setInterval(pollSignal, POLL_INTERVAL_MS);
+  log('Polling for answer every ' + POLL_MS + 'ms…', 'dim');
+  pollTimer = setInterval(pollSignal, POLL_MS);
 }
-
-let gotAnswer = false;
 
 async function pollSignal() {
   if (!hosting) return;
 
-  // 1) Wait for answer if we don't have it yet
   if (!gotAnswer) {
     try {
       const res = await signal('get_answer');
       if (res.ok && res.answer) {
-        await pc.setRemoteDescription(new RTCSessionDescription(res.answer));
-        gotAnswer = true;
-        log('Answer received — establishing connection…', 'ok');
-        setStatus('connecting', 'Answer received — connecting…');
+        log('Answer received! type=' + res.answer.type + ', ' + res.answer.sdp.split('\n').length + ' SDP lines', 'ok');
+        try {
+          await pc.setRemoteDescription(new RTCSessionDescription(res.answer));
+          log('Remote description set — ICE negotiation begins', 'ok');
+          gotAnswer = true;
+          setStatus('connecting', 'Answer set — waiting for ICE…');
+        } catch(e) {
+          log('setRemoteDescription failed: ' + e.name + ': ' + e.message, 'err');
+        }
       }
-    } catch(e) { /* not ready yet */ }
+    } catch(e) {
+      // signal() already logged — skip
+    }
   }
 
-  // 2) Collect ICE candidates sent by the viewer
+  // Poll for viewer ICE candidates
   try {
     const res = await signal('get_ice', { since: iceIndex, from: 'host' });
     if (res.ok && res.candidates && res.candidates.length) {
+      log('Got ' + res.candidates.length + ' viewer ICE candidate(s)', 'ok');
       for (const c of res.candidates) {
+        const info = iceInfo(c.candidate);
+        log('Adding viewer ICE: ' + info.label, info.cls);
         try {
           await pc.addIceCandidate(new RTCIceCandidate(c));
           iceIndex = c.id + 1;
-        } catch(e) { /* ignore stale candidates */ }
+        } catch(e) {
+          log('addIceCandidate failed: ' + e.message, 'err');
+        }
       }
     }
-  } catch(e) { /* non-fatal */ }
+  } catch(e) {
+    // already logged
+  }
 }
 
 function stopHost() {
-  hosting = false;
-  gotAnswer = false;
+  log('=== Stopping host ===');
+  hosting = false; gotAnswer = false;
   if (pollTimer) { clearInterval(pollTimer); pollTimer = null; }
   cleanup();
   document.getElementById('host-btn').textContent = 'Start Streaming';
@@ -537,34 +473,26 @@ function stopHost() {
   document.getElementById('placeholder').style.display = 'flex';
   document.getElementById('conn-badge').textContent = 'no viewers';
   document.getElementById('conn-badge').style.color = '';
-  document.getElementById('frame-count') && (document.getElementById('frame-count').textContent = '');
   setStatus('', 'Stopped');
-  log('Streaming stopped');
   try { signal('reset'); } catch(e) {}
 }
 
 function cleanup() {
   stopStream();
-  if (pc) { pc.close(); pc = null; }
+  if (pc) { pc.close(); pc = null; log('PeerConnection closed'); }
 }
 
 function stopStream() {
-  if (localStream) {
-    localStream.getTracks().forEach(t => t.stop());
-    localStream = null;
-  }
-  const preview = document.getElementById('preview');
-  preview.srcObject = null;
+  if (localStream) { localStream.getTracks().forEach(t => t.stop()); localStream = null; }
+  document.getElementById('preview').srcObject = null;
 }
 
-// ── Init ──────────────────────────────────────────────
+// ── Init ──────────────────────────────────────────────────────────────────
 loadCameras();
-
-// Pre-fill signal URL if there's a ?signal= param (handy for QR codes)
 const params = new URLSearchParams(location.search);
-if (params.get('signal')) {
-  document.getElementById('signal-url').value = params.get('signal');
-}
+if (params.get('signal')) document.getElementById('signal-url').value = params.get('signal');
+log('Page loaded. User agent: ' + navigator.userAgent.slice(0,80), 'dim');
+log('STUN: ' + ICE_SERVERS.map(s=>s.urls).join(', '), 'dim');
 </script>
 </body>
 </html>
