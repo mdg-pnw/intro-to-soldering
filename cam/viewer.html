@@ -59,14 +59,22 @@
   @keyframes pulse { 0%,100%{opacity:1}50%{opacity:0.25} }
 
   /* ── Diagnostic log ── */
-  .log-section { padding: 14px 16px; border-top: 1px solid var(--border);
-    display: flex; flex-direction: column; gap: 8px; background: var(--surface2); }
-  .log-header { display: flex; align-items: center; justify-content: space-between;
-    font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-muted); }
+  .log-section { padding: 10px 16px; border-top: 1px solid var(--border);
+    background: var(--surface2); }
+  .log-header { display: flex; align-items: center; }
+  .log-toggle { display: flex; align-items: center; gap: 6px; cursor: pointer;
+    font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-muted);
+    user-select: none; background: none; border: none; font-family: var(--font); padding: 0; }
+  .log-toggle:hover { color: var(--text); }
+  .log-toggle .chevron { display: inline-block; transition: transform 0.2s; }
+  .log-toggle.open .chevron { transform: rotate(90deg); }
+  .log-actions { display: flex; align-items: center; gap: 8px; margin-left: auto; }
   .log-clear { font-size: 10px; padding: 2px 8px; background: transparent;
     border: 1px solid var(--border); border-radius: 4px; color: var(--text-muted);
     font-family: var(--font); cursor: pointer; text-transform: uppercase; letter-spacing: 0.05em; }
   .log-clear:hover { border-color: var(--danger); color: var(--danger); }
+  .log-body { display: none; margin-top: 8px; }
+  .log-body.open { display: block; }
   .log { font-size: 10.5px; color: var(--text-muted); line-height: 1.75;
     letter-spacing: 0.01em; height: 200px; overflow-y: auto;
     background: var(--bg); border-radius: var(--radius);
@@ -105,7 +113,7 @@
   <div class="connect-bar">
     <div class="field">
       <label>Signal server URL</label>
-      <input id="signal-url" type="url" value="https://i2s.cmmn.com/cam/signal.php" />
+      <input id="signal-url" type="url" placeholder="https://yourdomain.com/signal.php" />
     </div>
     <button class="btn btn-connect" id="connect-btn" onclick="toggleConnection()">Connect</button>
   </div>
@@ -124,10 +132,16 @@
 
   <div class="log-section">
     <div class="log-header">
-      <span>Diagnostic log</span>
-      <button class="log-clear" onclick="clearLog()">Clear</button>
+      <button class="log-toggle" id="log-toggle" onclick="toggleLog()">
+        <span class="chevron">▶</span> Diagnostic log
+      </button>
+      <div class="log-actions">
+        <button class="log-clear" onclick="clearLog()">Clear</button>
+      </div>
     </div>
-    <div class="log" id="log"></div>
+    <div class="log-body" id="log-body">
+      <div class="log" id="log"></div>
+    </div>
   </div>
 
   <div class="status-bar">
@@ -164,6 +178,13 @@ function log(msg, cls='') {
   el.scrollTop = el.scrollHeight;
 }
 function clearLog() { document.getElementById('log').innerHTML = ''; }
+function toggleLog() {
+  const toggle = document.getElementById('log-toggle');
+  const body   = document.getElementById('log-body');
+  const open   = body.classList.toggle('open');
+  toggle.classList.toggle('open', open);
+  if (open) body.querySelector('.log').scrollTop = body.querySelector('.log').scrollHeight;
+}
 
 function iceInfo(candidateStr) {
   if (!candidateStr) return { cls: 'dim', label: 'null/end-of-candidates' };
