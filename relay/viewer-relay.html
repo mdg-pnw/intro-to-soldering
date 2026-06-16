@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WS Camera — Viewer (Relay)</title>
+<style>
+  :root {
+    --bg: #0d0f12; --surface: #161a20; --surface2: #1e242d;
+    --border: rgba(255,255,255,0.08);
+    --accent: #00e5a0; --accent-dim: rgba(0,229,160,0.12); --accent-glow: rgba(0,229,160,0.25);
+    --text: #eef0f3; --text-muted: #7a8494;
+    --danger: #ff5c5c; --danger-dim: rgba(255,92,92,0.12);
+    --warn: #f5a623;
+    --radius: 8px; --font: 'JetBrains Mono','Fira Code','Cascadia Code',monospace;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--text); font-family: var(--font);
+    font-size: 13px; min-height: 100vh; display: flex; flex-direction: column;
+    align-items: center; padding: 2rem 1rem; gap: 12px; }
+  header { width: 100%; max-width: 900px; display: flex; align-items: center; gap: 12px; margin-bottom: 8px; }
+  .logo { width: 32px; height: 32px; border-radius: 8px; background: var(--accent-dim);
+    border: 1px solid var(--accent); display: flex; align-items: center;
+    justify-content: center; flex-shrink: 0; }
+  .logo svg { width: 18px; height: 18px; stroke: var(--accent); fill: none; stroke-width: 1.8; }
+  h1 { font-size: 15px; font-weight: 600; letter-spacing: 0.04em; }
+  .tagline { font-size: 11px; color: var(--text-muted); margin-left: auto; }
+  .card { width: 100%; max-width: 900px; background: var(--surface);
+    border: 1px solid var(--border); border-radius: 12px; overflow: hidden; }
+  .connect-bar { display: flex; gap: 10px; padding: 16px; border-bottom: 1px solid var(--border);
+    align-items: flex-end; flex-wrap: wrap; }
+  .field { display: flex; flex-direction: column; gap: 4px; flex: 1; min-width: 180px; }
+  .field label { font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-muted); }
+  input { background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius);
+    color: var(--text); font-family: var(--font); font-size: 13px; padding: 8px 10px;
+    outline: none; transition: border-color 0.15s; width: 100%; }
+  input:focus { border-color: var(--accent); }
+  .btn { border-radius: var(--radius); font-family: var(--font); font-size: 12px; font-weight: 600;
+    letter-spacing: 0.06em; padding: 9px 22px; cursor: pointer; transition: all 0.15s;
+    white-space: nowrap; border: 1px solid; text-transform: uppercase; align-self: flex-end; }
+  .btn-connect { background: var(--accent-dim); border-color: var(--accent); color: var(--accent); }
+  .btn-connect:hover { background: var(--accent-glow); }
+  .btn-connect.active { background: var(--danger-dim); border-color: var(--danger); color: var(--danger); }
+  .viewer { position: relative; background: #090b0e; aspect-ratio: 16/9;
+    display: flex; align-items: center; justify-content: center; overflow: hidden; }
+  #feed { width: 100%; height: 100%; object-fit: contain; display: none; }
+  .placeholder { display: flex; flex-direction: column; align-items: center; gap: 16px;
+    color: var(--text-muted); position: absolute; }
+  .placeholder svg { width: 48px; height: 48px; stroke: currentColor; fill: none; stroke-width: 1.2; opacity: 0.4; }
+  .placeholder p { font-size: 12px; opacity: 0.6; text-align: center; line-height: 1.6; }
+  .hud { position: absolute; top: 12px; left: 12px; right: 12px;
+    display: flex; justify-content: space-between; pointer-events: none;
+    opacity: 0; transition: opacity 0.2s; }
+  .hud.visible { opacity: 1; }
+  .badge { font-size: 10px; letter-spacing: 0.06em; text-transform: uppercase;
+    padding: 4px 8px; border-radius: 4px; backdrop-filter: blur(8px);
+    display: flex; align-items: center; gap: 5px; }
+  .badge.live { background: rgba(0,229,160,0.2); border: 1px solid rgba(0,229,160,0.4); color: var(--accent); }
+  .badge.info { background: rgba(0,0,0,0.55); border: 1px solid rgba(255,255,255,0.12); color: var(--text-muted); }
+  .dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor;
+    animation: pulse 1.2s ease-in-out infinite; }
+  @keyframes pulse { 0%,100%{opacity:1}50%{opacity:0.25} }
+  .status-bar { display: flex; align-items: center; gap: 10px; padding: 10px 16px;
+    background: var(--surface2); border-top: 1px solid var(--border); }
+  .sdot { width: 7px; height: 7px; border-radius: 50%; background: var(--text-muted);
+    flex-shrink: 0; transition: background 0.3s; }
+  .sdot.connecting { background: var(--warn); animation: pulse 0.8s infinite; }
+  .sdot.connected  { background: var(--accent); }
+  .sdot.error      { background: var(--danger); }
+  #status-text { font-size: 11px; color: var(--text-muted); flex: 1; }
+  #stat-text   { font-size: 11px; color: var(--text-muted); }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">
+    <svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+  </div>
+  <h1>WS Camera <span style="color:var(--accent);font-weight:400">/ Viewer · Relay</span></h1>
+  <span class="tagline">PHP frame relay</span>
+</header>
+
+<div class="card">
+  <div class="connect-bar">
+    <div class="field">
+      <label>Relay URL</label>
+      <input id="relay-url" type="url" placeholder="https://yourdomain.com/relay.php" />
+    </div>
+    <button class="btn btn-connect" id="connect-btn" onclick="toggleConnection()">Connect</button>
+  </div>
+
+  <div class="viewer">
+    <div class="placeholder" id="placeholder">
+      <svg viewBox="0 0 24 24"><path d="M15 10l4.553-2.277A1 1 0 0121 8.6v6.8a1 1 0 01-1.447.877L15 14M3 8a2 2 0 012-2h10a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2V8z"/></svg>
+      <p id="placeholder-text">Enter the relay URL above and click Connect</p>
+    </div>
+    <img id="feed" alt="camera feed" />
+    <div class="hud" id="hud">
+      <div class="badge live"><div class="dot"></div> LIVE</div>
+      <div class="badge info" id="res-badge">—</div>
+    </div>
+  </div>
+
+  <div class="status-bar">
+    <div class="sdot" id="sdot"></div>
+    <span id="status-text">Disconnected</span>
+    <span id="stat-text"></span>
+  </div>
+</div>
+
+<script>
+const RELAY_URL_KEY = 'wscam-relay-url';
+
+let active = false, lastSeq = 0, frameCount = 0;
+let fpsFrames = 0, lastFpsTime = performance.now();
+let retryTimer = null, fetchController = null;
+
+function relayUrl() { return document.getElementById('relay-url').value.trim(); }
+
+function setStatus(state, msg) {
+  document.getElementById('sdot').className = 'sdot' + (state ? ' '+state : '');
+  document.getElementById('status-text').textContent = msg;
+}
+
+function toggleConnection() {
+  if (active) stop(); else start();
+}
+
+function start() {
+  if (!relayUrl()) { setStatus('error', 'Enter the relay URL first'); return; }
+  active = true;
+  lastSeq = 0;
+  frameCount = fpsFrames = 0;
+  lastFpsTime = performance.now();
+  document.getElementById('connect-btn').textContent = 'Disconnect';
+  document.getElementById('connect-btn').classList.add('active');
+  setStatus('connecting', 'Waiting for stream…');
+  document.getElementById('placeholder-text').textContent = 'Waiting for host to start streaming…';
+  fetchNext();
+}
+
+async function fetchNext() {
+  if (!active) return;
+
+  // Use long-poll: ask for a frame newer than lastSeq
+  // The server holds the connection until a new frame arrives (up to 8s)
+  const url = relayUrl() + '?action=pull&since=' + lastSeq;
+
+  try {
+    fetchController = new AbortController();
+    const r = await fetch(url, {
+      signal: fetchController.signal,
+      cache: 'no-store',
+    });
+
+    if (!r.ok) {
+      // 503 = no stream yet, keep waiting
+      if (r.status === 503) {
+        setStatus('connecting', 'Waiting for host…');
+        document.getElementById('placeholder-text').textContent = 'Waiting for host to start streaming…';
+        retryTimer = setTimeout(fetchNext, 1000);
+        return;
+      }
+      throw new Error('HTTP ' + r.status);
+    }
+
+    // Read frame metadata from response headers
+    const seq = parseInt(r.headers.get('X-Frame-Seq') || '0', 10);
+    const w   = parseInt(r.headers.get('X-Frame-W')   || '0', 10);
+    const h   = parseInt(r.headers.get('X-Frame-H')   || '0', 10);
+
+    // Convert blob to object URL and display
+    const blob   = await r.blob();
+    const objUrl = URL.createObjectURL(blob);
+    const img    = document.getElementById('feed');
+
+    // Revoke previous object URL to free memory
+    if (img._objUrl) URL.revokeObjectURL(img._objUrl);
+    img._objUrl = objUrl;
+    img.src     = objUrl;
+    img.style.display = 'block';
+
+    document.getElementById('placeholder').style.display = 'none';
+    document.getElementById('hud').classList.add('visible');
+
+    lastSeq = seq;
+    frameCount++;
+    fpsFrames++;
+
+    if (w && h) document.getElementById('res-badge').textContent = w + '×' + h;
+
+    // FPS counter
+    const now = performance.now();
+    if (now - lastFpsTime >= 1000) {
+      const fps = (fpsFrames / ((now - lastFpsTime) / 1000)).toFixed(1);
+      document.getElementById('stat-text').textContent = frameCount + ' frames · ' + fps + ' fps';
+      fpsFrames = 0;
+      lastFpsTime = now;
+    }
+
+    setStatus('connected', 'Receiving stream');
+
+    // Immediately ask for the next frame
+    fetchNext();
+
+  } catch(e) {
+    if (!active) return; // aborted by user — expected
+    if (e.name === 'AbortError') return;
+
+    setStatus('error', 'Stream error — retrying…');
+    retryTimer = setTimeout(fetchNext, 2000);
+  }
+}
+
+function stop() {
+  active = false;
+  if (fetchController) { fetchController.abort(); fetchController = null; }
+  if (retryTimer)      { clearTimeout(retryTimer); retryTimer = null; }
+
+  const img = document.getElementById('feed');
+  if (img._objUrl) { URL.revokeObjectURL(img._objUrl); img._objUrl = null; }
+  img.src = '';
+  img.style.display = 'none';
+
+  document.getElementById('placeholder').style.display = 'flex';
+  document.getElementById('placeholder-text').textContent = 'Enter the relay URL above and click Connect';
+  document.getElementById('hud').classList.remove('visible');
+  document.getElementById('connect-btn').textContent = 'Connect';
+  document.getElementById('connect-btn').classList.remove('active');
+  document.getElementById('stat-text').textContent = '';
+  document.getElementById('res-badge').textContent = '—';
+  setStatus('', 'Disconnected');
+}
+
+// ── Persist URL ────────────────────────────────────────────────────────────
+const saved = localStorage.getItem(RELAY_URL_KEY);
+if (saved) document.getElementById('relay-url').value = saved;
+document.getElementById('relay-url').addEventListener('change', () =>
+  localStorage.setItem(RELAY_URL_KEY, relayUrl()));
+
+const params = new URLSearchParams(location.search);
+if (params.get('relay')) document.getElementById('relay-url').value = params.get('relay');
+</script>
+</body>
+</html>
