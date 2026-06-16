@@ -385,7 +385,7 @@ async function negotiate(offerData) {
 
 async function pollIce(sid) {
   try {
-    const res = await signal('get_ice', { since: iceIndex, from: 'viewer', session_id: sid });
+    const res = await signal('get_ice', { since: iceIndex, from: 'viewer' });
     if (res.ok && res.candidates && res.candidates.length) {
       log('Got ' + res.candidates.length + ' host ICE candidate(s)', 'ok');
       for (const c of res.candidates) {

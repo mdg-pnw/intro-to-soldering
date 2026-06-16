@@ -459,7 +459,7 @@ async function pollSignal() {
 
   // Poll for viewer ICE candidates for this session
   try {
-    const res = await signal('get_ice', { since: iceIndex, from: 'host', session_id: sessionId });
+    const res = await signal('get_ice', { since: iceIndex, from: 'host' });
     if (res.ok && res.candidates && res.candidates.length) {
       log('Got ' + res.candidates.length + ' viewer ICE candidate(s)', 'ok');
       for (const c of res.candidates) {

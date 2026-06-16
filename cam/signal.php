@@ -79,6 +79,7 @@ switch ($action) {
         if (!$offer) send(['ok' => false, 'error' => 'No offer yet', 'session_id' => get_session()]);
         // known_session lets viewer detect a host restart mid-session
         $known = intval($body['known_session'] ?? $_GET['known_session'] ?? -1);
+        // Body takes precedence since we POST JSON
         $new_session = ($known >= 0 && $offer['session_id'] !== $known);
         send(['ok' => true, 'offer' => $offer, 'session_id' => $offer['session_id'], 'new_session' => $new_session]);
 
@@ -116,16 +117,16 @@ switch ($action) {
         send(['ok' => true]);
 
     case 'get_ice':
-        $since      = intval($_GET['since'] ?? $body['since'] ?? 0);
-        $from       = $_GET['from'] ?? $body['from'] ?? '';
-        $session_id = intval($_GET['session_id'] ?? $body['session_id'] ?? get_session());
-        $ice        = read_json($ice_file) ?? [];
-        $filtered   = array_values(array_filter($ice, function($c) use ($since, $from, $session_id) {
+        $since = intval($body['since'] ?? $_GET['since'] ?? 0);
+        $from  = $body['from']  ?? $_GET['from']  ?? '';
+        $ice   = read_json($ice_file) ?? [];
+        // Filter by index and exclude candidates sent by the requester (no echo).
+        // No session_id filter here — ICE list is already cleared on each new offer.
+        $filtered = array_values(array_filter($ice, function($c) use ($since, $from) {
             return $c['id'] >= $since
-                && ($from === '' || $c['from'] !== $from)
-                && ($c['session_id'] === $session_id);
+                && ($from === '' || $c['from'] !== $from);
         }));
-        send(['ok' => true, 'candidates' => $filtered, 'total' => count($ice), 'session_id' => $session_id]);
+        send(['ok' => true, 'candidates' => $filtered, 'total' => count($ice)]);
 
     case 'reset':
         @unlink($offer_file);
