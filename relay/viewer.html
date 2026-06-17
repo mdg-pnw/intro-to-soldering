@@ -152,6 +152,15 @@ async function fetchNext() {
       if (r.status === 503) {
         setStatus('connecting', 'Waiting for host…');
         document.getElementById('placeholder-text').textContent = 'Waiting for host to start streaming…';
+        // Clear stale frame so viewers don't see old content
+        const img = document.getElementById('feed');
+        if (img._objUrl) { URL.revokeObjectURL(img._objUrl); img._objUrl = null; }
+        img.src = '';
+        img.style.display = 'none';
+        document.getElementById('placeholder').style.display = 'flex';
+        document.getElementById('hud').classList.remove('visible');
+        document.getElementById('res-badge').textContent = '—';
+        lastSeq = 0;
         retryTimer = setTimeout(fetchNext, 1000);
         return;
       }

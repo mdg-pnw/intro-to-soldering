@@ -121,7 +121,11 @@ switch ($action) {
         // Mark stream as dead if no frame in 5 seconds
         if ($meta['live'] && (microtime(true) - ($meta['ts'] ?? 0)) > 5) {
             $meta['live'] = false;
+            $meta['w']    = 0;
+            $meta['h']    = 0;
+            $meta['size'] = 0;
             write_meta($meta_file, $meta);
+            @unlink($frame_file);
         }
         echo json_encode(['ok' => true] + $meta);
         break;
@@ -129,6 +133,9 @@ switch ($action) {
     case 'stop':
         $meta = read_meta($meta_file);
         $meta['live'] = false;
+        $meta['w']    = 0;
+        $meta['h']    = 0;
+        $meta['size'] = 0;
         write_meta($meta_file, $meta);
         @unlink($frame_file);
         header('Content-Type: application/json');

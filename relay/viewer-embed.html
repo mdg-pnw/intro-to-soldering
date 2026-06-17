@@ -5,23 +5,33 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Camera</title>
 <style>
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { background: #090b0e; width: 100%; height: 100%;
-    display: flex; flex-direction: column;
+  html, body { height: 100%; margin: 0; padding: 0; }
+  * { box-sizing: border-box; }
+  body { background: #090b0e; display: flex; flex-direction: column;
     font-family: 'JetBrains Mono','Fira Code',monospace; }
   .viewer { position: relative; flex: 1; display: flex;
     align-items: center; justify-content: center; background: #090b0e; }
   img#feed { width: 100%; height: 100%; object-fit: contain; display: none; }
+  /* Overlay: shown when not streaming */
   .overlay { position: absolute; inset: 0; display: flex; flex-direction: column;
-    align-items: center; justify-content: center; gap: 14px; }
+    align-items: center; justify-content: center; gap: 14px;
+    background: rgba(9,11,14,0.85); transition: opacity 0.2s; }
+  .overlay.hidden { opacity: 0; pointer-events: none; }
   .connect-btn { background: rgba(0,229,160,0.12); border: 1px solid #00e5a0;
     border-radius: 8px; color: #00e5a0; font-family: inherit; font-size: 12px;
     font-weight: 600; letter-spacing: 0.08em; padding: 9px 24px; cursor: pointer;
     text-transform: uppercase; transition: background 0.15s; }
   .connect-btn:hover { background: rgba(0,229,160,0.22); }
-  .connect-btn.disconnect { border-color: #ff5c5c; color: #ff5c5c; background: rgba(255,92,92,0.12); }
-  .connect-btn.disconnect:hover { background: rgba(255,92,92,0.22); }
   .status-msg { font-size: 10px; color: #7a8494; letter-spacing: 0.04em; display: none; }
+  /* Disconnect: corner badge, only shown when live */
+  .disc-btn { position: absolute; top: 10px; right: 10px;
+    background: rgba(0,0,0,0.55); border: 1px solid rgba(255,92,92,0.5);
+    border-radius: 4px; color: #ff5c5c; font-family: inherit; font-size: 10px;
+    font-weight: 600; letter-spacing: 0.06em; padding: 4px 10px; cursor: pointer;
+    text-transform: uppercase; backdrop-filter: blur(6px);
+    display: none; transition: background 0.15s; }
+  .disc-btn:hover { background: rgba(255,92,92,0.2); }
+  .disc-btn.visible { display: block; }
   .live-badge { position: absolute; top: 10px; left: 10px; font-size: 10px;
     letter-spacing: 0.06em; text-transform: uppercase; padding: 4px 8px;
     border-radius: 4px; background: rgba(0,229,160,0.2); border: 1px solid rgba(0,229,160,0.4);
@@ -37,10 +47,11 @@
 <div class="viewer">
   <img id="feed" alt="camera feed" />
   <div class="overlay" id="overlay">
-    <button class="connect-btn" id="btn" onclick="toggle()">Connect Camera</button>
+    <button class="connect-btn" onclick="start()">Connect Camera</button>
     <span class="status-msg" id="msg"></span>
   </div>
   <div class="live-badge" id="live"><div class="dot"></div> LIVE</div>
+  <button class="disc-btn" id="disc" onclick="stop()">Disconnect</button>
 </div>
 
 <script>
@@ -49,20 +60,21 @@ const RELAY_URL = 'relay.php';
 let active = false, lastSeq = 0;
 let retryTimer = null, fetchController = null;
 
-const btn      = document.getElementById('btn');
 const overlay  = document.getElementById('overlay');
 const feed     = document.getElementById('feed');
 const msg      = document.getElementById('msg');
 const liveBadge = document.getElementById('live');
+const discBtn  = document.getElementById('disc');
 
 function setMsg(text) { msg.style.display = text ? 'block' : 'none'; msg.textContent = text; }
-
-function toggle() { if (active) stop(); else start(); }
+function setLive(on) {
+  overlay.classList.toggle('hidden', on);
+  discBtn.classList.toggle('visible', on);
+  liveBadge.classList.toggle('visible', on);
+}
 
 function start() {
   active = true; lastSeq = 0;
-  btn.textContent = 'Disconnect';
-  btn.className = 'connect-btn disconnect';
   setMsg('Waiting for host…');
   fetchNext();
 }
@@ -76,6 +88,10 @@ async function fetchNext() {
 
     if (!r.ok) {
       setMsg('Waiting for host to start streaming…');
+      if (feed._objUrl) { URL.revokeObjectURL(feed._objUrl); feed._objUrl = null; }
+      feed.src = ''; feed.style.display = 'none';
+      setLive(false);
+      lastSeq = 0;
       retryTimer = setTimeout(fetchNext, 1000);
       return;
     }
@@ -88,12 +104,7 @@ async function fetchNext() {
     feed._objUrl = objUrl;
     feed.src = objUrl;
     feed.style.display = 'block';
-
-    // Hide overlay once we have the first frame
-    overlay.style.background = 'transparent';
-    overlay.style.pointerEvents = 'none';
-    btn.style.pointerEvents = 'auto';
-    liveBadge.classList.add('visible');
+    setLive(true);
     setMsg('');
 
     lastSeq = seq;
@@ -112,12 +123,7 @@ function stop() {
   if (retryTimer)      { clearTimeout(retryTimer); retryTimer = null; }
   if (feed._objUrl)    { URL.revokeObjectURL(feed._objUrl); feed._objUrl = null; }
   feed.src = ''; feed.style.display = 'none';
-  overlay.style.background = '';
-  overlay.style.pointerEvents = '';
-  btn.style.pointerEvents = '';
-  liveBadge.classList.remove('visible');
-  btn.textContent = 'Connect Camera';
-  btn.className = 'connect-btn';
+  setLive(false);
   setMsg('');
 }
 </script>
