@@ -228,7 +228,7 @@ You can use this handy <a href="https://www.digikey.com/en/resources/conversion-
 <summary><strong>Capacitor</strong> <span class="expand-icon">▶</span></summary>
 <div class="component-body"><p><strong>Simple definition:</strong> A capacitor stores a small amount of electrical energy and releases it when needed.</p>
 <p><strong>Think of it this way:</strong> A capacitor is like a tiny rechargeable bucket for electricity - it fills up, holds a charge briefly, and then releases it.</p>
-<p><strong>In your kit:</strong> Capacitors smooth out power, reduce electrical noise, create timing effects, and help stabilize circuits.</p>
+<p><strong>In your kit:</strong> Capacitors smooth out power, reduce electrical noise, and help stabilize circuits.</p>
 </div>
 </details>
 }
@@ -238,6 +238,7 @@ You can use this handy <a href="https://www.digikey.com/en/resources/conversion-
 <div class="component-body"><p><strong>Simple definition:</strong> An IC is a tiny chip that contains many electronic parts inside it.</p>
 <p><strong>Think of it this way:</strong> An IC is like a tiny electronic brain. Instead of building a circuit from lots of separate pieces, many parts are packed into one small chip.</p>
 <p><strong>In your kit:</strong> An IC might control lights, respond to sensors, store logic, amplify signals, or perform a specific function designed by the chip manufacturer.</p>
+This <a href="https://youtu.be/pDELW2pIvWw">video</a> has a great explanation about how to Integrated Circuits simplify routine logic functions.
 </div>
 </details>
 }
@@ -271,7 +272,9 @@ You can use this handy <a href="https://www.digikey.com/en/resources/conversion-
 * **Adafruit Learning System** (adafruit.com/learn) - thorough beginner soldering guides with photos
 * **EEVblog on YouTube**: Dave Jones' soldering tutorials are widely considered the best free resource
 * **r/soldering on Reddit**: community for joint critique and technique feedback
-* **Electrical Basics Made Easy**:  <a href="https://www.youtube.com/watch?v=nYuVSG89vg0">https://www.youtube.com/watch?v=nYuVSG89vg0</a>
+* **<a href="https://www.youtube.com/watch?v=nYuVSG89vg0">Electrical Basics Made Easy</a>**
+** Highly Recommended
+* **<a href="https://youtu.be/pDELW2pIvWw">Digital Electronics - The First Video YOU Should Watch</a>**
 ** Highly Recommended
 
 ### Projects and Kits
