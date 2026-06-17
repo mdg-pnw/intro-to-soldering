@@ -1,0 +1,75 @@
+[[← Previous->Title]] 
+[[← Previous->What Is Soldering]] 
+[[← Previous->Safety First]] 
+[[← Previous->Tools and Materials]] 
+[[← Previous->The Soldering Iron]] 
+[[← Previous->Soldering Iron Tips]] 
+[[← Previous->Preparing Your Workspace]] 
+[[← Previous->Tinning the Tip]] 
+[[← Previous->Basic Technique]] 
+[[← Previous->Reading the Joint]] 
+[[← Previous->Common Mistakes]] 
+[[← Previous->Desoldering Basics]] 
+[[← Previous->Let's Get Practical]] 
+[[← Previous->Practice and Next Steps]] 
+[[← Previous->Wrap Up]] 
+
+
+
+
+[[Next: Title →->Title]] 
+[[Next: What Is Soldering →->What Is Soldering]] 
+[[Next: Safety First →->Safety First]] 
+[[Next: Tools and Materials →->Tools and Materials]] 
+[[Next: The Soldering Iron →->The Soldering Iron]] 
+[[Next: Soldering Iron Tips →->Soldering Iron Tips]] 
+[[Next: Preparing Your Workspace →->Preparing Your Workspace]] 
+[[Next: Tinning the Tip →->Tinning the Tip]] 
+[[Next: Basic Technique →->Basic Technique]] 
+[[Next: Reading the Joint →->Reading the Joint]] 
+[[Next: Common Mistakes →->Common Mistakes]] 
+[[Next: Desoldering Basics →->Desoldering Basics]] 
+[[Next: Let's Get Practical →->Let's Get Practical]] 
+[[Next: Practice and Next Steps →->Practice and Next Steps]] 
+[[Next: Wrap Up →->Wrap Up]] 
+
+
+
+Title
+What Is Soldering
+Let's Get Practical
+Basic Technique
+Preparing Your Workspace
+Safety First
+Tinning the Tip
+Tools and Materials
+The Soldering Iron
+Soldering Iron Tips
+Reading the Joint
+Common Mistakes
+Desoldering Basics
+Practice and Next Steps
+Wrap Up
+
+
+
+
+
+
+<div class="nav-bar"><!--Title--> [[Next: What Is Soldering →->What Is Soldering]] </div>
+<div class="nav-bar">[[← Previous->Title]] <!--What Is Soldering--> [[Next: Let's Get Practical →->Let's Get Practical]] </div>
+<div class="nav-bar">[[← Previous->What Is Soldering]] <!--Let's Get Practical--> [[Next: Basic Technique →->Basic Technique]] </div>
+<div class="nav-bar">[[← Previous->Let's Get Practical]] <!--Basic Technique--> [[Next: Preparing Your Workspace →->Preparing Your Workspace]] </div>
+<div class="nav-bar">[[← Previous->Basic Technique]] <!--Preparing Your Workspace--> [[Next: Safety First →->Safety First]] </div>
+<div class="nav-bar">[[← Previous->Preparing Your Workspace]] <!--Safety First--> [[Next: Tinning the Tip →->Tinning the Tip]] </div>
+<div class="nav-bar">[[← Previous->Safety First]] <!--Tinning the Tip--></div>
+
+
+<!--Reading the Joint-->
+<!--Common Mistakes-->
+<!--Desoldering Basics-->
+<!--Practice and Next Steps-->
+<!--Tools and Materials-->
+<!--The Soldering Iron-->
+<!--Soldering Iron Tips-->
+<!--Wrap Up-->
