@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Camera</title>
+<style>
+  html, body { height: 100%; margin: 0; padding: 0; }
+  * { box-sizing: border-box; }
+  body { background: #090b0e; display: flex; flex-direction: column;
+    font-family: 'JetBrains Mono','Fira Code',monospace; }
+  .viewer { position: relative; flex: 1; display: flex;
+    align-items: center; justify-content: center; background: #090b0e; }
+  canvas#feed { width: 100%; height: 100%; object-fit: contain; display: none; }
+  .overlay { position: absolute; inset: 0; display: flex; flex-direction: column;
+    align-items: center; justify-content: center; gap: 14px;
+    background: rgba(9,11,14,0.85); transition: opacity 0.2s; }
+  .overlay.hidden { opacity: 0; pointer-events: none; }
+  .ip-input { background: #0d0f12; border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 8px; color: #eef0f3; font-family: inherit; font-size: 13px;
+    padding: 8px 12px; outline: none; width: 200px; text-align: center;
+    transition: border-color 0.15s; letter-spacing: 0.02em; }
+  .ip-input::placeholder { color: #7a8494; }
+  .ip-input:focus { border-color: #00e5a0; }
+  .connect-btn { background: rgba(0,229,160,0.12); border: 1px solid #00e5a0;
+    border-radius: 8px; color: #00e5a0; font-family: inherit; font-size: 12px;
+    font-weight: 600; letter-spacing: 0.08em; padding: 9px 24px; cursor: pointer;
+    text-transform: uppercase; transition: background 0.15s; }
+  .connect-btn:hover { background: rgba(0,229,160,0.22); }
+  .status-msg { font-size: 10px; color: #7a8494; letter-spacing: 0.04em; display: none; }
+  .disc-btn { position: absolute; top: 10px; right: 10px;
+    background: rgba(0,0,0,0.55); border: 1px solid rgba(255,92,92,0.5);
+    border-radius: 4px; color: #ff5c5c; font-family: inherit; font-size: 10px;
+    font-weight: 600; letter-spacing: 0.06em; padding: 4px 10px; cursor: pointer;
+    text-transform: uppercase; backdrop-filter: blur(6px);
+    display: none; transition: background 0.15s; }
+  .disc-btn:hover { background: rgba(255,92,92,0.2); }
+  .disc-btn.visible { display: block; }
+  .live-badge { position: absolute; top: 10px; left: 10px; font-size: 10px;
+    letter-spacing: 0.06em; text-transform: uppercase; padding: 4px 8px;
+    border-radius: 4px; background: rgba(0,229,160,0.2); border: 1px solid rgba(0,229,160,0.4);
+    color: #00e5a0; display: none; align-items: center; gap: 5px; backdrop-filter: blur(6px); }
+  .live-badge.visible { display: flex; }
+  .dot { width: 6px; height: 6px; border-radius: 50%; background: #00e5a0;
+    animation: pulse 1.2s ease-in-out infinite; }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.25} }
+</style>
+</head>
+<body>
+
+<div class="viewer">
+  <canvas id="feed" width="1280" height="720"></canvas>
+  <div class="overlay" id="overlay">
+    <input class="ip-input" id="ip-input" type="text" placeholder="192.168.1.100"
+      onkeydown="if(event.key==='Enter')connect()" />
+    <button class="connect-btn" onclick="connect()">Connect Camera</button>
+    <span class="status-msg" id="msg"></span>
+  </div>
+  <div class="live-badge" id="live"><div class="dot"></div> LIVE</div>
+  <button class="disc-btn" id="disc" onclick="disconnect()">Disconnect</button>
+</div>
+
+<script>
+  let ws = null;
+  let connected = false;
+  let rendering = false;
+  let pendingData = null;
+  let currentBlobUrl = null;
+  let canvasW = 0, canvasH = 0;
+
+  const canvas   = document.getElementById('feed');
+  const ctx      = canvas.getContext('2d', { alpha: false });
+  const overlay  = document.getElementById('overlay');
+  const msg      = document.getElementById('msg');
+  const liveBadge = document.getElementById('live');
+  const discBtn  = document.getElementById('disc');
+
+  const img = new Image();
+  img.onload = () => {
+    if (currentBlobUrl) { URL.revokeObjectURL(currentBlobUrl); currentBlobUrl = null; }
+    paintFrame();
+  };
+  img.onerror = () => {
+    if (currentBlobUrl) { URL.revokeObjectURL(currentBlobUrl); currentBlobUrl = null; }
+    rendering = false;
+    drainPending();
+  };
+
+  function setMsg(text) { msg.style.display = text ? 'block' : 'none'; msg.textContent = text; }
+  function setLive(on) {
+    overlay.classList.toggle('hidden', on);
+    discBtn.classList.toggle('visible', on);
+    liveBadge.classList.toggle('visible', on);
+  }
+
+  function connect() {
+    const ip = document.getElementById('ip-input').value.trim();
+    if (!ip) { setMsg('Enter an IP address first'); return; }
+    const url = 'ws://' + ip + ':8080/';
+    setMsg('Connecting…');
+
+    try {
+      ws = new WebSocket(url);
+      ws.binaryType = 'arraybuffer';
+    } catch(e) {
+      setMsg('Failed: ' + e.message);
+      return;
+    }
+
+    ws.onopen = () => {
+      connected = true;
+      rendering = false;
+      pendingData = null;
+      setMsg('');
+      setLive(true);
+    };
+
+    ws.onmessage = (evt) => queueFrame(evt.data);
+
+    ws.onerror = () => setMsg('Connection error — check IP and that the server is running');
+
+    ws.onclose = (evt) => {
+      connected = false;
+      pendingData = null;
+      rendering = false;
+      canvas.style.display = 'none';
+      setLive(false);
+      setMsg(evt.reason || 'Disconnected');
+    };
+  }
+
+  function disconnect() {
+    if (ws) { ws.close(); ws = null; }
+    connected = false;
+    pendingData = null;
+    rendering = false;
+    canvas.style.display = 'none';
+    setLive(false);
+    setMsg('');
+  }
+
+  function queueFrame(data) {
+    if (rendering) {
+      pendingData = data;
+      return;
+    }
+    startRender(data);
+  }
+
+  function drainPending() {
+    if (pendingData !== null) {
+      const d = pendingData;
+      pendingData = null;
+      startRender(d);
+    }
+  }
+
+  function startRender(data) {
+    rendering = true;
+    if (typeof data === 'string') {
+      const b64 = data.replace(/^data:image\/[^;]+;base64,/, '');
+      img.src = 'data:image/jpeg;base64,' + b64;
+    } else {
+      if (currentBlobUrl) { URL.revokeObjectURL(currentBlobUrl); currentBlobUrl = null; }
+      const blob = new Blob([data], { type: 'image/jpeg' });
+      currentBlobUrl = URL.createObjectURL(blob);
+      img.src = currentBlobUrl;
+    }
+  }
+
+  function paintFrame() {
+    const w = img.naturalWidth || img.width;
+    const h = img.naturalHeight || img.height;
+    if (w !== canvasW || h !== canvasH) {
+      canvas.width = w; canvas.height = h;
+      canvasW = w; canvasH = h;
+    }
+    ctx.drawImage(img, 0, 0);
+    rendering = false;
+    canvas.style.display = 'block';
+    drainPending();
+  }
+</script>
+</body>
+</html>
