@@ -83,10 +83,6 @@
 
 <div class="card">
   <div class="connect-bar">
-    <div class="field">
-      <label>Relay URL</label>
-      <input id="relay-url" type="url" placeholder="https://i2s.cmmn.com/relay/relay.php" />
-    </div>
     <button class="btn btn-connect" id="connect-btn" onclick="toggleConnection()">Connect</button>
   </div>
 
@@ -110,13 +106,11 @@
 </div>
 
 <script>
-const RELAY_URL_KEY = 'wscam-relay-url';
+const RELAY_URL = 'relay.php';
 
 let active = false, lastSeq = 0, frameCount = 0;
 let fpsFrames = 0, lastFpsTime = performance.now();
 let retryTimer = null, fetchController = null;
-
-function relayUrl() { return document.getElementById('relay-url').value.trim(); }
 
 function setStatus(state, msg) {
   document.getElementById('sdot').className = 'sdot' + (state ? ' '+state : '');
@@ -128,7 +122,6 @@ function toggleConnection() {
 }
 
 function start() {
-  if (!relayUrl()) { setStatus('error', 'Enter the relay URL first'); return; }
   active = true;
   lastSeq = 0;
   frameCount = fpsFrames = 0;
@@ -145,7 +138,7 @@ async function fetchNext() {
 
   // Use long-poll: ask for a frame newer than lastSeq
   // The server holds the connection until a new frame arrives (up to 8s)
-  const url = relayUrl() + '?action=pull&since=' + lastSeq;
+  const url = RELAY_URL + '?action=pull&since=' + lastSeq;
 
   try {
     fetchController = new AbortController();
@@ -233,14 +226,7 @@ function stop() {
   setStatus('', 'Disconnected');
 }
 
-// ── Persist URL ────────────────────────────────────────────────────────────
-const saved = localStorage.getItem(RELAY_URL_KEY);
-if (saved) document.getElementById('relay-url').value = saved;
-document.getElementById('relay-url').addEventListener('change', () =>
-  localStorage.setItem(RELAY_URL_KEY, relayUrl()));
-
-const params = new URLSearchParams(location.search);
-if (params.get('relay')) document.getElementById('relay-url').value = params.get('relay');
+start();
 </script>
 </body>
 </html>

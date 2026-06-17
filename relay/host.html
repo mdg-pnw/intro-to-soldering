@@ -94,29 +94,33 @@
   <div class="section">
     <div class="row">
       <div class="field">
-        <label>Relay URL</label>
-        <input id="relay-url" type="url" placeholder="https://i2s.cmmn.com/relay/relay.php" />
-      </div>
-    </div>
-    <div class="row">
-      <div class="field">
         <label>Camera</label>
         <select id="cam-select"><option value="">Loading…</option></select>
+      </div>
+      <div class="field" style="max-width:100px">
+        <label>Resolution</label>
+        <select id="resolution">
+          <option value="1280">720p</option>
+          <option value="854">480p</option>
+          <option value="640" selected>360p</option>
+          <option value="480">270p</option>
+        </select>
       </div>
       <div class="field" style="max-width:100px">
         <label>Quality</label>
         <select id="quality">
           <option value="0.85">High</option>
-          <option value="0.70" selected>Medium</option>
-          <option value="0.50">Low</option>
+          <option value="0.70">Medium</option>
+          <option value="0.50" selected>Low</option>
+          <option value="0.30">Tiny</option>
         </select>
       </div>
       <div class="field" style="max-width:100px">
         <label>FPS target</label>
         <select id="fps">
           <option value="24">24 fps</option>
-          <option value="15" selected>15 fps</option>
-          <option value="10">10 fps</option>
+          <option value="15">15 fps</option>
+          <option value="10" selected>10 fps</option>
           <option value="5">5 fps</option>
         </select>
       </div>
@@ -148,20 +152,18 @@
 
   <div class="status-bar">
     <div class="sdot" id="sdot"></div>
-    <span id="status-text">Idle — enter relay URL and tap Start</span>
+    <span id="status-text">Idle — tap Start to begin streaming</span>
   </div>
 </div>
 
 <script>
-const RELAY_URL_KEY = 'wscam-relay-url';
+const RELAY_URL = 'relay.php';
 
 let stream = null, captureCanvas = null, captureCtx = null;
 let sendTimer = null, active = false, facingMode = 'environment';
 let frameCount = 0, errorCount = 0, totalBytes = 0;
 let fpsFrames = 0, lastFpsTime = performance.now();
 let sending = false; // prevent overlapping POSTs
-
-function relayUrl() { return document.getElementById('relay-url').value.trim(); }
 
 function setStatus(state, msg) {
   document.getElementById('sdot').className = 'sdot' + (state ? ' '+state : '');
@@ -200,7 +202,6 @@ async function flipCamera() {
 // ── Host flow ──────────────────────────────────────────────────────────────
 async function toggleHost() {
   if (active) { stopHost(); return; }
-  if (!relayUrl()) { setStatus('error', 'Enter the relay URL first'); return; }
   await startHost();
 }
 
@@ -231,12 +232,14 @@ async function startHost() {
   document.getElementById('flip-btn').classList.add('visible');
   document.getElementById('hud').classList.add('visible');
 
-  // Set up offscreen canvas sized to actual camera output
+  // Set up offscreen canvas scaled to selected resolution
   await new Promise(r => preview.onloadedmetadata = r);
   const vw = preview.videoWidth, vh = preview.videoHeight;
+  const maxW = parseInt(document.getElementById('resolution').value, 10);
+  const scale = Math.min(1, maxW / vw);
   captureCanvas = document.createElement('canvas');
-  captureCanvas.width  = vw;
-  captureCanvas.height = vh;
+  captureCanvas.width  = Math.round(vw * scale);
+  captureCanvas.height = Math.round(vh * scale);
   captureCtx = captureCanvas.getContext('2d', { alpha: false });
 
   active = true;
@@ -265,7 +268,9 @@ async function sendFrame() {
     if (!blob) { sending = false; return; }
 
     try {
-      const r = await fetch(relayUrl() + '?action=push', {
+      const ctrl = new AbortController();
+      const tid = setTimeout(() => ctrl.abort(), 3000);
+      const r = await fetch(RELAY_URL + '?action=push', {
         method: 'POST',
         headers: {
           'Content-Type': 'image/jpeg',
@@ -273,7 +278,9 @@ async function sendFrame() {
           'X-Frame-H': captureCanvas.height,
         },
         body: blob,
+        signal: ctrl.signal,
       });
+      clearTimeout(tid);
 
       if (r.ok) {
         frameCount++;
@@ -323,17 +330,8 @@ function stopHost() {
   setStatus('', 'Stopped');
 
   // Tell server stream is over
-  fetch(relayUrl() + '?action=stop', { method: 'POST' }).catch(() => {});
+  fetch(RELAY_URL + '?action=stop', { method: 'POST' }).catch(() => {});
 }
-
-// ── Persist URL ────────────────────────────────────────────────────────────
-const saved = localStorage.getItem(RELAY_URL_KEY);
-if (saved) document.getElementById('relay-url').value = saved;
-document.getElementById('relay-url').addEventListener('change', () =>
-  localStorage.setItem(RELAY_URL_KEY, relayUrl()));
-
-const params = new URLSearchParams(location.search);
-if (params.get('relay')) document.getElementById('relay-url').value = params.get('relay');
 
 loadCameras();
 </script>

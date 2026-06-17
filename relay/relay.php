@@ -19,10 +19,11 @@ $meta_file   = "$dir/meta.json";
 
 $action = $_GET['action'] ?? 'pull';
 
-// ── CORS (same as signal.php) ─────────────────────────────────────────────
+// ── CORS ──────────────────────────────────────────────────────────────────
 header('Access-Control-Allow-Origin: *');
 header('Access-Control-Allow-Methods: GET, POST, OPTIONS');
-header('Access-Control-Allow-Headers: Content-Type, X-Frame-Seq');
+header('Access-Control-Allow-Headers: Content-Type, X-Frame-W, X-Frame-H');
+header('Access-Control-Expose-Headers: X-Frame-Seq, X-Frame-Ts, X-Frame-W, X-Frame-H');
 if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') { http_response_code(204); exit; }
 
 // ── Helpers ───────────────────────────────────────────────────────────────
@@ -38,8 +39,8 @@ function write_meta($file, $data) {
 switch ($action) {
 
     case 'push':
-        // Read raw JPEG from request body
-        $data = file_get_contents('php://input');
+        // Read raw JPEG from request body (cap at 1 MB)
+        $data = file_get_contents('php://input', false, null, 0, 1048576);
         if (!$data || strlen($data) < 3) {
             http_response_code(400);
             echo json_encode(['ok' => false, 'error' => 'Empty frame']);
@@ -76,14 +77,15 @@ switch ($action) {
 
         // If caller passes ?since=N, hold the response until a newer frame
         // exists or 8 seconds pass (poor-man's long-poll)
-        $since   = intval($_GET['since'] ?? 0);
-        $waited  = 0;
+        $since    = intval($_GET['since'] ?? 0);
+        $waited   = 0;
         $max_wait = 8; // seconds
-        $interval = 80000; // 80ms between checks
+        $interval = 50000; // 50ms between checks
 
         while ($meta['seq'] <= $since && $waited < $max_wait * 1000000) {
             usleep($interval);
             $waited += $interval;
+            clearstatcache(true, $meta_file);
             $meta = read_meta($meta_file);
             // If stream went offline, bail early
             if (!$meta['live']) break;
