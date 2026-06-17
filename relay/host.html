@@ -262,7 +262,7 @@ async function sendFrame() {
   const quality = parseFloat(document.getElementById('quality').value);
   const preview = document.getElementById('preview');
 
-  captureCtx.drawImage(preview, 0, 0);
+  captureCtx.drawImage(preview, 0, 0, captureCanvas.width, captureCanvas.height);
 
   captureCanvas.toBlob(async (blob) => {
     if (!blob) { sending = false; return; }
