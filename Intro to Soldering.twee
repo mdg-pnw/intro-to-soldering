@@ -25,11 +25,8 @@ Intro to Soldering
 
 :: Basic Technique [Intro] {"position":"500,650","size":"100,100"}
 ## Basic Soldering Technique
-
 <div class="info-box">**The golden rule: heat the joint, not the solder.** Solder should melt when it touches the hot joint, not when it touches the iron tip.</div>
-
 ### Step-by-Step
-
 1. **Flux**: Add flux to the joint.
 2. **Heat**: Touch the iron tip to the junction of the lead and pad simultaneously. Wait 1-2 seconds.
 3. **Feed solder**: Bring solder to the joint from the opposite side of the iron tip. Let it flow in.
@@ -41,7 +38,6 @@ Intro to Soldering
 (display:"Camera")
 
 ### Timing
-
 * Total dwell time on the joint: typically **2-4 seconds**
 * Too short → incomplete wetting, cold joint
 * Too long → component damage, lifted pads, burned flux
@@ -49,11 +45,10 @@ Intro to Soldering
 <div class="nav-bar">[[← Previous->Let's Get Practical]] <!--Basic Technique--> [[Next: Preparing Your Workspace →->Preparing Your Workspace]] </div>
 
 
-
 :: Camera {"position":"25,175","size":"100,100"}
 {
 <details class="component">
-<summary><strong>Viewer (print:$viewerMode)</strong> <span class="expand-icon">▶</span></summary>
+<summary><strong>Viewer</strong> <span class="expand-icon">▶</span></summary>
 <div class="component-body">
 
 (if: $viewerMode is "WebSocket")[
@@ -97,7 +92,6 @@ Intro to Soldering
 }
 
 
-
 :: Desoldering Basics [Review] {"position":"900,450","size":"100,100"}
 ## Desoldering Basics
 
@@ -117,8 +111,6 @@ Mistakes happen. Desoldering lets you remove or rework components without damagi
 * Use a fresh section each time, a saturated braid won't wick
 
 <div class="info-box">**Patience matters.** Pulling components before the solder is fully molten tears pads off the board. Let the heat do the work, not your fingers.</div>
-
-
 
 
 :: Diode Pipe [Image] {"position":"25,925","size":"100,100"}
@@ -173,9 +165,6 @@ Mistakes happen. Desoldering lets you remove or rework components without damagi
 ]\
 </span>\
 </div>
-
-
-
 
 
 :: Header [header] {"position":"150,25","size":"100,100"}
@@ -255,7 +244,6 @@ This <a href="https://youtu.be/pDELW2pIvWw">video</a> has a great explanation ab
 <div class="nav-bar">[[← Previous->What Is Soldering]] <!--Let's Get Practical--> [[Next: Basic Technique →->Basic Technique]] </div>
 
 
-
 :: Practice and Next Steps [Next-Steps] {"position":"1300,200","size":"100,100"}
 ## Practice & Next Steps
 
@@ -276,6 +264,7 @@ This <a href="https://youtu.be/pDELW2pIvWw">video</a> has a great explanation ab
 ** Highly Recommended
 * **<a href="https://youtu.be/pDELW2pIvWw">Digital Electronics - The First Video YOU Should Watch</a>**
 ** Highly Recommended
+* **SparkFun**: A great place to find free instructional <a href="https://learn.sparkfun.com/resources">resources</a> as well as kits.
 
 ### Projects and Kits
 
@@ -285,28 +274,21 @@ This <a href="https://youtu.be/pDELW2pIvWw">video</a> has a great explanation ab
 <div class="tip-box">**Fastest way to improve:** Solder something, photograph every joint, post for critique. Specific feedback accelerates skill far faster than solo practice.</div>
 
 
-
-
 :: Preparing Your Workspace [Intro] {"position":"500,800","size":"100,100"}
 ## Preparing Your Workspace
-
 ### Physical Setup
-
 * Work on a **heat-resistant mat**: silicone, ceramic tile, or a proper soldering mat
 * Place your iron stand **within easy reach** of your dominant hand
 * Ensure **good lighting**: you need to clearly see pads and component leads
 * Set up **ventilation**: a fan pulling fumes away, or a dedicated fume extractor
-
 ### Before You Start Soldering
-
 * Organize your components and (link:"PCB")[Printed Circuit Board] before turning on the iron
+** Use the alcohol pad to clean the PCB. This helps remove oil and residue.
 * Know exactly what you're going to solder and plan before you heat
-* Heat the iron and **tin the tip** (covered next)
 * Have your brass cleaner ready
 
 
 <div class="nav-bar">[[← Previous->Basic Technique]] <!--Preparing Your Workspace--> [[Next: Safety First →->Safety First]] </div>
-
 
 
 :: QR Code [Image] {"position":"25,775","size":"100,100"}
@@ -345,26 +327,20 @@ Visually assessing a solder joint is a skill you'll develop quickly with practic
 <div class="tip-box">**Use a magnifier or your phone camera** to inspect joints, especially on small components.</div>
 
 
-
-
 :: Safety First [Intro] {"position":"500,950","size":"100,100"}
 ## Safety First ⚠️
-
 <div class="warn-box">**The iron tip runs at 300-400°C. (text-colour:red)+(bg:yellow)[Burns happen instantly and without warning.]**</div>
 
 ### Key Safety Rules
-
 * **Eye protection**: always wear safety glasses
-* **Ventilation**: solder fumes (flux vapor) are irritating; work near a fan or fume extractor
+* **Ventilation**: solder fumes (flux vapor) are irritating, so work near a fan or fume extractor
 * **Never touch the tip**: use a stand at all times when the iron is hot
 * **Lead handling**: if using leaded solder, wear gloves and wash your hands afterwards
 * **Fire hazard**: keep flammables away and never leave a hot iron unattended
 * **Cable management**: keep the iron cord away from the tip and your work area
-
 <div class="tip-box">**Tip:** Return the iron to its stand between every operation. Most burns happen when an iron is set down "just for a second."</div>
 
 <div class="nav-bar">[[← Previous->Preparing Your Workspace]] <!--Safety First--> [[Next: Tinning the Tip →->Tinning the Tip]] </div>
-
 
 
 :: Soldering Iron Tips [Next-Steps] {"position":"1300,450","size":"100,100"}
@@ -381,10 +357,8 @@ Visually assessing a solder joint is a skill you'll develop quickly with practic
 <div class="tip-box">**Tip choice:** Chisel or bevel tips transfer heat more efficiently than fine conical tips for most through-hole and pad work. Use fine tips for precision (link:"SMD")[Surface Mount Device] work only.</div>
 
 
-
 :: Startup [startup] {"position":"25,25","size":"100,100"}
 (set: $viewerMode to "WebSocket")
-
 
 
 :: Technique [Image] {"position":"25,625","size":"100,100"}
@@ -404,28 +378,16 @@ Visually assessing a solder joint is a skill you'll develop quickly with practic
 ⭐ **Temperature-controlled pencil iron**: The best of both! It's simple, inexpensive (~$35). A digital setpoint and sensors provide consistent results.
 
 
-### Temperature Settings
-
-* **Leaded solder (63/37, 60/40):** 315-340°C / 600-650°F
-* **Lead-free solder:** 340-370°C / 650-700°F
-* **Too cool** → solder won't flow properly, cold joints
-* **Too hot** → damages components, burns flux, shortens tip life
-
-
-
 
 :: Tinning the Tip [Intro] {"position":"500,1100","size":"100,100"}
 ## Tinning the Tip
-
-Tinning means coating the iron tip with a thin, fresh layer of solder. It is the single most important maintenance habit for clean, reliable soldering.
+Tinning means coating the iron tip with a thin, fresh layer of solder. It is the //single most important maintenance habit// for clean, reliable soldering.
 
 ### Why It Matters
-
 * A tinned (shiny, silver) tip transfers heat efficiently and wets solder properly
-* An oxidized (black, dull) tip insulates itself - heat won't transfer, joints will be poor regardless of technique
+* An oxidized (black, dull) tip insulates itself. Heat won't transfer and joints will be poor regardless of technique
 
 ### How to Tin
-
 1. Heat the iron to working temperature
 2. Clean the tip on the brass cleaner to remove old oxidation
 3. Immediately touch fresh solder to the tip. It should melt and coat it evenly
@@ -448,24 +410,29 @@ Tinning means coating the iron tip with a thin, fresh layer of solder. It is the
 </div>
 }
 
-### Keeping Tips Healthy
+### Power On the Soldering Iron
+1. Plug the USB-C cable into the iron.
+2. When it turns on, press the ➕ button one time to heat up the iron.
+3. Press and hold the ➖ button to turn off the heat. (It may take some time to cool off)
+(display:"Camera")
 
+### Keeping Tips Healthy
 * Never leave a hot iron idle with a bare, dry tip for long
-* Don't sand or file tips. Tt destroys the iron plating layer
+* Don't sand or file tips or it will destroy the iron plating layer
 * Use tip tinner/activator paste for severely oxidized tips
 
 <div class="nav-bar">[[← Previous->Safety First]] <!--Tinning the Tip--></div>
 
 
-
 :: Title [Intro] {"position":"500,200","size":"100,100"}
+{
 <div class="title-hero">
 # Introduction to Soldering
-{
 <p class="subtitle">A hands-on guide to soldering electronics.</p>
 <p class="presenter">👋 Hi, I'm Monty DeGauven</p>
-}
+
 </div>
+}
 ### Who am I?
 I am a //mostly// normal dude who likes making things. I am not an electronics expert, a soldering genius, or someone who has every answer. I am a curious maker with a little experience, a lot of enthusiasm, and a belief that sometimes the right introduction can spark a lifelong interest.
 
@@ -481,7 +448,6 @@ That experience stayed with me. It turned into years of tinkering, experimenting
  ### Bookmark this site!
  (display:"QR Code")
 <div class="nav-bar"><!--Title--> [[Next: What Is Soldering →->What Is Soldering]] </div>
-
 
 
 :: Tools and Materials [Next-Steps] {"position":"1300,575","size":"100,100"}
@@ -504,22 +470,15 @@ That experience stayed with me. It turned into years of tinkering, experimenting
 * **Silicone Mat**: prevents burning work surfaces and makes cleanup easier
 
 
-
-
 :: What Is Soldering [Intro] {"position":"500,350","size":"100,100"}
 ## What Is Soldering?
-
 Soldering is the process of joining two metal surfaces using a low-melting-point filler metal called solder. Unlike welding, the base materials are **not melted**, only the solder is.
-
 ### Where Is It Used?
-
 * Electronics for circuit boards, wiring, connectors
 * Plumbing to join copper pipes
 * Jewelry making and metalwork
 * Stained glass assembly
-
 ### Why Learn Soldering?
-
 * Make THINGS!
 * Fix THINGS!
 * Hack THINGS!
@@ -542,7 +501,6 @@ This interactive mini desk pet also monitors the local temperature and humidity!
 <div class="nav-bar">[[← Previous->Title]] <!--What Is Soldering--> [[Next: Let's Get Practical →->Let's Get Practical]] </div>
 
 
-
 :: Wrap Up [Next-Steps] {"position":"1300,700","size":"100,100"}
 <div class="end-center">
 
@@ -553,8 +511,6 @@ This interactive mini desk pet also monitors the local temperature and humidity!
 TODO: Add plug for EMS
 
 </div>
-
-
 
 
 :: StoryScript [script]
