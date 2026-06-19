@@ -424,6 +424,11 @@ Tinning means coating the iron tip with a thin, fresh layer of solder. It is the
 4. Wipe off the excess on the cleaner, leaving a thin, shiny coat
 
 <div class="info-box">**Tin //before// and //after// every session.** Before you put the iron away, tin it. The solder coat protects the tip from oxidizing while it cools between uses.</div>
+<details class="component"> \
+<summary><strong>What part of the tip do you tin?</strong> <span class="expand-icon">▶</span></summary>\
+<div class="component-body"> \
+   <img src="https://i2s.cmmn.com/images/tinning-good-bad.png" style="max-width:100%" />
+ </div></details>\
 
 {
 <button class="video-btn" onclick="openVideoModal('tin-modal','tin-video','https://www.youtube.com/embed/ejZpB9TPTMg?start=831&rel=0')">▶ Watch: Tinning in Action</button>
