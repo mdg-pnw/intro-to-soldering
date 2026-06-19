@@ -42,13 +42,13 @@ Basic Technique
 Preparing Your Workspace
 Safety First
 Tinning the Tip
-Tools and Materials
-The Soldering Iron
-Soldering Iron Tips
 Reading the Joint
 Common Mistakes
 Desoldering Basics
 Practice and Next Steps
+The Soldering Iron
+Soldering Iron Tips
+Tools and Materials
 Wrap Up
 
 
@@ -63,6 +63,9 @@ Wrap Up
 <div class="nav-bar">[[← Previous->Basic Technique]] <!--Preparing Your Workspace--> [[Next: Safety First →->Safety First]] </div>
 <div class="nav-bar">[[← Previous->Preparing Your Workspace]] <!--Safety First--> [[Next: Tinning the Tip →->Tinning the Tip]] </div>
 <div class="nav-bar">[[← Previous->Safety First]] <!--Tinning the Tip--></div>
+
+
+<div class="nav-bar"> </div>
 
 
 <!--Reading the Joint-->
