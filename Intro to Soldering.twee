@@ -129,6 +129,10 @@ Mistakes happen. Desoldering lets you remove or rework components without damagi
  </div></details>
 
 
+:: Feedback [Image] {"position":"25,1075","size":"100,100"}
+<img src="https://i2s.cmmn.com/images/feedback-qr.jpg" style="max-width:200px" />
+
+
 :: Footer [footer] {"position":"275,25","size":"100,100"}
 <div id="pres-footer">
 (set: $q to "Title")\
@@ -481,7 +485,7 @@ That experience stayed with me. It turned into years of tinkering, experimenting
         (display:"Agenda")
  </div></details>
  ### Bookmark this site!
- (display:"QR Code")
+ (display:"QR Code") 
 <div class="nav-bar"><!--Title--> [[Next: What Is Soldering →->What Is Soldering]] </div>
 
 
@@ -544,6 +548,10 @@ This interactive mini desk pet also monitors the local temperature and humidity!
 ## Thank You!
 
 ### Questions?
+### Feedback
+Please feel free to provide honest feedback to help us improve this class. 
+ (display:"Feedback")
+
 </div>
 ## Become a Member!
 <a href="https://eugenemakerspace.com/membership/">Support the Eugene Makerspace</a> and what we do, access the shop, explore new tools and technologies, participate in a community of makers, and join in as we create something wonderful!
